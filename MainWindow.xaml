@@ -4,9 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:snapwatch"
+        xmlns:components="clr-namespace:snapwatch.UI.Components"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Background="#000"
+        Title="snapwatch" Height="750" Width="1125">
     <Grid>
-        
+
+        <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Collapsed" />
+        <!-- Collapsed -->
+
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <components:Panel />
+            </Border>
+
+            <Border Grid.Column="1">
+                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" />
+            </Border>
+        </Grid>
     </Grid>
 </Window>

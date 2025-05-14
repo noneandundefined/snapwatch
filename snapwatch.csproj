@@ -55,6 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Internal\Service\Navigation.cs" />
+    <Compile Include="Internal\Service\WPFHelper.cs" />
+    <Compile Include="Models\PanelItemsModel.cs" />
+    <Compile Include="UI\Components\Panel.xaml.cs">
+      <DependentUpon>Panel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Components\SkeletonLoader.xaml.cs">
+      <DependentUpon>SkeletonLoader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\PanelVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +77,26 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\Components\Panel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Components\SkeletonLoader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Styles\AppStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Styles\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Styles\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -90,9 +120,38 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Public\images\empty_img.webp" />
+    <None Include="Public\images\gradient.webp" />
+    <Resource Include="Public\font\Oswald-Bold.ttf" />
+    <Resource Include="Public\font\Oswald-ExtraLight.ttf" />
+    <Resource Include="Public\font\Oswald-Light.ttf" />
+    <Resource Include="Public\font\Oswald-Medium.ttf" />
+    <Resource Include="Public\font\Oswald-Regular.ttf" />
+    <Resource Include="Public\font\Oswald-SemiBold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Resource Include="Public\images\default_image.jpg" />
+    <Resource Include="Public\images\image_preloader.png" />
+    <Resource Include="Public\ico\clapperboard.png" />
+    <Resource Include="Public\ico\heart.png" />
+    <Resource Include="Public\ico\ico-app.ico" />
+    <Resource Include="Public\ico\layout-dashboard.png" />
+    <Resource Include="Public\ico\monitor.png" />
+    <Resource Include="Public\ico\move-left.png" />
+    <Resource Include="Public\ico\play.png" />
+    <Resource Include="Public\ico\play_n.png" />
+    <Resource Include="Public\ico\text.png" />
+    <Resource Include="Public\ico\youtube.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Internal\Core\" />
+    <Folder Include="Internal\Interface\" />
+    <Folder Include="Internal\Repository\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
