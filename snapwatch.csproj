@@ -55,9 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Internal\Service\Navigation.cs" />
+    <Compile Include="Internal\Service\WPFHelper.cs" />
+    <Compile Include="Models\PanelItemsModel.cs" />
+    <Compile Include="UI\Components\Panel.xaml.cs">
+      <DependentUpon>Panel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\SkeletonLoader.xaml.cs">
       <DependentUpon>SkeletonLoader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\PanelVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +77,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\Components\Panel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Components\SkeletonLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,8 +151,6 @@
     <Folder Include="Internal\Core\" />
     <Folder Include="Internal\Interface\" />
     <Folder Include="Internal\Repository\" />
-    <Folder Include="Internal\Service\" />
-    <Folder Include="ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
