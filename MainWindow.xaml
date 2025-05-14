@@ -11,8 +11,22 @@
         Title="snapwatch" Height="750" Width="1125">
     <Grid>
 
-        <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Visible" />
+        <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Collapsed" />
         <!-- Collapsed -->
 
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <components:Panel />
+            </Border>
+
+            <Border Grid.Column="1">
+                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" />
+            </Border>
+        </Grid>
     </Grid>
 </Window>
