@@ -124,7 +124,7 @@
                 </Ellipse.Triggers>
             </Ellipse>
             <Label Style="{StaticResource Font}" Foreground="#fff"
-                   Content="Ждать... Мы загружаем все, что вам нужно." FontSize="18" />
+                   Content="Подождите... Мы загружаем все, что вам нужно." FontSize="18" />
         </StackPanel>
     </Grid>
 </UserControl>
