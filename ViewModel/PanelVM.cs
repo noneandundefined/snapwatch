@@ -2,6 +2,7 @@
 using snapwatch.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace snapwatch.ViewModel
@@ -29,8 +30,8 @@ namespace snapwatch.ViewModel
             {
                 return _menuItemClickCommand ?? (_menuItemClickCommand = new RelayCommand(path =>
                 {
-                    UIActions _action = new UIActions(Application.Current.MainWindow as MainWindow);
-                    _action.SetFrameContent(path as string);
+                    Navigation _nav = new Navigation(Application.Current.MainWindow as MainWindow);
+                    _nav.SetFrameContent(path as string);
                 }));
             }
         }
