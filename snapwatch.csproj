@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,15 +58,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Internal\Core\Config.cs" />
     <Compile Include="Internal\Service\Navigation.cs" />
     <Compile Include="Internal\Service\WPFHelper.cs" />
     <Compile Include="Models\PanelItemsModel.cs" />
+    <Compile Include="UI\Components\MovieCard.xaml.cs">
+      <DependentUpon>MovieCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Components\Panel.xaml.cs">
       <DependentUpon>Panel.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Components\SkeletonLoader.xaml.cs">
       <DependentUpon>SkeletonLoader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Styles\Controllers\ImageUriConvertor.cs" />
     <Compile Include="ViewModel\PanelVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -77,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\Components\MovieCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Components\Panel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -116,6 +128,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -148,7 +161,6 @@
     <Resource Include="Public\ico\youtube.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Internal\Core\" />
     <Folder Include="Internal\Interface\" />
     <Folder Include="Internal\Repository\" />
     <Folder Include="View\" />

@@ -1,0 +1,23 @@
+﻿using Newtonsoft.Json;
+
+namespace snapwatch.Internal.Core
+{
+    public class AppConfig
+    {
+        [JsonProperty("SERVER_URL")]
+        public string SERVER_URL { get; }
+
+        public AppConfig()
+        {
+            this.SERVER_URL = "http://localhost:8080/api/v1"; // https://flicksfi-production.up.railway.app/api/v1
+        }
+    }
+
+    public class Config
+    {
+        public AppConfig ReturnConfig()
+        {
+            return new AppConfig();
+        }
+    }
+}
