@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace snapwatch.Models
 {
@@ -16,10 +12,10 @@ namespace snapwatch.Models
         public string BackdropPath { get; set; }
 
         [JsonPropertyName("genre_ids")]
-        public List<int> GenreIds { get; set; }
+        public List<ushort> GenreIds { get; set; }
 
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         [JsonPropertyName("original_language")]
         public string OriginalLanguage { get; set; }
@@ -31,7 +27,7 @@ namespace snapwatch.Models
         public string Overview { get; set; }
 
         [JsonPropertyName("popularity")]
-        public double Popularity { get; set; }
+        public float Popularity { get; set; }
 
         [JsonPropertyName("poster_path")]
         public string PosterPath { get; set; }
@@ -49,6 +45,17 @@ namespace snapwatch.Models
         public double VoteAverage { get; set; }
 
         [JsonPropertyName("vote_count")]
-        public int VoteCount { get; set; }
+        public ushort VoteCount { get; set; }
+    }
+
+    public class MoviesModel
+    {
+        public ushort Page { get; set; }
+
+        public List<MovieModel> Results { get; set; }
+
+        public uint TotalPages { get; set; }
+
+        public uint TotalResults { get; set; }
     }
 }
