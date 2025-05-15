@@ -18,6 +18,19 @@ namespace snapwatch.Internal.Service
         public void LoaderVisibilityCollapsed() => this._main.Loader.Visibility = Visibility.Collapsed;
     }
 
+    public class UIException
+    {
+        public void Error(string overview, string title)
+        {
+            MessageBox.Show(overview.ToString(), title.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void Warning(string overview, string title)
+        {
+            MessageBox.Show(overview.ToString(), title.ToString(), MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;

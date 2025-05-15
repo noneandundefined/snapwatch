@@ -1,5 +1,6 @@
 ﻿using snapwatch.Internal.Core;
 using snapwatch.Internal.Interface;
+using snapwatch.Internal.Service;
 using snapwatch.Models;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,14 @@ namespace snapwatch.Internal.Repository
     public class MovieRepository : IMovieRepository
     {
         private readonly Config _config;
+        private readonly UIException _uiException;
 
         private readonly short MAX_COUNT_MOVIES = 500;
 
         public MovieRepository()
         {
             this._config = new Config();
+            this._uiException = new UIException();
         }
 
         public MoviesModel GetMovies()
@@ -47,7 +50,7 @@ namespace snapwatch.Internal.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                this._uiException.Error(ex.Message, "Error get movies");
                 return null;
             }
         }

@@ -1,9 +1,8 @@
 ﻿using snapwatch.Internal.Core;
 using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,51 +38,46 @@ namespace snapwatch.UI.Components
         {
             MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/image_preloader.png"));
 
-            await Task.Run(async () =>
+            using (var ctx = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
             {
                 try
                 {
-                    // Загрузка постера
-                    using (WebClient client = new WebClient())
+                    using (var httpClient = new HttpClient())
                     {
-                        using (var ctx = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+                        string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
+
+                        var response = await httpClient.GetAsync(url, ctx.Token);
+
+                        if (response.IsSuccessStatusCode)
                         {
-                            try
+                            byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
+
+                            var bitmap = new BitmapImage();
+                            using (var memoryStream = new MemoryStream(imageBytes))
                             {
-                                byte[] imageBytes = await client.DownloadDataTaskAsync(new Uri($"{this._config.ReturnConfig().SERVER_URL}/image/w500{path}", UriKind.Absolute));
-                                Dispatcher.Invoke(() =>
-                                {
-                                    using (MemoryStream memoryStream = new MemoryStream(imageBytes))
-                                    {
-                                        var bitmap = new BitmapImage();
-                                        bitmap.BeginInit();
-                                        bitmap.StreamSource = memoryStream;
-                                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                                        bitmap.EndInit();
-                                        MovieBrash.ImageSource = bitmap;
-                                    }
-                                });
+                                bitmap.BeginInit();
+                                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                                bitmap.StreamSource = memoryStream;
+                                bitmap.EndInit();
+                                bitmap.Freeze();
                             }
-                            catch (TaskCanceledException)
-                            {
-                                // Ошибка загрузки постера
-                                Dispatcher.Invoke(() =>
-                                {
-                                    MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
-                                });
-                            }
+
+                            MovieBrash.ImageSource = bitmap;
+                            return;
                         }
                     }
                 }
+                catch (OperationCanceledException)
+                {
+
+                }
                 catch (Exception)
                 {
-                    // Ошибка загрузки постера
-                    Dispatcher.Invoke(() =>
-                    {
-                        MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
-                    });
+
                 }
-            });
+
+                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
+            }
         }
 
         private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="#000"
-        Title="snapwatch" Height="750" Width="1125">
+        Title="snapwatch" Height="750" MinHeight="750" Width="1125" MinWidth="1125">
     <Grid>
 
         <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Collapsed" />
@@ -25,7 +25,7 @@
             </Border>
 
             <Border Grid.Column="1">
-                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" />
+                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" Source="pack://application:,,,/View/Home.xaml" />
             </Border>
         </Grid>
     </Grid>
