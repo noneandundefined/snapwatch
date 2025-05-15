@@ -37,6 +37,14 @@ namespace snapwatch.Internal.Service
         {
             System.Diagnostics.Debug.WriteLine("MeasureOverride called");
 
+            _itemsControl ??= ItemsControl.GetItemsOwner(this);
+            _generator ??= this.ItemContainerGenerator;
+
+            if (_itemsControl == null || _generator == null)
+            {
+                return availableSize;
+            }
+
             if (_itemsControl == null)
             {
                 return availableSize;
@@ -60,7 +68,7 @@ namespace snapwatch.Internal.Service
             int visibleRowCount = (int)Math.Ceiling(availableSize.Height / itemSize.Height);
             int lastVisibleIndex = Math.Min(itemCount, (firstVisibleIndex + (visibleRowCount + 1) * itemsPerRow));
 
-            this.Children.Clear();
+            RemoveInternalChildRange(0, this.Children.Count);
 
             GeneratorPosition startPos = _generator.GeneratorPositionFromIndex(firstVisibleIndex);
             int childIndex = (startPos.Offset == 0) ? startPos.Index : startPos.Index + 1;
