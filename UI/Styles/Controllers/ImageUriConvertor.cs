@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using snapwatch.Internal.Core;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace snapwatch.UI.Styles.Controllers
@@ -24,7 +21,8 @@ namespace snapwatch.UI.Styles.Controllers
         {
             if (value is string posterPath)
             {
-                return new Uri($"{this._config.ReturnConfig().SERVER_URL}/image/w500/{posterPath}", UriKind.Absolute);
+                return new Uri($"https://image.tmdb.org/t/p/w500/{posterPath}?api_key={this._config.ReturnConfig().API_KEY_TMDB}", UriKind.Absolute);
+                //return new Uri($"{this._config.ReturnConfig().SERVER_URL}/image/w500/{posterPath}", UriKind.Absolute);
                 /*return new ImageBrush(new BitmapImage(uri));*/
             }
 
