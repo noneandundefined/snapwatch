@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.View"
-             xmlns:controller="clr-namespace:snapwatch.UI.Styles.Controllers"
+             xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
              mc:Ignorable="d" 
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
 
     <UserControl.Resources>
+        <controllers:MoodToColorConverter x:Key="MoodToColorConverter"/>
+        
         <Style x:Key="MoodButton" TargetType="ToggleButton">
             <Setter Property="Width" Value="60"/>
             <Setter Property="Height" Value="60"/>
@@ -22,8 +24,8 @@
                                 <Ellipse Width="60" Height="60">
                                     <Ellipse.Fill>
                                         <RadialGradientBrush GradientOrigin="0.3,0.3">
-                                            <GradientStop Offset="0" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag, Converter={StaticResource MoodColorConverter}, ConverterParameter=Start}"/>
-                                            <GradientStop Offset="1" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag, Converter={StaticResource MoodColorConverter}, ConverterParameter=End}"/>
+                                            <GradientStop Offset="0" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag, Converter={StaticResource MoodToColorConverter}, ConverterParameter=Start}"/>
+                                            <GradientStop Offset="1" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag, Converter={StaticResource MoodToColorConverter}, ConverterParameter=End}"/>
                                         </RadialGradientBrush>
                                     </Ellipse.Fill>
                                 </Ellipse>
@@ -47,8 +49,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <controller:MoodToColorConverter x:Key="MoodColorConverter"/>
     </UserControl.Resources>
 
     <Border Padding="11">

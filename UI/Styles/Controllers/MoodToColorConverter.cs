@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace snapwatch.UI.Styles.Controllers
 {
-    public class MoodToColorConverter
+    public class MoodToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
