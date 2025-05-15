@@ -36,7 +36,7 @@ namespace snapwatch.Internal.Repository
                 }
 
                 var r = new Random();
-                ushort randomPage = (ushort) r.Next(1, MAX_COUNT_MOVIES + 1);
+                ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
 
                 foreach (var movies in moviesJson)
                 {

@@ -1,0 +1,28 @@
+name: Build and Check WPF/C# Application
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Format code (dotnet-format)
+      run: dotnet format --verify-no-changes
+      continue-on-error: true
+
+    - name: Build WPF project
+      run: dotnet build --no-restore --configuration Release
