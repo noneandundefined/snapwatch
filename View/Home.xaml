@@ -9,7 +9,7 @@
              xmlns:components="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
              mc:Ignorable="d"
-             Background="#171717"
+             Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
 
     <UserControl.DataContext>

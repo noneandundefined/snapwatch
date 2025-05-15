@@ -7,7 +7,7 @@
         xmlns:components="clr-namespace:snapwatch.UI.Components"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="#171717" Icon="pack://application:,,,/Public/images/snapwatch-40px.ico"
+        Background="#0f0f0f" Icon="pack://application:,,,/Public/images/snapwatch-40px.ico"
         Title="snapwatch" Height="750" MinHeight="750" Width="924" MinWidth="924">
     <Grid>
 
