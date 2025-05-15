@@ -17,6 +17,9 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Install MSBuild
+      uses: microsoft/setup-msbuild@v1.3
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -25,4 +28,4 @@ jobs:
       continue-on-error: true
 
     - name: Build WPF project
-      run: dotnet build snapwatch.sln --no-restore --configuration Release -p:UseSharedCompilation=false -p:Platform="Any CPU"
+      run: msbuild snapwatch.sln /p:Configuration=Release /p:Platform="Any CPU"
