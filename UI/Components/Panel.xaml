@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
              mc:Ignorable="d" Background="#111"
-             d:DesignHeight="700" d:DesignWidth="150">
+             d:DesignHeight="700" d:DesignWidth="120">
 
     <UserControl.DataContext>
         <vm:PanelVM />
@@ -20,8 +20,8 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5 0 0 20">
+                <StackPanel HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 30">
                         <Image Source="pack://application:,,,/Public/images/snapwatch-40px.png" Width="44" />
                     </StackPanel>
 
@@ -35,7 +35,7 @@
                                                   CommandParameter="{Binding PathView}" />
                                     </Border.InputBindings>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding Image}" Width="22" />
+                                        <Image Source="{Binding Image}" Width="24" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
