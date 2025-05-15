@@ -9,6 +9,6 @@ namespace snapwatch.Internal.Interface
 {
     public interface IMovieRepository
     {
-        List<MoviesModel> GetMovies();
+        MoviesModel GetMovies();
     }
 }

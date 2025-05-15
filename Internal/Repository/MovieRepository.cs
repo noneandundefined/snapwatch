@@ -1,18 +1,52 @@
-﻿using snapwatch.Internal.Interface;
+﻿using snapwatch.Internal.Core;
+using snapwatch.Internal.Interface;
 using snapwatch.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace snapwatch.Internal.Repository
 {
     public class MovieRepository : IMovieRepository
     {
-        public List<MoviesModel> GetMovies()
+        private readonly Config _config;
+
+        private readonly short MAX_COUNT_MOVIES = 500;
+
+        public MovieRepository()
         {
-            throw new NotImplementedException();
+            this._config = new Config();
+        }
+
+        public MoviesModel GetMovies()
+        {
+            try
+            {
+                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+
+                List<MoviesModel> moviesJson = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+
+                if (moviesPages == null || moviesPages.Count == 0)
+                {
+                    return new MoviesModel();
+                }
+
+                var r = new Random();
+                ushort randomPage = (ushort) r.Next(1, MAX_COUNT_MOVIES + 1);
+
+                foreach (var movies in moviesJson)
+                {
+                    if (movies.Page == randomPage)
+                    {
+                        return movies;
+                    }
+                }
+            }
         }
     }
 }

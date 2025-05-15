@@ -50,12 +50,16 @@ namespace snapwatch.Models
 
     public class MoviesModel
     {
+        [JsonPropertyName("page")]
         public ushort Page { get; set; }
 
+        [JsonPropertyName("results")]
         public List<MovieModel> Results { get; set; }
 
+        [JsonPropertyName("total_pages")]
         public uint TotalPages { get; set; }
 
+        [JsonPropertyName("total_results")]
         public uint TotalResults { get; set; }
     }
 }

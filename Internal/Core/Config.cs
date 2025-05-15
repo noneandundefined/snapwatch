@@ -5,11 +5,11 @@ namespace snapwatch.Internal.Core
     public class AppConfig
     {
         [JsonProperty("SERVER_URL")]
-        public string SERVER_URL { get; }
+        public string MOVIES_JSON_READ { get; }
 
         public AppConfig()
         {
-            this.SERVER_URL = "http://localhost:8080/api/v1"; // https://flicksfi-production.up.railway.app/api/v1
+            this.MOVIES_JSON_READ = "pack://application:,,,/Internal/Data/movies.json";
         }
     }
 
