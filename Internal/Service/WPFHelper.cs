@@ -1,14 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace snapwatch.Internal.Service
 {
     public class WPFHelper
     {
+        private readonly MainWindow _main;
+
+        public WPFHelper(MainWindow main)
+        {
+            this._main = main;
+        }
+
+        public void LoaderVisibilityVisible() => this._main.Loader.Visibility = Visibility.Visible;
+
+        public void LoaderVisibilityCollapsed() => this._main.Loader.Visibility = Visibility.Collapsed;
     }
 
     public class RelayCommand : ICommand
