@@ -21,9 +21,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden" ScrollChanged="ScrollViewer_ScrollChanged">
+        <ScrollViewer Grid.Row="0" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden" 
+                      ScrollChanged="ScrollViewer_ScrollChanged">
             <StackPanel>
-                <ItemsControl ItemsSource="{Binding Movies}">
+                <ItemsControl ItemsSource="{Binding Movies}" ScrollViewer.CanContentScroll="True">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
