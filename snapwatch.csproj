@@ -182,7 +182,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Public\images\empty_img.webp" />
-    <None Include="Public\images\gradient.webp" />
+    <Resource Include="Public\images\gradient.webp" />
     <Resource Include="Public\font\Oswald-Bold.ttf" />
     <Resource Include="Public\font\Oswald-ExtraLight.ttf" />
     <Resource Include="Public\font\Oswald-Light.ttf" />
