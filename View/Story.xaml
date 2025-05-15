@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.View"
+             xmlns:controller="clr-namespace:snapwatch.UI.Styles.Controllers"
              mc:Ignorable="d" 
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
@@ -47,7 +48,7 @@
             </Setter>
         </Style>
 
-        <local:MoodToColorConverter x:Key="MoodColorConverter"/>
+        <controller:MoodToColorConverter x:Key="MoodColorConverter"/>
     </UserControl.Resources>
 
     <Border Padding="11">

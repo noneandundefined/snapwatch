@@ -109,6 +109,7 @@
       <DependentUpon>SkeletonLoader.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Styles\Controllers\ImageUriConvertor.cs" />
+    <Compile Include="UI\Styles\Controllers\MoodToColorConverter.cs" />
     <Compile Include="ViewModel\MovieCardVM.cs" />
     <Compile Include="ViewModel\PanelVM.cs" />
     <Compile Include="View\Home.xaml.cs">
