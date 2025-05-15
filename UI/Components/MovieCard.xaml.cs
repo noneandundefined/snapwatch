@@ -50,7 +50,7 @@ namespace snapwatch.UI.Components
                         {
                             try
                             {
-                                byte[] imageBytes = await client.DownloadDataTaskAsync(new Uri($"{this._config.ReturnConfig().SERVER_URL}/image/w500{path}", UriKind.Absolute));
+                                byte[] imageBytes = await client.DownloadDataTaskAsync(new Uri($"https://image.tmdb.org/t/p/w500/{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}", UriKind.Absolute));
                                 Dispatcher.Invoke(() =>
                                 {
                                     using (MemoryStream memoryStream = new MemoryStream(imageBytes))

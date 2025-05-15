@@ -33,7 +33,7 @@
                     <TextBlock Margin="15 0" VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Left" Panel.ZIndex="1" 
                                Text="Search" Style="{StaticResource Font}" Foreground="#555"
                                x:Name="PlaceholderSearch" />
-                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged">
+                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4" />
