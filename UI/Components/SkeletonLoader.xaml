@@ -28,14 +28,24 @@
                         </Border>
                     </StackPanel>
 
-                    <StackPanel HorizontalAlignment="Left" Margin="7">
-                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                            <Border.Triggers>
-                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                                </EventTrigger>
-                            </Border.Triggers>
-                        </Border>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Grid>
+                            <Border Width="50" Height="50" Background="#111" CornerRadius="6" Margin="0 15">
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                    </EventTrigger>
+                                </Border.Triggers>
+                            </Border>
+
+                            <Border Width="30" Height="30" Background="#444" CornerRadius="6" Margin="0 15">
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                    </EventTrigger>
+                                </Border.Triggers>
+                            </Border>
+                        </Grid>
 
                         <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
                             <Border.Triggers>
