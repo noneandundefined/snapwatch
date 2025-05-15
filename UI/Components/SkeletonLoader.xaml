@@ -14,53 +14,55 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="10" BorderThickness="1" Background="#000" 
+        <Border BorderThickness="1" Background="#000" Padding="24"
                 BorderBrush="{StaticResource ColorBorder}" HorizontalAlignment="Center">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 20 0 30">
-                    <Border Width="50" Height="50" Background="#555" CornerRadius="6">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Border.Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
+            <Grid>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 30">
+                        <Border Width="50" Height="50" Background="#555" CornerRadius="6">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="Border.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Left" Margin="7">
+                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+
+                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+
+                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+
+                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
-
-                <StackPanel HorizontalAlignment="Left" Margin="7">
-                    <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-
-                    <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-
-                    <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-
-                    <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-                </StackPanel>
-            </StackPanel>
+            </Grid>
         </Border>
 
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
