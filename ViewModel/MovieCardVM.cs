@@ -1,4 +1,7 @@
-﻿using snapwatch.Models;
+﻿using snapwatch.Internal.Interface;
+using snapwatch.Internal.Repository;
+using snapwatch.Internal.Service;
+using snapwatch.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -14,6 +17,10 @@ namespace snapwatch.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private readonly WPFHelper _wpfHelper;
+
+        private readonly IMovieRepository _movieReposiroty;
 
         /// <summary>
         /// Хранение фильмов
@@ -31,24 +38,25 @@ namespace snapwatch.ViewModel
 
         public MovieCardVM()
         {
-            this._action = new UIActions(Application.Current.MainWindow as MainWindow);
+            this._wpfHelper = new WPFHelper(Application.Current.MainWindow as MainWindow);
+            this._movieReposiroty = new MovieRepository();
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                this._action.LoaderVisibilityVisible();
+                this._wpfHelper.LoaderVisibilityVisible();
             });
 
             Task.Run(async () =>
             {
-                var movies = await this._recommendationService.Get();
+                MoviesModel movies = this._movieReposiroty.GetMovies();
                 Movies = new ObservableCollection<MovieModel>();
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     if (movies != null)
                     {
-                        this._action.LoaderVisibilityCollapsed();
-                        foreach (var movie in movies)
+                        this._wpfHelper.LoaderVisibilityCollapsed();
+                        foreach (var movie in movies.Results)
                         {
                             Movies.Add(movie);
                         }

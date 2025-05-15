@@ -93,6 +93,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Internal\Core\Config.cs" />
+    <Compile Include="Internal\Interface\IMovieRepository.cs" />
+    <Compile Include="Internal\Repository\MovieRepository.cs" />
     <Compile Include="Internal\Service\Navigation.cs" />
     <Compile Include="Internal\Service\WPFHelper.cs" />
     <Compile Include="Models\MovieModel.cs" />
@@ -171,6 +173,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Internal\Data\movies.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -203,9 +206,6 @@
     <Resource Include="Public\ico\text.png" />
     <Resource Include="Public\ico\youtube.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Internal\Interface\" />
-    <Folder Include="Internal\Repository\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
