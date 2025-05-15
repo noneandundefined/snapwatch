@@ -41,9 +41,6 @@ namespace snapwatch.ViewModel
             MenuItems = new ObservableCollection<PanelItemsModel>
             {
                 new PanelItemsModel { Image="pack://application:,,,/Public/ico/layout-dashboard.png", PathView="pack://application:,,,/View/Home.xaml", Title="Home" },
-                new PanelItemsModel { Image="pack://application:,,,/Public/ico/heart.png", PathView="pack://application:,,,/View/Favourite.xaml", Title="Favourites" },
-                new PanelItemsModel { Image="pack://application:,,,/Public/ico/youtube.png", PathView="pack://application:,,,/View/YoutubeSearch.xaml", Title="Youtube" },
-                new PanelItemsModel { Image="pack://application:,,,/Public/ico/clapperboard.png", PathView="pack://application:,,,/View/MovieSearch.xaml", Title="Movies" },
                 new PanelItemsModel { Image="pack://application:,,,/Public/ico/text.png", PathView="pack://application:,,,/View/Story.xaml", Title="Story" },
             };
         }
