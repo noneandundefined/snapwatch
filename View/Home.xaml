@@ -8,7 +8,6 @@
              xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
              xmlns:components="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
-             xmlns:controls="clr-namespace:snapwatch.Internal.Service"
              mc:Ignorable="d"
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
@@ -25,11 +24,11 @@
         <ScrollViewer Grid.Row="0" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden" 
                       ScrollChanged="ScrollViewer_ScrollChanged">
             <StackPanel>
-                <ItemsControl ItemsSource="{Binding Movies}" ScrollViewer.CanContentScroll="True">
+                <ItemsControl ItemsSource="{Binding Movies}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <!-- <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" /> -->
-                            <controls:VirtualizingWrapPanel ItemWidth="257" ItemHeight="350" />
+                            <VirtualizingStackPanel />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
