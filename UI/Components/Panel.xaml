@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
-             mc:Ignorable="d" Background="#111"
-             d:DesignHeight="700" d:DesignWidth="120">
+             mc:Ignorable="d" Background="#000"
+             d:DesignHeight="700" d:DesignWidth="100">
 
     <UserControl.DataContext>
         <vm:PanelVM />
     </UserControl.DataContext>
 
-    <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
+    <Border CornerRadius="0 10 10 0" BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -21,8 +21,8 @@
 
             <Border Grid.Row="0" Padding="10">
                 <StackPanel HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Margin="0 0 0 30">
-                        <Image Source="pack://application:,,,/Public/images/snapwatch-40px.png" Width="44" />
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 30">
+                        <Image Source="pack://application:,,,/Public/images/snapwatch-40px.png" Width="50" />
                     </StackPanel>
 
                     <ItemsControl x:Name="menuItems" ItemsSource="{Binding MenuItems}">
