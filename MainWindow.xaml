@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="#000" Icon="pack://application:,,,/Public/images/snapwatch-40px.ico"
-        Title="snapwatch" Height="750" MinHeight="750" Width="1125" MinWidth="1125">
+        Title="snapwatch" Height="750" MinHeight="750" Width="924" MinWidth="924">
     <Grid>
 
         <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Collapsed" />
