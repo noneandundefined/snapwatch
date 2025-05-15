@@ -4,11 +4,7 @@ using snapwatch.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace snapwatch.Internal.Repository
 {
@@ -31,9 +27,9 @@ namespace snapwatch.Internal.Repository
 
                 List<MoviesModel> moviesJson = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
 
-                if (moviesPages == null || moviesPages.Count == 0)
+                if (moviesJson == null || moviesJson.Count == 0)
                 {
-                    return new MoviesModel();
+                    return null;
                 }
 
                 var r = new Random();
@@ -46,6 +42,13 @@ namespace snapwatch.Internal.Repository
                         return movies;
                     }
                 }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
             }
         }
     }
