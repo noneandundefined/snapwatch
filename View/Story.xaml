@@ -8,77 +8,167 @@
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
 
-    <Border Padding="11">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <!-- 1. Стили для скруглённого TextBox -->
+        <Style TargetType="TextBox" x:Key="RoundedTextBox">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FF6EA6FF"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FF2A78D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+        <!-- 2. Стили для ToggleButton настроения -->
+        <Style TargetType="ToggleButton" x:Key="MoodToggle">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Background" Value="#EEE"/>
+            <Setter Property="BorderBrush" Value="#CCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000" BlurRadius="8" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                                         To="1.03" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                                         To="1.03" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                                         To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <!-- Checked -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#B3D4FF"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#4A8FDA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
 
-                <Grid Grid.Column="0" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="15 0" FontSize="15" HorizontalAlignment="Left" Panel.ZIndex="1" 
-                               Text="Search" Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
-                               x:Name="PlaceholderSearch" />
-                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox" HorizontalAlignment="Stretch">
-                        <TextBox.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="4" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsFocused" Value="True">
-                                        <Setter Property="BorderBrush" Value="#333" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Resources>
-                    </TextBox>
-                </Grid>
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- Кнопка -->
-                <Border Grid.Column="1" Background="#333" CornerRadius="0 45 45 0" Margin="4 0 4 0" Width="80">
-                    <Label Content="Подобрать" 
-                           VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                           Style="{StaticResource Font}" FontSize="17">
-                        <Label.LayoutTransform>
-                            <RotateTransform Angle="90" />
-                        </Label.LayoutTransform>
-                    </Label>
+        <!-- Заголовок -->
+        <TextBlock Text="Что вы хотите посмотреть?" 
+                   FontSize="18" FontWeight="SemiBold" 
+                   Margin="0,0,0,12"/>
 
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation
-                                                    Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                    To="#ccc"
-                                                    Duration="0:0:0.1" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation
-                                                     Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                     To="#333"
-                                                     Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>
-            </Grid>
-        </Grid>
-    </Border>
+        <!-- Ввод истории -->
+        <TextBox x:Name="StoryInput" Grid.Row="1"
+                 Style="{StaticResource RoundedTextBox}"
+                 Background="White"
+                 Foreground="#333"
+                 AcceptsReturn="True"
+                 Height="100"/>
+
+        <!-- Кнопки настроения -->
+        <UniformGrid Grid.Row="2" Columns="4" Margin="0,12,0,12">
+            <ToggleButton Style="{StaticResource MoodToggle}" Content="Бодрое"/>
+            <ToggleButton Style="{StaticResource MoodToggle}" Content="Весёлое"/>
+            <ToggleButton Style="{StaticResource MoodToggle}" Content="Спокойное"/>
+            <ToggleButton Style="{StaticResource MoodToggle}" Content="Грустное"/>
+        </UniformGrid>
+
+        <!-- Кнопка Подобрать фильм -->
+        <Button x:Name="RecommendButton" Grid.Row="3"
+                Content="🔍 Подобрать фильм"
+                Padding="16,8"
+                FontSize="14"
+                Background="#2A78D2"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                RenderTransformOrigin="0.5,0.5">
+            <Button.Effect>
+                <DropShadowEffect Color="#000" BlurRadius="10" Opacity="0.3"/>
+            </Button.Effect>
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Button.RenderTransform>
+            <!-- Анимация при наведении -->
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                             To="1.05" Duration="0:0:0.15"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                             To="1.05" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                             To="1" Duration="0:0:0.15"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                             To="1" Duration="0:0:0.15"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
 </UserControl>
