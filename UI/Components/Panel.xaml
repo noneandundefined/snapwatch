@@ -12,7 +12,7 @@
         <vm:PanelVM />
     </UserControl.DataContext>
 
-    <Border CornerRadius="0 10 10 0" BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
+    <Border BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
