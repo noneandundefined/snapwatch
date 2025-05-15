@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace snapwatch.Internal.Core
 {
@@ -12,7 +14,7 @@ namespace snapwatch.Internal.Core
 
         public AppConfig()
         {
-            this.MOVIES_JSON_READ = "pack://application:,,,/Internal/Data/movies.json";
+            this.MOVIES_JSON_READ = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "movies.json");
             this.API_KEY_TMDB = "ecfe8540ac63325e0c50686c0be8848d";
         }
     }
