@@ -17,15 +17,15 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" HorizontalAlignment="Center" Width="700">
+                <Grid Grid.Column="0" HorizontalAlignment="Stretch">
                     <TextBlock Margin="15 0" FontSize="15" HorizontalAlignment="Left" Panel.ZIndex="1" 
-                           Text="Search" Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
-                           x:Name="PlaceholderSearch" />
-                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox">
+                               Text="Search" Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
+                               x:Name="PlaceholderSearch" />
+                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox" HorizontalAlignment="Stretch">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4" />
@@ -38,6 +38,46 @@
                         </TextBox.Resources>
                     </TextBox>
                 </Grid>
+
+                <!-- Кнопка -->
+                <Border Grid.Column="1" Background="#333" CornerRadius="0 45 45 0" Margin="4 0 4 0" Width="80">
+                    <Label Content="Подобрать" 
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                           Style="{StaticResource Font}" FontSize="17">
+                        <Label.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </Label.LayoutTransform>
+                    </Label>
+
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation
+                                                    Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                    To="#ccc"
+                                                    Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation
+                                                     Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                     To="#333"
+                                                     Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
             </Grid>
         </Grid>
     </Border>
