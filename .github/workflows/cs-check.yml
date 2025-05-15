@@ -1,0 +1,31 @@
+name: Build and Check WPF/C# Application
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install MSBuild
+      uses: microsoft/setup-msbuild@v1.3
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Format code (dotnet-format)
+      run: dotnet format snapwatch.sln --verify-no-changes
+      continue-on-error: true
+
+    - name: Build WPF project
+      run: msbuild snapwatch.sln /p:Configuration=Release /p:Platform="Any CPU"
