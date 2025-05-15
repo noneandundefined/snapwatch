@@ -1,11 +1,8 @@
 ﻿using snapwatch.Internal.Core;
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -47,7 +44,7 @@ namespace snapwatch.UI.Components
                 {
                     using (var httpClient = new HttpClient())
                     {
-                        string url = $"https://image.tmdb.org/t/p/w500/{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
+                        string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
 
                         var response = await httpClient.GetAsync(url, ctx.Token);
 
@@ -81,52 +78,6 @@ namespace snapwatch.UI.Components
 
                 MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
             }
-
-            //await Task.Run(async () =>
-            //{
-            //    try
-            //    {
-            //        // Загрузка постера
-            //        using (WebClient client = new WebClient())
-            //        {
-            //            using (var ctx = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
-            //            {
-            //                try
-            //                {
-            //                    byte[] imageBytes = await client.DownloadDataTaskAsync(new Uri($"https://image.tmdb.org/t/p/w500/{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}", UriKind.Absolute));
-            //                    Dispatcher.Invoke(() =>
-            //                    {
-            //                        using (MemoryStream memoryStream = new MemoryStream(imageBytes))
-            //                        {
-            //                            var bitmap = new BitmapImage();
-            //                            bitmap.BeginInit();
-            //                            bitmap.StreamSource = memoryStream;
-            //                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            //                            bitmap.EndInit();
-            //                            MovieBrash.ImageSource = bitmap;
-            //                        }
-            //                    });
-            //                }
-            //                catch (TaskCanceledException)
-            //                {
-            //                    // Ошибка загрузки постера
-            //                    Dispatcher.Invoke(() =>
-            //                    {
-            //                        MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
-            //                    });
-            //                }
-            //            }
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        // Ошибка загрузки постера
-            //        Dispatcher.Invoke(() =>
-            //        {
-            //            MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Public/images/default_image.jpg"));
-            //        });
-            //    }
-            //});
         }
 
         private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
