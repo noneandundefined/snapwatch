@@ -24,5 +24,17 @@ namespace snapwatch.View
         {
             InitializeComponent();
         }
+
+        private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchTextBox.Text.Length > 0)
+            {
+                PlaceholderStory.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                PlaceholderStory.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
