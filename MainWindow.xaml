@@ -25,7 +25,7 @@
             </Border>
 
             <Border Grid.Column="1">
-                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" />
+                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" Source="pack://application:,,,/View/Home.xaml" />
             </Border>
         </Grid>
     </Grid>
