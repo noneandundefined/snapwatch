@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
              mc:Ignorable="d" Background="#111"
-             d:DesignHeight="700" d:DesignWidth="350">
+             d:DesignHeight="700" d:DesignWidth="150">
 
     <UserControl.DataContext>
         <vm:PanelVM />
@@ -22,11 +22,7 @@
             <Border Grid.Row="0" Padding="10">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5 0 0 20">
-                        <Image Source="pack://application:,,,/Public/images/gradient.webp" Width="44" />
-                        <StackPanel Margin="10 0 0 0">
-                            <Label Content="Гость 1521" Style="{StaticResource Font}" Foreground="#fff" FontSize="16" />
-                            <Label Content="gost1521@gmail.com" Style="{StaticResource Font}" FontWeight="Normal" Foreground="#999" FontSize="15" Margin="0 -10 0 0" />
-                        </StackPanel>
+                        <Image Source="pack://application:,,,/Public/images/snapwatch-40px.png" Width="44" />
                     </StackPanel>
 
                     <ItemsControl x:Name="menuItems" ItemsSource="{Binding MenuItems}">
@@ -40,7 +36,6 @@
                                     </Border.InputBindings>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{Binding Image}" Width="22" />
-                                        <Label Content="{Binding Title}" Foreground="#fff" FontSize="17" Margin="7 0 0 2" Style="{StaticResource Font}" FontWeight="Normal" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
