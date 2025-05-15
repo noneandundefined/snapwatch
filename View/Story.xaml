@@ -68,8 +68,8 @@
                 <Grid Grid.Column="0" HorizontalAlignment="Stretch">
                     <TextBlock Margin="15 0" FontSize="16" HorizontalAlignment="Left" Panel.ZIndex="1" 
                                Text="Хочу посмотреть..." Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
-                               x:Name="PlaceholderStory"  />
-                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox" TextChanged="StoryTextBox_TextChanged" HorizontalAlignment="Stretch">
+                               x:Name="PlaceholderStory" />
+                    <TextBox Style="{StaticResource TextBoxSearch_Style}" TextWrapping="Wrap" x:Name="SearchTextBox" TextChanged="StoryTextBox_TextChanged" HorizontalAlignment="Stretch">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4" />
