@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace snapwatch.ViewModel
 {
-    internal class MovieCardVM
+    public class MovieCardVM
     {
     }
 }

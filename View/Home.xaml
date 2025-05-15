@@ -13,7 +13,7 @@
              d:DesignHeight="700" d:DesignWidth="775">
 
     <UserControl.DataContext>
-        <vm:MovieVM />
+        <vm:MovieCardVM />
     </UserControl.DataContext>
 
     <Grid>
