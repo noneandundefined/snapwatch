@@ -35,8 +35,12 @@ namespace snapwatch.Internal.Service
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            System.Diagnostics.Debug.WriteLine("MeasureOverride called");
+
             if (_itemsControl == null)
+            {
                 return availableSize;
+            }
 
             int itemCount = _itemsControl.HasItems ? _itemsControl.Items.Count : 0;
 
@@ -48,7 +52,9 @@ namespace snapwatch.Internal.Service
             _viewport = availableSize;
 
             if (ScrollOwner != null)
+            {
                 ScrollOwner.InvalidateScrollInfo();
+            }
 
             int firstVisibleIndex = (int)(_offset.Y / itemSize.Height) * itemsPerRow;
             int visibleRowCount = (int)Math.Ceiling(availableSize.Height / itemSize.Height);
@@ -89,6 +95,8 @@ namespace snapwatch.Internal.Service
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+            System.Diagnostics.Debug.WriteLine("ArrangeOverride called");
+
             Size itemSize = new Size(ItemWidth, ItemHeight);
             int itemsPerRow = Math.Max(1, (int)(finalSize.Width / itemSize.Width));
 

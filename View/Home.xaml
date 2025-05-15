@@ -8,6 +8,7 @@
              xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
              xmlns:components="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
+             xmlns:controls="clr-namespace:snapwatch.Internal.Service"
              mc:Ignorable="d"
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
@@ -27,7 +28,8 @@
                 <ItemsControl ItemsSource="{Binding Movies}" ScrollViewer.CanContentScroll="True">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                            <!-- <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" /> -->
+                            <controls:VirtualizingWrapPanel ItemWidth="257" ItemHeight="350" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>

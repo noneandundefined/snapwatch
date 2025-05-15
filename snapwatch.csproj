@@ -96,6 +96,7 @@
     <Compile Include="Internal\Interface\IMovieRepository.cs" />
     <Compile Include="Internal\Repository\MovieRepository.cs" />
     <Compile Include="Internal\Service\Navigation.cs" />
+    <Compile Include="Internal\Service\VirtualizingWrapPanel.cs" />
     <Compile Include="Internal\Service\WPFHelper.cs" />
     <Compile Include="Models\MovieModel.cs" />
     <Compile Include="Models\PanelItemsModel.cs" />
