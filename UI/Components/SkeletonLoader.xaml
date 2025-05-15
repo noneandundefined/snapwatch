@@ -14,12 +14,11 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Border BorderThickness="1" Background="#000" Padding="24"
-                BorderBrush="{StaticResource ColorBorder}" HorizontalAlignment="Center">
+        <Border Background="#000" Padding="24" HorizontalAlignment="Center">
             <Grid>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 20 0 30">
-                        <Border Width="50" Height="50" Background="#555" CornerRadius="6">
+                        <Border Width="50" Height="50" Background="#444" CornerRadius="6">
                             <Border.Triggers>
                                 <EventTrigger RoutedEvent="Border.Loaded">
                                     <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
@@ -38,7 +37,7 @@
                                 </Border.Triggers>
                             </Border>
 
-                            <Border Width="30" Height="30" Background="#444" CornerRadius="6" Margin="0 15">
+                            <Border Width="25" Height="25" Background="#444" CornerRadius="6" Margin="0 15">
                                 <Border.Triggers>
                                     <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                                         <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
@@ -47,29 +46,23 @@
                             </Border>
                         </Grid>
 
-                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                            <Border.Triggers>
-                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                                </EventTrigger>
-                            </Border.Triggers>
-                        </Border>
+                        <Grid>
+                            <Border Width="50" Height="50" Background="#111" CornerRadius="6" Margin="0 15">
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                    </EventTrigger>
+                                </Border.Triggers>
+                            </Border>
 
-                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                            <Border.Triggers>
-                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                                </EventTrigger>
-                            </Border.Triggers>
-                        </Border>
-
-                        <Border Width="30" Height="30" Background="#555" CornerRadius="6" Margin="0 15">
-                            <Border.Triggers>
-                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
-                                </EventTrigger>
-                            </Border.Triggers>
-                        </Border>
+                            <Border Width="25" Height="25" Background="#444" CornerRadius="6" Margin="0 15">
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard Storyboard="{StaticResource SkeletonAnimation}" />
+                                    </EventTrigger>
+                                </Border.Triggers>
+                            </Border>
+                        </Grid>
                     </StackPanel>
                 </StackPanel>
             </Grid>
