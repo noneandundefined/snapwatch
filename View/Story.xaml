@@ -7,7 +7,38 @@
              mc:Ignorable="d" 
              Background="#000"
              d:DesignHeight="700" d:DesignWidth="775">
-    <Grid>
-            
-    </Grid>
+
+    <Border Padding="11">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" HorizontalAlignment="Center" Width="700">
+                    <TextBlock Margin="15 0" FontSize="15" HorizontalAlignment="Left" Panel.ZIndex="1" 
+                           Text="Search" Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
+                           x:Name="PlaceholderSearch" />
+                    <TextBox Style="{StaticResource TextBoxSearch_Style}" x:Name="SearchTextBox">
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsFocused" Value="True">
+                                        <Setter Property="BorderBrush" Value="#333" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>
