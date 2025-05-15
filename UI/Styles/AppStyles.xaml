@@ -4,7 +4,6 @@
         <Setter Property="Margin" Value="0 12 0 0" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="17" />
-        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Background" Value="#111" />
 
         <Style.Triggers>
