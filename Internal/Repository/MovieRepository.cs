@@ -13,13 +13,17 @@ namespace snapwatch.Internal.Repository
     {
         private readonly Config _config;
         private readonly UIException _uiException;
+        private readonly IndexService _indexService;
 
         private readonly short MAX_COUNT_MOVIES = 500;
+        private readonly Dictionary<ushort, uint> _pidx;
 
         public MovieRepository()
         {
             this._config = new Config();
             this._uiException = new UIException();
+            this._indexService = new IndexService();
+            this._pidx = this._indexService.LoadPIDX();
         }
 
         public MoviesModel GetMovies()

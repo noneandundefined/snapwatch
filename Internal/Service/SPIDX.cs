@@ -18,16 +18,13 @@ namespace snapwatch.Internal.Core
             {
                 if (reader.TokenType == JsonToken.StartObject)
                 {
-                    // Текущая позиция в потоке — начало объекта
                     long position = fs.Position;
 
-    // Загружаем JObject страницы
-    var obj = JObject.Load(reader);
+                    var obj = JObject.Load(reader);
 
-    int page = obj["page"]?.Value<int>() ?? -1;
+                    int page = obj["page"]?.Value<int>() ?? -1;
                     if (page != -1)
                     {
-                        // Записываем в индекс: page \t позиция
                         indexWriter.WriteLine($"{page}\t{position}");
                     }
                 }
