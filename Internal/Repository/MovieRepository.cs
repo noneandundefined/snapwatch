@@ -37,7 +37,7 @@ namespace snapwatch.Internal.Repository
                 var r = new Random();
                 ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
 
-                if (!this._pidx.TryGetValue(randomPage, out var offset))
+                if (!this._pidx.TryGetValue(11, out var offset))
                 {
                     return null;
                 }
@@ -47,13 +47,17 @@ namespace snapwatch.Internal.Repository
 
                 sr = new StreamReader(fileSt);
 
-                char[] buffer = new char[200000];
-                int readChar = sr.Read(buffer, 0, buffer.Length);
-                string jsonChunk = new string(buffer, 0, readChar);
+                byte[] buffer = new byte[65536];
+                int bytesRead;
+                var ms = new MemoryStream();
 
+                bytesRead = fileSt.Read(buffer, 0, buffer.Length);
+                ms.Write(buffer, 0, bytesRead);
+
+                ms.Seek(0, SeekOrigin.Begin);
                 var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-                MoviesModel movies = JsonSerializer.Deserialize<MoviesModel>(jsonChunk, jsonOptions);
+                MoviesModel movies = JsonSerializer.Deserialize<MoviesModel>(ms, jsonOptions);
 
                 if (movies != null && movies.Page == randomPage)
                 {
