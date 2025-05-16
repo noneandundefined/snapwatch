@@ -36,6 +36,11 @@ namespace snapwatch.View
                 return;
             }
 
+            if (scrollViewer.ScrollableHeight == 0)
+            {
+                return;
+            }
+
             if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight * 0.9)
             {
                 this._isLoading = true;
