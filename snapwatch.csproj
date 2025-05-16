@@ -99,6 +99,7 @@
     <Compile Include="Internal\Core\Config.cs" />
     <Compile Include="Internal\Interface\IMovieRepository.cs" />
     <Compile Include="Internal\Repository\MovieRepository.cs" />
+    <Compile Include="Internal\Service\IndexService.cs" />
     <Compile Include="Internal\Service\Navigation.cs" />
     <Compile Include="Internal\Service\WPFHelper.cs" />
     <Compile Include="Models\MovieModel.cs" />
@@ -192,6 +193,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Internal\Data\movies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Internal\Data\movies.pidx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

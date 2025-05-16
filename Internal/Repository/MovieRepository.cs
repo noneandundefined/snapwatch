@@ -29,7 +29,7 @@ namespace snapwatch.Internal.Repository
 
         public MoviesModel GetMovies()
         {
-            StreamReader st = null;
+            StreamReader sr = null;
             FileStream fileSt = null;
 
             try
@@ -86,15 +86,8 @@ namespace snapwatch.Internal.Repository
             }
             finally
             {
-                if (sr != null)
-                {
-                    sr.Dispose();
-                }
-
-                if (fileSt != null)
-                {
-                    fileSt.Dispose();
-                }
+                sr?.Dispose();
+                fileSt?.Dispose();
             }
         }
     }
