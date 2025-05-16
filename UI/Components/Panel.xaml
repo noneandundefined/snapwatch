@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.UI.Components"
              xmlns:vm="clr-namespace:snapwatch.ViewModel"
-             mc:Ignorable="d" Background="#111"
-             d:DesignHeight="700" d:DesignWidth="350">
+             mc:Ignorable="d" Background="#000"
+             d:DesignHeight="700" d:DesignWidth="100">
 
     <UserControl.DataContext>
         <vm:PanelVM />
     </UserControl.DataContext>
 
-    <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
+    <Border BorderThickness="1" BorderBrush="{StaticResource ColorBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -20,13 +20,9 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5 0 0 20">
-                        <Image Source="pack://application:,,,/Public/images/gradient.webp" Width="44" />
-                        <StackPanel Margin="10 0 0 0">
-                            <Label Content="Гость 1521" Style="{StaticResource Font}" Foreground="#fff" FontSize="16" />
-                            <Label Content="gost1521@gmail.com" Style="{StaticResource Font}" FontWeight="Normal" Foreground="#999" FontSize="15" Margin="0 -10 0 0" />
-                        </StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 30">
+                        <Image Source="pack://application:,,,/Public/images/snapwatch-40px.png" Width="50" />
                     </StackPanel>
 
                     <ItemsControl x:Name="menuItems" ItemsSource="{Binding MenuItems}">
@@ -39,8 +35,7 @@
                                                   CommandParameter="{Binding PathView}" />
                                     </Border.InputBindings>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding Image}" Width="22" />
-                                        <Label Content="{Binding Title}" Foreground="#fff" FontSize="17" Margin="7 0 0 2" Style="{StaticResource Font}" FontWeight="Normal" />
+                                        <Image Source="{Binding Image}" Width="24" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

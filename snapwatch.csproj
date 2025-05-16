@@ -9,6 +9,7 @@
     <RootNamespace>snapwatch</RootNamespace>
     <AssemblyName>snapwatch</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -83,6 +84,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="VirtualizingWrapPanel, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\VirtualizingWrapPanel.2.1.2\lib\net462\VirtualizingWrapPanel.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -95,6 +99,7 @@
     <Compile Include="Internal\Core\Config.cs" />
     <Compile Include="Internal\Interface\IMovieRepository.cs" />
     <Compile Include="Internal\Repository\MovieRepository.cs" />
+    <Compile Include="Internal\Service\IndexService.cs" />
     <Compile Include="Internal\Service\Navigation.cs" />
     <Compile Include="Internal\Service\WPFHelper.cs" />
     <Compile Include="Models\MovieModel.cs" />
@@ -109,6 +114,7 @@
       <DependentUpon>SkeletonLoader.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Styles\Controllers\ImageUriConvertor.cs" />
+    <Compile Include="UI\Styles\Controllers\MoodToColorConverter.cs" />
     <Compile Include="ViewModel\MovieCardVM.cs" />
     <Compile Include="ViewModel\PanelVM.cs" />
     <Compile Include="View\Home.xaml.cs">
@@ -153,6 +159,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Styles\StoryStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,11 +186,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Public\images\snapwatch-40px.ico" />
+    <Resource Include="Public\images\snapwatch-40px.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Internal\Data\movies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Internal\Data\movies.pidx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

@@ -7,16 +7,16 @@
         xmlns:components="clr-namespace:snapwatch.UI.Components"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="#000"
-        Title="snapwatch" Height="750" MinHeight="750" Width="1125" MinWidth="1125">
+        Background="#0f0f0f" Icon="pack://application:,,,/Public/images/snapwatch-40px.ico"
+        Title="snapwatch" Height="750" MinHeight="750" Width="924" MinWidth="924">
     <Grid>
 
         <components:SkeletonLoader Panel.ZIndex="2" x:Name="Loader" Visibility="Collapsed" />
         <!-- Collapsed -->
 
-        <Grid Margin="10">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -24,7 +24,7 @@
                 <components:Panel />
             </Border>
 
-            <Border Grid.Column="1">
+            <Border Grid.Column="1" Margin="10">
                 <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" Source="pack://application:,,,/View/Home.xaml" />
             </Border>
         </Grid>

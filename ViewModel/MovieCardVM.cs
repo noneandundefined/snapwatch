@@ -65,5 +65,17 @@ namespace snapwatch.ViewModel
             });
         }
 
+        public void LoadMoreMovies()
+        {
+            MoviesModel movies = this._movieReposiroty.GetMovies();
+
+            if (movies != null)
+            {
+                foreach (var movie in movies.Results)
+                {
+                    Movies.Add(movie);
+                }
+            }
+        }
     }
 }
