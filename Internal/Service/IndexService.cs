@@ -1,6 +1,7 @@
 ﻿using snapwatch.Internal.Core;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace snapwatch.Internal.Service
 {
@@ -28,6 +29,24 @@ namespace snapwatch.Internal.Service
             }
 
             return dict;
+        }
+
+        public uint GetNextOffset(ushort page)
+        {
+            ushort nextPage = (ushort)(page + 1);
+
+            while (nextPage <= _pidx.Keys.Max())
+            {
+                if (_pidx.TryGetValue(nextPage, out uint nextOffset))
+                {
+                    return nextOffset;
+                }
+
+                nextPage++;
+            }
+
+            var fileInfo = new FileInfo(_config.ReturnConfig().MOVIES_JSON_READ);
+            return (uint) fileInfo.Length;
         }
     }
 }
