@@ -29,6 +29,9 @@ namespace snapwatch.Internal.Repository
 
         public MoviesModel GetMovies()
         {
+            StreamReader st = null;
+            FileStream fileSt = null;
+
             try
             {
                 var r = new Random();
@@ -39,10 +42,10 @@ namespace snapwatch.Internal.Repository
                     return null;
                 }
 
-                FileStream fileSt = new FileStream(this._config.ReturnConfig().MOVIES_JSON_READ, FileMode.Open, FileAccess.Read);
+                fileSt = new FileStream(this._config.ReturnConfig().MOVIES_JSON_READ, FileMode.Open, FileAccess.Read);
                 fileSt.Seek(offset, SeekOrigin.Begin);
 
-                StreamReader sr = new StreamReader(fileSt);
+                sr = new StreamReader(fileSt);
 
                 char[] buffer = new char[200000];
                 int readChar = sr.Read(buffer, 0, buffer.Length);
@@ -80,6 +83,18 @@ namespace snapwatch.Internal.Repository
             {
                 this._uiException.Error(ex.Message, "Error get movies");
                 return null;
+            }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Dispose();
+                }
+
+                if (fileSt != null)
+                {
+                    fileSt.Dispose();
+                }
             }
         }
     }
