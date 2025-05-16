@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Windows.Controls;
 
 namespace snapwatch.Internal.Repository
 {
@@ -42,22 +43,27 @@ namespace snapwatch.Internal.Repository
                     return null;
                 }
 
+                uint nextOffset = GetNextOffset(page);
+                if (nextOffset <= offset)
+                {
+                    return null;
+                }
+
+                int length = (int)(nextOffset - offset);
+
                 fileSt = new FileStream(this._config.ReturnConfig().MOVIES_JSON_READ, FileMode.Open, FileAccess.Read);
                 fileSt.Seek(offset, SeekOrigin.Begin);
 
-                sr = new StreamReader(fileSt);
+                byte[] buffer = new byte[length];
+                int bytesRead = fileSt.Read(buffer, 0, length);
+                if (bytesRead != length)
+                {
+                    return null;
+                }
 
-                byte[] buffer = new byte[65536];
-                int bytesRead;
-                var ms = new MemoryStream();
-
-                bytesRead = fileSt.Read(buffer, 0, buffer.Length);
-                ms.Write(buffer, 0, bytesRead);
-
-                ms.Seek(0, SeekOrigin.Begin);
                 var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-                MoviesModel movies = JsonSerializer.Deserialize<MoviesModel>(ms, jsonOptions);
+                MoviesModel movies = JsonSerializer.Deserialize<MoviesModel>(buffer, jsonOptions);
 
                 if (movies != null && movies.Page == randomPage)
                 {
