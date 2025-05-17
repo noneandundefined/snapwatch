@@ -2,6 +2,7 @@
 using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Service;
+using snapwatch.Engine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,8 @@ namespace snapwatch.Core.Repository
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
 
+        private readonly ToneBuilder _toneBuilder;
+
         private readonly short MAX_COUNT_MOVIES = 500;
         private readonly Dictionary<ushort, uint> _pidx;
 
@@ -26,6 +29,8 @@ namespace snapwatch.Core.Repository
             this._uiException = new UIException();
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
+
+            this._toneBuilder = new ToneBuilder();
 
             this._pidx = this._indexService.LoadPIDX();
         }
@@ -105,6 +110,8 @@ namespace snapwatch.Core.Repository
 
         public async Task<List<MovieModel>> GetMoviesByTone(string tone)
         {
+            List<MovieModel> moviesByTone = [];
+
             try
             {
                 string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
@@ -125,6 +132,13 @@ namespace snapwatch.Core.Repository
                         if (!this._translateService.IS_EN(overview))
                         {
                             overview = await this._translateService.RU_TO_EN(overview);
+                        }
+
+                        string toneMovie = this._toneBuilder.Tone(overview); // Anticipation | Joy | Trust | Sadness
+
+                        if (toneMovie == tone)
+                        {
+                            moviesByTone.Add(movie);
                         }
                     }
                 }
