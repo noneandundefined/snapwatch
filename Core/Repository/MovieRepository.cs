@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
 {
@@ -100,7 +101,7 @@ namespace snapwatch.Core.Repository
             }
         }
 
-        public MoviesModel GetMoviesByTone(string tone)
+        public async Task<List<MovieModel>> GetMoviesByTone(string tone)
         {
             
         }
