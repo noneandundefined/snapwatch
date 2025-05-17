@@ -1,4 +1,5 @@
-﻿using snapwatch.Engine.DataSet;
+﻿using Newtonsoft.Json.Linq;
+using snapwatch.Engine.DataSet;
 using snapwatch.Engine.Models;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace snapwatch.Engine
             string[] joy = JoyEmotionLexicon();
             string[] trust = TrustEmotionLexicon();
             string[] sadness = SadnessEmotionLexicon();
+
 
             ToneModel toneModel = new()
             {
