@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:snapwatch"
-        xmlns:components="clr-namespace:snapwatch.UI.Components"
+        xmlns:components="clr-namespace:snapwatch.UserInterface.UI.Components"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="#0f0f0f" Icon="pack://application:,,,/Public/images/snapwatch-40px.ico"
+        Background="#0f0f0f" Icon="pack://application:,,,/UserInterface/Public/images/snapwatch-40px.ico"
         Title="snapwatch" Height="750" MinHeight="750" Width="924" MinWidth="924">
     <Grid>
 
@@ -25,7 +25,7 @@
             </Border>
 
             <Border Grid.Column="1" Margin="10">
-                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" Source="pack://application:,,,/View/Home.xaml" />
+                <Frame x:Name="FrameContent" NavigationUIVisibility="Hidden" Source="pack://application:,,,/UserInterface/View/Home.xaml" />
             </Border>
         </Grid>
     </Grid>
