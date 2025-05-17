@@ -39,5 +39,37 @@ namespace snapwatch.Core.Service
 
             return translated.DestinationText;
         }
+
+        public bool IS_EN(string text, double threshold = 0.9)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            ushort totalLetters = 0;
+            ushort latinLetters = 0;
+
+            foreach (char c in text)
+            {
+                if (char.IsLetter(c))
+                {
+                    totalLetters++;
+
+                    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                    {
+                        latinLetters++;
+                    }
+                }
+            }
+
+            if (totalLetters == 0)
+            {
+                return false;
+            }
+
+            double ratio = (double)latinLetters / totalLetters;
+            return ratio >= threshold;
+        }
     }
 }
