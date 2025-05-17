@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using snapwatch.Core.Interface;
+using snapwatch.Core.Repository;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace snapwatch.UserInterface.View
 {
@@ -20,9 +10,12 @@ namespace snapwatch.UserInterface.View
     /// </summary>
     public partial class Story : UserControl
     {
+        private readonly IMovieRepository movieRepository;
+
         public Story()
         {
             InitializeComponent();
+            this.movieRepository = new MovieRepository();
         }
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -35,6 +28,8 @@ namespace snapwatch.UserInterface.View
             {
                 PlaceholderStory.Visibility = Visibility.Visible;
             }
+
+            this.movieRepository.GetMoviesByTone("Joy");
         }
     }
 }

@@ -127,6 +127,8 @@ namespace snapwatch.Core.Repository
                 {
                     foreach (var movie in movies.Results)
                     {
+                        if (moviesByTone.Count > 25) break;
+
                         string overview = movie.Overview;
 
                         if (!this._translateService.IS_EN(overview))
@@ -142,6 +144,8 @@ namespace snapwatch.Core.Repository
                         }
                     }
                 }
+
+                return moviesByTone;
             }
             catch (Exception ex)
             {

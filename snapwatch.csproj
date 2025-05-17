@@ -98,12 +98,18 @@
     </ApplicationDefinition>
     <Compile Include="Core\Core\Config.cs" />
     <Compile Include="Core\Interface\IMovieRepository.cs" />
+    <Compile Include="Core\Models\TranslateModel.cs" />
     <Compile Include="Core\Repository\MovieRepository.cs" />
     <Compile Include="Core\Service\IndexService.cs" />
     <Compile Include="Core\Service\Navigation.cs" />
+    <Compile Include="Core\Service\TranslateService.cs" />
     <Compile Include="Core\Service\WPFHelper.cs" />
     <Compile Include="Core\Models\MovieModel.cs" />
     <Compile Include="Core\Models\PanelItemsModel.cs" />
+    <Compile Include="Engine\DataSet\ToneDataSet.cs" />
+    <Compile Include="Engine\Models\ToneModel.cs" />
+    <Compile Include="Engine\NLPBuilder.cs" />
+    <Compile Include="Engine\ToneBuilder.cs" />
     <Compile Include="UserInterface\UI\Components\MovieCard.xaml.cs">
       <DependentUpon>MovieCard.xaml</DependentUpon>
     </Compile>
@@ -186,6 +192,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Engine\Data\NRC-Emotion-Lexicon\anticipation-NRC-Emotion-Lexicon.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Engine\Data\NRC-Emotion-Lexicon\trust-NRC-Emotion-Lexicon.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Engine\Data\NRC-Emotion-Lexicon\sadness-NRC-Emotion-Lexicon.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Engine\Data\NRC-Emotion-Lexicon\joy-NRC-Emotion-Lexicon.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="UserInterface\Public\images\snapwatch-40px.ico" />
     <Resource Include="UserInterface\Public\images\snapwatch-40px.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
