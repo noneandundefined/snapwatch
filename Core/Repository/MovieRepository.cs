@@ -115,6 +115,19 @@ namespace snapwatch.Core.Repository
                 {
                     return null;
                 }
+
+                foreach (var movies in moviesJson)
+                {
+                    foreach (var movie in movies.Results)
+                    {
+                        string overview = movie.Overview;
+
+                        if (!this._translateService.IS_EN(overview))
+                        {
+                            overview = await this._translateService.RU_TO_EN(overview);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
