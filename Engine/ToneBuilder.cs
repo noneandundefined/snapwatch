@@ -1,4 +1,5 @@
 ﻿using snapwatch.Engine.DataSet;
+using snapwatch.Engine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,16 @@ namespace snapwatch.Engine
 {
     public class ToneBuilder : ToneDataSet
     {
-        
+        public string Tone(string text)
+        {
+            return "";
+        }
+
+        private ToneModel AnalizeTone()
+        {
+            ToneModel toneModel = new();
+
+            uint
+        }
     }
 }

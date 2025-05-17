@@ -1,7 +1,6 @@
 ﻿using snapwatch.Core.Core;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Documents;
 
 namespace snapwatch.Engine.DataSet
 {
@@ -14,32 +13,37 @@ namespace snapwatch.Engine.DataSet
             this._config = new Config();
         }
 
-        protected string[] anticipationEmotionLexicon()
+        private string[] ReadEmotionLexicon(string path)
         {
-            List<string> output = new List<string>();
+            List<string> output = [];
 
-            foreach (var line in File.ReadLines(this._config.ReturnConfig().DATA_NRC_EMOTION_ANTICIPATION))
+            foreach (var line in File.ReadLines(path))
             {
                 var parts = line.Split('\t');
                 output.Add(parts[0]);
             }
 
-            return output.ToArray();
+            return [.. output];
         }
 
-        protected string[] joyfulKeywords()
+        protected string[] AnticipationEmotionLexicon()
         {
-
+            return this.ReadEmotionLexicon(this._config.ReturnConfig().DATA_NRC_EMOTION_ANTICIPATION);
         }
 
-        protected string[] sadKeywords()
+        protected string[] JoyEmotionLexicon()
         {
-
+            return this.ReadEmotionLexicon(this._config.ReturnConfig().DATA_NRC_EMOTION_JOY);
         }
 
-        protected string[] calmKeywords()
+        protected string[] TrustEmotionLexicon()
         {
+            return this.ReadEmotionLexicon(this._config.ReturnConfig().DATA_NRC_EMOTION_TRUST);
+        }
 
+        protected string[] SadnessEmotionLexicon()
+        {
+            return this.ReadEmotionLexicon(this._config.ReturnConfig().DATA_NRC_EMOTION_SADNESS);
         }
     }
 }
