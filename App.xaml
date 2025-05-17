@@ -6,9 +6,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UI/Styles/Colors.xaml" />
-                <ResourceDictionary Source="/UI/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="/UI/Styles/AppStyles.xaml" />
+                <ResourceDictionary Source="/UserInterface/UI/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/UserInterface/UI/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="/UserInterface/UI/Styles/AppStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
