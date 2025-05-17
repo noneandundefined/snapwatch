@@ -20,7 +20,11 @@ namespace snapwatch.Engine.DataSet
             foreach (var line in File.ReadLines(path))
             {
                 var parts = line.Split('\t');
-                output.Add(parts[0]);
+
+                if (parts[1] == "1")
+                {
+                    output.Add(parts[0]);
+                }
             }
 
             return [.. output];
