@@ -39,75 +39,71 @@ namespace snapwatch.Engine
 
         private string Lemmatize(string input)
         {
-            //return input switch
-            //{
-            //    "am" or "is" or "are" or "was" or "were" => "be",
-            //    "has" or "have" or "had" => "have",
-            //    "does" or "did" => "do",
-            //    "going" or "goes" or "went" => "go",
-            //    "made" or "making" => "make",
-            //    "saw" or "seen" or "seeing" => "see",
-            //    "came" or "coming" => "come",
-            //    "took" or "takes" or "taken" or "taking" => "take",
-            //    "better" or "best" => "good",
-            //    "worse" or "worst" => "bad",
-            //    "bigger" or "biggest" => "big",
-            //    "smaller" or "smallest" => "small",
-            //    "larger" or "largest" => "large",
-            //    "more" or "most" => "many",
-            //    "less" or "least" => "little",
-            //    "further" or "furthest" => "far",
-            //    "children" => "child",
-            //    "people" => "person",
-            //    "lives" => "life",
-            //    "wives" => "wife",
-            //    "fewer" or "fewest" => "few",
-            //    _ => input
-            //};
-
             switch (input)
             {
                 case "am": case "is": case "are": case "was": case "were": 
                     return "be";
+
                 case "has": case "have": case "had": 
                     return "have";
+
                 case "does": case "did": 
                     return "do";
+
                 case "going": case "goes": case "went": 
                     return "go";
-                case "made": case "making": return "make";
+
+                case "made": case "making": 
+                    return "make";
+
                 case "saw": case "seen": case "seeing": 
                     return "see";
+
                 case "came": case "coming": 
                     return "come";
+
                 case "took": case "takes": case "taken": case "taking": 
                     return "take";
+
                 case "better": case "best": 
                     return "good";
+
                 case "worse": case "worst": 
                     return "bad";
+
                 case "bigger": case "biggest": 
                     return "big";
+
                 case "smaller": case "smallest": 
                     return "small";
+
                 case "larger": case "largest": 
                     return "large";
+
                 case "more": case "most": 
                     return "many";
+
                 case "less": case "least": 
                     return "little";
+
                 case "further": case "furthest": 
                     return "far";
+
                 case "children": 
                     return "child";
+
                 case "people": 
                     return "person";
+
                 case "lives": 
                     return "life";
+
                 case "wives": 
                     return "wife";
+
                 case "fewer": case "fewest": 
                     return "few";
+
                 default: 
                     return input;
             }
