@@ -99,5 +99,10 @@ namespace snapwatch.Core.Repository
                 fileSt?.Dispose();
             }
         }
+
+        public MoviesModel GetMoviesByTone(string tone)
+        {
+            
+        }
     }
 }
