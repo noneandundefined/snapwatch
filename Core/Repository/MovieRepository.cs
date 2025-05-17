@@ -15,6 +15,7 @@ namespace snapwatch.Core.Repository
         private readonly Config _config;
         private readonly UIException _uiException;
         private readonly IndexService _indexService;
+        private readonly TranslateService _translateService;
 
         private readonly short MAX_COUNT_MOVIES = 500;
         private readonly Dictionary<ushort, uint> _pidx;
@@ -24,6 +25,7 @@ namespace snapwatch.Core.Repository
             this._config = new Config();
             this._uiException = new UIException();
             this._indexService = new IndexService();
+            this._translateService = new TranslateService();
 
             this._pidx = this._indexService.LoadPIDX();
         }
@@ -103,7 +105,22 @@ namespace snapwatch.Core.Repository
 
         public async Task<List<MovieModel>> GetMoviesByTone(string tone)
         {
-            
+            try
+            {
+                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+
+                List<MoviesModel> moviesJson = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+
+                if (moviesJson == null || moviesJson.Count == 0)
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Error get movies");
+                return null;
+            }
         }
     }
 }
