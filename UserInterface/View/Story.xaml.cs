@@ -29,7 +29,7 @@ namespace snapwatch.UserInterface.View
                 PlaceholderStory.Visibility = Visibility.Visible;
             }
 
-            this.movieRepository.GetMoviesByTone("Joy");
+            this.movieRepository.GetMoviesByTone("Sadness");
         }
     }
 }
