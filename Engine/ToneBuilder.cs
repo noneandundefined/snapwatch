@@ -3,8 +3,6 @@ using snapwatch.Engine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace snapwatch.Engine
 {
@@ -23,14 +21,35 @@ namespace snapwatch.Engine
 
             ToneModel tones = this.AnalizeTone(tokens);
 
-            return "";
+            var tonesQuantity = new (string Name, ushort Value)[]
+            {
+                ("Anticipation", tones.Anticipation),
+                ("Joy",          tones.Joy),
+                ("Trust",        tones.Trust),
+                ("Sadness",      tones.Sadness)
+            };
+
+            var (Name, Value) = tonesQuantity.OrderByDescending(t => t.Value).First();
+
+            return Name;
         }
 
         private ToneModel AnalizeTone(List<string> tokens)
         {
-            ToneModel toneModel = new();
+            string[] anticipation = AnticipationEmotionLexicon();
+            string[] joy = JoyEmotionLexicon();
+            string[] trust = TrustEmotionLexicon();
+            string[] sadness = SadnessEmotionLexicon();
 
-            ushort countAnticipation = tokens.Count(token => AnticipationEmotionLexicon.Contains(token));
+            ToneModel toneModel = new()
+            {
+                Anticipation = (ushort)tokens.Count(token => anticipation.Contains(token)),
+                Joy = (ushort)tokens.Count(token => joy.Contains(token)),
+                Trust = (ushort)tokens.Count(token => trust.Contains(token)),
+                Sadness = (ushort)tokens.Count(token => sadness.Contains(token)),
+            };
+
+            return toneModel;
         }
     }
 }
