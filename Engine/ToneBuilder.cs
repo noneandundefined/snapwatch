@@ -10,16 +10,27 @@ namespace snapwatch.Engine
 {
     public class ToneBuilder : ToneDataSet
     {
+        private readonly NLPBuilder _nlpBuilder;
+
+        public ToneBuilder()
+        {
+            this._nlpBuilder = new NLPBuilder();
+        }
+
         public string Tone(string text)
         {
+            List<string> tokens = this._nlpBuilder.Preprocess(text);
+
+            ToneModel tones = this.AnalizeTone(tokens);
+
             return "";
         }
 
-        private ToneModel AnalizeTone()
+        private ToneModel AnalizeTone(List<string> tokens)
         {
             ToneModel toneModel = new();
 
-            uint
+            ushort countAnticipation = tokens.Count(token => AnticipationEmotionLexicon.Contains(token));
         }
     }
 }
