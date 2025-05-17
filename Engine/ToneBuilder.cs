@@ -42,6 +42,14 @@ namespace snapwatch.Engine
             string[] trust = TrustEmotionLexicon();
             string[] sadness = SadnessEmotionLexicon();
 
+            ushort countAnticipation = 0;
+            foreach (var token in tokens)
+            {
+                if (anticipation.Contains(token))
+                {
+                    countAnticipation++;
+                }
+            }
 
             ToneModel toneModel = new()
             {
