@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.UserInterface.View"
              xmlns:controllers="clr-namespace:snapwatch.UserInterface.UI.Styles.Controllers"
+             xmlns:components="clr-namespace:snapwatch.UserInterface.UI.Components"
              mc:Ignorable="d" 
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
@@ -55,7 +56,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="240" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -103,11 +103,11 @@
                 </StackPanel>
             </Grid>
 
-            <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0 10 0 0">
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="0 10 0 0">
                 <Grid>
-                    <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8">
+                    <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8" MouseLeftButtonDown="Search_MouseLeftButtonDown">
                         <Label Content="ПОДОБРАТЬ" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                            Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" MouseLeftButtonDown="Search_MouseLeftButtonDown" />
+                            Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" />
 
                         <Border.Triggers>
                             <EventTrigger RoutedEvent="MouseEnter">
@@ -129,6 +129,23 @@
                     <Border Background="#000" Opacity="0.4" Height="9" VerticalAlignment="Bottom" />
                 </Grid>
             </StackPanel>
+
+            <ScrollViewer Grid.Row="2" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Movies}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <components:MovieCard Title="{Binding Movies.Title}" PosterPath="{Binding Movies.PosterPath}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Border>
 </UserControl>

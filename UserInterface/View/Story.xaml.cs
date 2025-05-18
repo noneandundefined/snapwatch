@@ -2,6 +2,8 @@
 using snapwatch.Core.Models;
 using snapwatch.Core.Repository;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,15 +12,34 @@ namespace snapwatch.UserInterface.View
     /// <summary>
     /// Логика взаимодействия для Story.xaml
     /// </summary>
-    public partial class Story : UserControl
+    public partial class Story : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private readonly IMovieRepository _movieRepository;
 
         private string _selectTone = "";
 
+        private List<MovieModel> _movies = [];
+        public List<MovieModel> Movies
+        {
+            get => this._movies;
+            set
+            {
+                this._movies = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Story()
         {
             InitializeComponent();
+            DataContext = this;
+
             this._movieRepository = new MovieRepository();
         }
 
@@ -56,7 +77,7 @@ namespace snapwatch.UserInterface.View
 
         private void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            List<MovieModel> movies = this._movieRepository.GetMoviesByTone(this._selectTone);
+            this._movies = this._movieRepository.GetMoviesByTone(this._selectTone);
         }
     }
 }
