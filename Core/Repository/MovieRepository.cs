@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows;
 
 namespace snapwatch.Core.Repository
 {
@@ -136,14 +137,19 @@ namespace snapwatch.Core.Repository
 
                 var filteredMovies = moviesJson.SelectMany(group => group.Results.Where(
                     movie => movie.GenreIds != null && movie.GenreIds.Intersect(isGenres).Any()
-                ));
+                )).ToList();
 
-                foreach (var movie in filteredMovies)
+                var r = new Random();
+                int startIndex = r.Next(filteredMovies.Count);
+
+                for (int i = 0; i < filteredMovies.Count; i++)
                 {
-                    if (moviesByTone.Count > 25) break;
+                    if (moviesByTone.Count >= 25) break;
+
+                    int index = (startIndex + i) % filteredMovies.Count;
+                    var movie = filteredMovies[index];
 
                     string overview = movie.Overview;
-
                     string toneMovie = this._toneBuilder.Tone(overview); // anticipation | joy | trust | sadness
 
                     if (toneMovie == tone)

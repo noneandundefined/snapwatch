@@ -51,87 +51,87 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Padding="11">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="240" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <ScrollViewer Padding="11" VerticalScrollBarVisibility="Hidden">
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="240" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="15 0" FontSize="16" HorizontalAlignment="Left" Panel.ZIndex="1" 
-                               Text="Хочу посмотреть..." Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
-                               x:Name="PlaceholderStory" />
-                    <TextBox Style="{StaticResource TextBoxSearch_Style}" TextWrapping="Wrap" x:Name="SearchTextBox" TextChanged="StoryTextBox_TextChanged" HorizontalAlignment="Stretch">
-                        <TextBox.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="4" />
-                                <Setter Property="Padding" Value="0,7,0,0" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsFocused" Value="True">
-                                        <Setter Property="BorderBrush" Value="#333" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Resources>
-                    </TextBox>
+                    <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+                        <TextBlock Margin="15 0" FontSize="16" HorizontalAlignment="Left" Panel.ZIndex="1" 
+                                       Text="Хочу посмотреть..." Style="{StaticResource Font}" Padding="0 10 0 0" Foreground="#555"
+                                       x:Name="PlaceholderStory" />
+                        <TextBox Style="{StaticResource TextBoxSearch_Style}" TextWrapping="Wrap" x:Name="SearchTextBox" TextChanged="StoryTextBox_TextChanged" HorizontalAlignment="Stretch">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="4" />
+                                    <Setter Property="Padding" Value="0,7,0,0" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter Property="BorderBrush" Value="#333" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
+                    </Grid>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="под настроение"
+                                       Foreground="Gray"
+                                       FontSize="16"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,20"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ToggleButton Style="{StaticResource MoodButton}" Tag="Бодрое" Margin="30,0" Click="AnticipationToneButton_Click" />
+                            <ToggleButton Style="{StaticResource MoodButton}" Tag="Весёлое" Margin="30,0" Click="JoyToneButton_Click" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <ToggleButton Style="{StaticResource MoodButton}" Tag="Спокойное" Margin="30,0" Click="TrustToneButton_Click" />
+                            <ToggleButton Style="{StaticResource MoodButton}" Tag="Грустное" Margin="30,0" Click="SadnessToneButton_Click" />
+                        </StackPanel>
+                    </StackPanel>
                 </Grid>
 
-                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="под настроение"
-                               Foreground="Gray"
-                               FontSize="16"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,20"/>          
+                <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="0 10 0 0">
+                    <Grid>
+                        <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8" MouseLeftButtonDown="Search_MouseLeftButtonDown">
+                            <Label Content="ПОДОБРАТЬ" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                        Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" />
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Бодрое" Margin="30,0" Click="AnticipationToneButton_Click" />
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Весёлое" Margin="30,0" Click="JoyToneButton_Click" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Спокойное" Margin="30,0" Click="TrustToneButton_Click" />
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Грустное" Margin="30,0" Click="SadnessToneButton_Click" />
-                    </StackPanel>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#940000" Duration="0:0:0.08" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFFF2400" Duration="0:0:0.03" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+                        <Border Background="#000" Opacity="0.4" Height="9" VerticalAlignment="Bottom" />
+                    </Grid>
                 </StackPanel>
-            </Grid>
 
-            <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="0 10 0 0">
-                <Grid>
-                    <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8" MouseLeftButtonDown="Search_MouseLeftButtonDown">
-                        <Label Content="ПОДОБРАТЬ" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                            Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" />
-
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#940000" Duration="0:0:0.08" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFFF2400" Duration="0:0:0.03" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-                    <Border Background="#000" Opacity="0.4" Height="9" VerticalAlignment="Bottom" />
-                </Grid>
-            </StackPanel>
-
-            <ScrollViewer Grid.Row="2" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
-                <StackPanel>
+                <StackPanel Grid.Row="2" Margin="17 10 0 10">
                     <ItemsControl ItemsSource="{Binding Movies}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -145,7 +145,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-            </ScrollViewer>
-        </Grid>
-    </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
