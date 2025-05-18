@@ -34,9 +34,24 @@ namespace snapwatch.UserInterface.View
             this.movieRepository.GetMoviesByTone("sadness");
         }
 
-        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e)
         {
+            this._selectTone = "anticipation";
+        }
 
+        private void JoyToneButton_Click(object sender, RoutedEventArgs e)
+        {
+            this._selectTone = "joy";
+        }
+
+        private void TrustToneButton_Click(object sender, RoutedEventArgs e)
+        {
+            this._selectTone = "trust";
+        }
+
+        private void SadnessToneButton_Click(object sender, RoutedEventArgs e)
+        {
+            this._selectTone = "sadness";
         }
     }
 }
