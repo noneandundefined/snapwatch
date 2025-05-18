@@ -107,7 +107,7 @@
                 <Grid>
                     <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8">
                         <Label Content="ПОДОБРАТЬ" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                            Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" />
+                            Style="{StaticResource Font}" Foreground="#fff" FontSize="15" Margin="0 -4 0 0" MouseLeftButtonDown="Search_MouseLeftButtonDown" />
 
                         <Border.Triggers>
                             <EventTrigger RoutedEvent="MouseEnter">

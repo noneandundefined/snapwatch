@@ -10,14 +10,14 @@ namespace snapwatch.UserInterface.View
     /// </summary>
     public partial class Story : UserControl
     {
-        private readonly IMovieRepository movieRepository;
+        private readonly IMovieRepository _movieRepository;
 
         private string _selectTone = "";
 
         public Story()
         {
             InitializeComponent();
-            this.movieRepository = new MovieRepository();
+            this._movieRepository = new MovieRepository();
         }
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -30,8 +30,6 @@ namespace snapwatch.UserInterface.View
             {
                 PlaceholderStory.Visibility = Visibility.Visible;
             }
-
-            this.movieRepository.GetMoviesByTone("sadness");
         }
 
         private void AnticipationToneButton_Click(object sender, RoutedEventArgs e)
@@ -52,6 +50,11 @@ namespace snapwatch.UserInterface.View
         private void SadnessToneButton_Click(object sender, RoutedEventArgs e)
         {
             this._selectTone = "sadness";
+        }
+
+        private void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this._movieRepository.GetMoviesByTone(this._selectTone);
         }
     }
 }
