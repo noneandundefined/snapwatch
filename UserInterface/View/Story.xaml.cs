@@ -77,7 +77,7 @@ namespace snapwatch.UserInterface.View
 
         private void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this._movies = this._movieRepository.GetMoviesByTone(this._selectTone);
+            this.Movies = this._movieRepository.GetMoviesByTone(this._selectTone);
         }
     }
 }

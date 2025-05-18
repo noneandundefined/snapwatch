@@ -140,7 +140,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <components:MovieCard Title="{Binding Movies.Title}" PosterPath="{Binding Movies.PosterPath}" />
+                                <components:MovieCard Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
