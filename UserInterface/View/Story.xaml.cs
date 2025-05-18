@@ -12,6 +12,8 @@ namespace snapwatch.UserInterface.View
     {
         private readonly IMovieRepository movieRepository;
 
+        private string _selectTone = "";
+
         public Story()
         {
             InitializeComponent();
@@ -29,7 +31,12 @@ namespace snapwatch.UserInterface.View
                 PlaceholderStory.Visibility = Visibility.Visible;
             }
 
-            this.movieRepository.GetMoviesByTone("Sadness");
+            this.movieRepository.GetMoviesByTone("sadness");
+        }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -92,13 +92,13 @@
                                Margin="0,0,0,20"/>          
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Бодрое" Margin="30,0" />
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Весёлое" Margin="30,0" />
+                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Бодрое" Margin="30,0" Click="AnticipationToneButton_Click" />
+                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Весёлое" Margin="30,0" Click="JoyToneButton_Click" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Спокойное" Margin="30,0" />
-                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Грустное" Margin="30,0" />
+                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Спокойное" Margin="30,0" Click="TrustToneButton_Click" />
+                        <ToggleButton Style="{StaticResource MoodButton}" Tag="Грустное" Margin="30,0" Click="SadnessToneButton_Click" />
                     </StackPanel>
                 </StackPanel>
             </Grid>

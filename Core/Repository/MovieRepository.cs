@@ -111,7 +111,7 @@ namespace snapwatch.Core.Repository
             }
         }
 
-        public async Task<List<MovieModel>> GetMoviesByTone(string tone)
+        public List<MovieModel> GetMoviesByTone(string tone)
         {
             List<MovieModel> moviesByTone = [];
 
