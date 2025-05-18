@@ -3,15 +3,17 @@ using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Service;
 using snapwatch.Engine;
+using snapwatch.Engine.DataSet;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
 {
-    public class MovieRepository : IMovieRepository
+    public class MovieRepository : ToneDataSet, IMovieRepository
     {
         private readonly Config _config;
         private readonly UIException _uiException;
@@ -123,6 +125,20 @@ namespace snapwatch.Core.Repository
                     return null;
                 }
 
+                List<int> isGenres = [];
+                isGenres = tone.ToLower() switch
+                {
+                    "anticipation" => AnticipationGenresID,
+                    "joy" => JoyGenresID,
+                    "trust" => TrustGenresID,
+                    "sadness" => SadnessGenresID,
+                    _ => throw new ArgumentException("Неправильно указан тон."),
+                };
+
+                var filteredMovies = moviesJson.SelectMany(group => group.Results.Where(
+                    movie => movie.GenreIds != null && movie.GenreIds.Intersect(isGenres).Any()
+                ));
+
                 foreach (var movies in moviesJson)
                 {
                     foreach (var movie in movies.Results)
@@ -130,11 +146,6 @@ namespace snapwatch.Core.Repository
                         if (moviesByTone.Count > 25) break;
 
                         string overview = movie.Overview;
-
-                        if (!this._translateService.IS_EN(overview))
-                        {
-                            overview = await this._translateService.RU_TO_EN(overview);
-                        }
 
                         string toneMovie = this._toneBuilder.Tone(overview); // Anticipation | Joy | Trust | Sadness
 
