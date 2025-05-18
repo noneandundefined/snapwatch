@@ -1,7 +1,6 @@
 ﻿using snapwatch.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace snapwatch.Core.Interface
 {
@@ -10,5 +9,7 @@ namespace snapwatch.Core.Interface
         MoviesModel GetMovies();
 
         List<MovieModel> GetMoviesByTone(string tone);
+
+        Task<List<MovieModel>> GetMoviesByToneAsync(string tone);
     }
 }

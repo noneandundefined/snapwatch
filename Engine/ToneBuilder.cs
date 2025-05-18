@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using snapwatch.Engine.DataSet;
+﻿using snapwatch.Engine.DataSet;
 using snapwatch.Engine.Models;
 using System;
 using System.Collections.Generic;

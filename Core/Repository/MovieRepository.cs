@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Windows;
+using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
 {
@@ -24,6 +24,8 @@ namespace snapwatch.Core.Repository
 
         private readonly short MAX_COUNT_MOVIES = 500;
         private readonly Dictionary<ushort, uint> _pidx;
+
+        protected List<MoviesModel> _moviesByCache = null;
 
         public MovieRepository()
         {
@@ -79,16 +81,18 @@ namespace snapwatch.Core.Repository
                 //    return movies;
                 //}
 
-                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-
-                List<MoviesModel> moviesJson = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
-
-                if (moviesJson == null || moviesJson.Count == 0)
+                if (this._moviesByCache == null)
                 {
-                    return null;
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
-                foreach (var movies in moviesJson)
+                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                foreach (var movies in this._moviesByCache)
                 {
                     if (movies.Page == randomPage)
                     {
@@ -100,7 +104,7 @@ namespace snapwatch.Core.Repository
             }
             catch (Exception ex)
             {
-                this._uiException.Error(ex.Message, "Error get movies");
+                this._uiException.Error(ex.Message, "Ошибка получения фильмов");
                 return null;
             }
             finally
@@ -116,17 +120,18 @@ namespace snapwatch.Core.Repository
 
             try
             {
-                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-
-                List<MoviesModel> moviesJson = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
-
-                if (moviesJson == null || moviesJson.Count == 0)
+                if (this._moviesByCache == null)
                 {
-                    return null;
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
-                List<ushort> isGenres = [];
-                isGenres = tone.ToLower() switch
+                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                HashSet<ushort> isGenres = tone.ToLower() switch
                 {
                     "anticipation" => AnticipationGenresID,
                     "joy" => JoyGenresID,
@@ -135,17 +140,22 @@ namespace snapwatch.Core.Repository
                     _ => throw new ArgumentException("Неправильно указан тон."),
                 };
 
-                var filteredMovies = moviesJson.SelectMany(group => group.Results.Where(
-                    movie => movie.GenreIds != null && movie.GenreIds.Intersect(isGenres).Any()
-                )).ToList();
+                var filteredMovies = this._moviesByCache.AsParallel()
+                    .WithDegreeOfParallelism(Environment.ProcessorCount)
+                    .SelectMany(group => group.Results
+                    .Where(movie => movie.GenreIds != null && movie.GenreIds.Any(id => isGenres.Contains(id))))
+                    .ToList();
 
                 var r = new Random();
                 int startIndex = r.Next(filteredMovies.Count);
 
-                for (int i = 0; i < filteredMovies.Count; i++)
-                {
-                    if (moviesByTone.Count >= 25) break;
+                object syncLock = new();
 
+                Parallel.ForEach(Enumerable.Range(0, filteredMovies.Count), new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = Environment.ProcessorCount
+                }, (i, state) =>
+                {
                     int index = (startIndex + i) % filteredMovies.Count;
                     var movie = filteredMovies[index];
 
@@ -154,17 +164,33 @@ namespace snapwatch.Core.Repository
 
                     if (toneMovie == tone)
                     {
-                        moviesByTone.Add(movie);
+                        lock (syncLock)
+                        {
+                            if (moviesByTone.Count < 25)
+                            {
+                                moviesByTone.Add(movie);
+
+                                if (moviesByTone.Count >= 25)
+                                {
+                                    state.Stop();
+                                }
+                            }
+                        }
                     }
-                }
+                });
 
                 return moviesByTone;
             }
             catch (Exception ex)
             {
-                this._uiException.Error(ex.Message, "Error get movies");
+                this._uiException.Error(ex.Message, "Ошибка получения фильмов");
                 return null;
             }
+        }
+
+        public Task<List<MovieModel>> GetMoviesByToneAsync(string tone)
+        {
+            return Task.Run(() => this.GetMoviesByTone(tone));
         }
     }
 }

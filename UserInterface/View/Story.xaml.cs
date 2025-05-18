@@ -75,9 +75,11 @@ namespace snapwatch.UserInterface.View
             this._selectTone = "sadness";
         }
 
-        private void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this.Movies = this._movieRepository.GetMoviesByTone(this._selectTone);
+            this.Movies = null;
+
+            this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
         }
     }
 }
