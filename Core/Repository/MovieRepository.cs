@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace snapwatch.Core.Repository
 {
@@ -125,7 +126,7 @@ namespace snapwatch.Core.Repository
                     return null;
                 }
 
-                List<int> isGenres = [];
+                List<ushort> isGenres = [];
                 isGenres = tone.ToLower() switch
                 {
                     "anticipation" => AnticipationGenresID,
@@ -139,20 +140,17 @@ namespace snapwatch.Core.Repository
                     movie => movie.GenreIds != null && movie.GenreIds.Intersect(isGenres).Any()
                 ));
 
-                foreach (var movies in moviesJson)
+                foreach (var movie in filteredMovies)
                 {
-                    foreach (var movie in movies.Results)
+                    if (moviesByTone.Count > 25) break;
+
+                    string overview = movie.Overview;
+
+                    string toneMovie = this._toneBuilder.Tone(overview); // anticipation | joy | trust | sadness
+
+                    if (toneMovie == tone)
                     {
-                        if (moviesByTone.Count > 25) break;
-
-                        string overview = movie.Overview;
-
-                        string toneMovie = this._toneBuilder.Tone(overview); // Anticipation | Joy | Trust | Sadness
-
-                        if (toneMovie == tone)
-                        {
-                            moviesByTone.Add(movie);
-                        }
+                        moviesByTone.Add(movie);
                     }
                 }
 

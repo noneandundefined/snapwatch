@@ -24,10 +24,10 @@ namespace snapwatch.Engine
 
             var tonesQuantity = new (string Name, ushort Value)[]
             {
-                ("Anticipation", tones.Anticipation),
-                ("Joy",          tones.Joy),
-                ("Trust",        tones.Trust),
-                ("Sadness",      tones.Sadness)
+                ("anticipation", tones.Anticipation),
+                ("joy",          tones.Joy),
+                ("trust",        tones.Trust),
+                ("sadness",      tones.Sadness)
             };
 
             var (Name, Value) = tonesQuantity.OrderByDescending(t => t.Value).First();

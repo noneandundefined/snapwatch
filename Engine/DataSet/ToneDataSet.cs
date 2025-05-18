@@ -13,10 +13,10 @@ namespace snapwatch.Engine.DataSet
             this._config = new Config();
         }
 
-        protected List<int> AnticipationGenresID { get; set; } = [27, 28, 9648, 10752, 53, 878, 37];
-        protected List<int> JoyGenresID { get; set; } = [80, 16, 28, 35, 14, 12, 37];
-        protected List<int> TrustGenresID { get; set; } = [36, 99, 10751, 10770, 10749, 37];
-        protected List<int> SadnessGenresID { get; set; } = [18, 10749, 10402, 10751, 16, 37];
+        protected List<ushort> AnticipationGenresID { get; set; } = [27, 28, 9648, 10752, 53, 878, 37];
+        protected List<ushort> JoyGenresID { get; set; } = [80, 16, 28, 35, 14, 12, 37];
+        protected List<ushort> TrustGenresID { get; set; } = [36, 99, 10751, 10770, 10749, 37];
+        protected List<ushort> SadnessGenresID { get; set; } = [18, 10749, 10402, 10751, 16, 37];
 
         private string[] ReadEmotionLexicon(string path)
         {
