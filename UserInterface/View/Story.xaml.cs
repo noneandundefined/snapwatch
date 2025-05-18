@@ -1,5 +1,7 @@
 ﻿using snapwatch.Core.Interface;
+using snapwatch.Core.Models;
 using snapwatch.Core.Repository;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -54,7 +56,7 @@ namespace snapwatch.UserInterface.View
 
         private void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this._movieRepository.GetMoviesByTone(this._selectTone);
+            List<MovieModel> movies = this._movieRepository.GetMoviesByTone(this._selectTone);
         }
     }
 }
