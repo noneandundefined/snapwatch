@@ -2,19 +2,18 @@
 using snapwatch.Core.Models;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Service
 {
     public class TranslateService
     {
-        private readonly HttpClient _http;
+        private readonly System.Net.Http.HttpClient _http;
         private readonly Config _config;
 
         public TranslateService()
         {
-            this._http = new HttpClient();
+            this._http = new System.Net.Http.HttpClient();
             this._config = new Config();
         }
 
@@ -22,7 +21,7 @@ namespace snapwatch.Core.Service
         {
             string url = $"{this._config.ReturnConfig().TRANSLATE_WWW_URL}?dl=en&text={Uri.EscapeDataString(text)}";
 
-            HttpResponseMessage response = await this._http.GetAsync(url);
+            System.Net.Http.HttpResponseMessage response = await this._http.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             Stream stream = await response.Content.ReadAsStreamAsync();
