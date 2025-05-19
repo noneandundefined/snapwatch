@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
@@ -84,7 +83,7 @@ namespace snapwatch.Core.Repository
                 if (this._moviesByCache == null)
                 {
                     string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
                 if (this._moviesByCache == null || this._moviesByCache.Count == 0)
@@ -123,7 +122,7 @@ namespace snapwatch.Core.Repository
                 if (this._moviesByCache == null)
                 {
                     string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
                 if (this._moviesByCache == null || this._moviesByCache.Count == 0)
