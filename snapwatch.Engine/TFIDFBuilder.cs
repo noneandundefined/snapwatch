@@ -31,7 +31,7 @@ namespace snapwatch.Engine
             return (float)cWord / text.Length;
         }
 
-        public double IDF(string word, List<string> documents)
+        public float IDF(string word, List<string> documents)
         {
             ushort cWord = (ushort)documents.AsParallel().Count(dOverview =>
             {
@@ -39,17 +39,17 @@ namespace snapwatch.Engine
                 return overview.Contains(word);
             });
 
-            return Math.Log((double)documents.Count / (1 + cWord));
+            return (float)Math.Log(documents.Count / (1 + cWord));
         }
 
-        public double TFIDF(float tf, double idf)
+        public float TFIDF(float tf, float idf)
         {
             return tf * idf;
         }
 
         public float[][] ComputeTFIDFMatrix(string[] overviews, List<string> _vocabulary)
         {
-            int nDocs = overviews.Count;
+            int nDocs = overviews.Count();
             int nTerms = _vocabulary.Count;
 
             float[][] matrix = new float[nDocs][];
@@ -68,10 +68,10 @@ namespace snapwatch.Engine
                 token => this.IDF(token, [..overviews])
             );
 
-            Parallel.For(0, nDocs, idfCache =>
+            Parallel.For(0, nDocs, i =>
             {
-                var tokens = _nlpBuilder.Preprocess(overviews[i]);
-                var tfCache = new Dictionary<string, float>();
+                List<string> tokens = _nlpBuilder.Preprocess(overviews[i]);
+                Dictionary<string, float> tfCache = new();
 
                 foreach (var token in tokens)
                 {
@@ -79,16 +79,17 @@ namespace snapwatch.Engine
 
                     if (!tfCache.TryGetValue(token, out float tf))
                     {
-                        tf = this.TF(token, [..tokens]);
+                        tf = this.TF(token, [.. tokens]);
                         tfCache[token] = tf;
                     }
 
-                    if (!idfCache.TryGetValue(token, out double idf))
-                        continue;
+                    if (!idfCache.TryGetValue(token, out float idf)) continue;
 
-                    matrix[i][index] = _tfidfBuilder.TFIDF(tf, idf);
+                    matrix[i][index] = this.TFIDF(tf, idf);
                 }
-            })
+            });
+
+            return matrix;
         }
     }
 }
