@@ -1,6 +1,7 @@
 ﻿using snapwatch.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace snapwatch.Engine
 {
@@ -10,6 +11,7 @@ namespace snapwatch.Engine
         private readonly TFIDFBuilder _tfidfBuilder;
 
         private List<string> _vocabulary;
+        private readonly ushort avgOverview = 39;
 
         public LSABuilder()
         {
@@ -43,16 +45,16 @@ namespace snapwatch.Engine
 
         public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 5)
         {
-            List<string> dOverview = documents.Select(document => document.Overview ?? "").ToList();
+            List<string> dOverview = documents.Take(documents.Count()/2).Select(document => document.Overview ?? "").ToList();
             dOverview.Add(text);
             this.AddVocabulary(dOverview);
 
             int nDocs = dOverview.Count;
             int nTerms = this._vocabulary.Count;
 
-            var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
+            var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Sparse(nDocs, nTerms);
 
-            for (int i = 0; i < nDocs; i++)
+            Parallel.For(0, nDocs, i =>
             {
                 List<string> tokens = this._nlpBuilder.Preprocess(dOverview[i]);
 
@@ -61,12 +63,12 @@ namespace snapwatch.Engine
                     int index = this._vocabulary.IndexOf(token);
                     if (index == -1) continue;
 
-                    float tf = this._tfidfBuilder.TF(token, [..tokens]);
+                    float tf = this._tfidfBuilder.TF(token, [.. tokens]);
                     double idf = this._tfidfBuilder.IDF(token, dOverview);
 
                     matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
                 }
-            }
+            });
 
             var svd = matrix.Svd(computeVectors: true);
             var documentTopicMatrix = svd.U;
@@ -75,12 +77,13 @@ namespace snapwatch.Engine
 
             var similarities = new List<(MovieModel, double Similarity)>();
 
-            for (int i = 0; i < nDocs - 1; i++)
+            Parallel.For(0, nDocs - 1, i =>
             {
                 var vMovie = documentTopicMatrix.Row(i);
+
                 double similarity = this.CosineSimilarity(vUser, vMovie);
                 similarities.Add((documents[i], similarity));
-            }
+            });
 
             return similarities.OrderByDescending(x => x.Similarity).Take(top).ToList();
         }
@@ -89,7 +92,14 @@ namespace snapwatch.Engine
         {
             if (this._vocabulary == null)
             {
-                this._vocabulary = documents.AsParallel().SelectMany(document => this._nlpBuilder.Preprocess(document)).Distinct().OrderBy(word => word).ToList();
+                this._vocabulary = documents.AsParallel().SelectMany(document => 
+                            this._nlpBuilder.Preprocess(document)).
+                            GroupBy(word => word).
+                            OrderByDescending(g => g.Count()).
+                            Take(this.avgOverview * documents.Count()).
+                            Select(g => g.Key).
+                            OrderBy(word => word).
+                            ToList();
             }
         }
 

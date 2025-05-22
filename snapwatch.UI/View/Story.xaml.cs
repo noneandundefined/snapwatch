@@ -59,14 +59,14 @@ namespace snapwatch.UI.View
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SearchTextBox.Text.Length > 0)
-            {
-                PlaceholderStory.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PlaceholderStory.Visibility = Visibility.Visible;
-            }
+            //if (SearchTextBox.Text.Length > 0)
+            //{
+            //    PlaceholderStory.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    PlaceholderStory.Visibility = Visibility.Visible;
+            //}
 
             PlaceholderStory.Visibility = SearchTextBox.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -86,7 +86,14 @@ namespace snapwatch.UI.View
                 this.IsLoading = true;
                 this.Movies = null;
 
-                this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                if (SearchTextBox.Text.Length > 0)
+                {
+                    this.Movies = await this._movieRepository.GetMoviesByTextAsync(SearchTextBox.Text);
+                }
+                else
+                {
+                    this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                }
             }
             finally
             {
