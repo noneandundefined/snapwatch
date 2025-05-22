@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
@@ -216,6 +217,28 @@ namespace snapwatch.Core.Repository
 
                 List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(this._moviesByCache, text);
             }
+        }
+
+        public Task<List<MovieModel>> GetMoviesByTextAsync(string text)
+        {
+            return Task.Run(async () =>
+            {
+                string prepareText = text;
+
+                try
+                {
+                    if (!this._translateService.IS_EN(text))
+                    {
+                        prepareText = await this._translateService.RU_TO_EN(text);
+                    }
+
+                    this.GetMoviesByText(prepareText);
+                }
+                catch (Exception ex)
+                {
+                    this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                }
+            });
         }
     }
 }
