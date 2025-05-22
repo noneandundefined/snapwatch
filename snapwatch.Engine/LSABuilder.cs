@@ -28,7 +28,7 @@ namespace snapwatch.Engine
             dOverview.Add(text);
 
             this.AddVocabulary(dOverview);
-            //this.CalcIDF();
+            this.CalcIDF();
 
             int nDocs = dOverview.Count;
             int nTerms = this._vocabulary.Count;
@@ -37,17 +37,32 @@ namespace snapwatch.Engine
 
             Parallel.For(0, nDocs, i =>
             {
-                List<string> tokens = this._tokenizedDOCS[i];
+                //List<string> tokens = this._tokenizedDOCS[i];
 
-                foreach (string token in tokens.Distinct())
+                //foreach (string token in tokens.Distinct())
+                //{
+                //    int index = this._vocabulary.IndexOf(token);
+                //    if (index == -1) continue;
+
+                //    float tf = this._tfidfBuilder.TF(token, [.. tokens]);
+                //    double idf = this._tfidfBuilder.IDF(token, dOverview);
+
+                //    matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
+                //}
+
+                List<string> tokens = this._tokenizedDOCS[i];
+                Dictionary<string, int> tokenCountsDict = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
+                int tokenTotal = tokenCountsDict.Count();
+
+                foreach (string token in tokenCountsDict.Keys)
                 {
                     int index = this._vocabulary.IndexOf(token);
                     if (index == -1) continue;
 
-                    float tf = this._tfidfBuilder.TF(token, [.. tokens]);
-                    double idf = this._tfidfBuilder.IDF(token, dOverview);
+                    float tf = (float)tokenCountsDict[token] / tokenTotal;
+                    double idf = _idfCache[token];
 
-                    matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
+                    matrix[i, index] = tf * idf;
                 }
             });
 
@@ -94,7 +109,7 @@ namespace snapwatch.Engine
             foreach (string word in this._vocabulary)
             {
                 int df = this._tokenizedDOCS.Count(doc => doc.Contains(word));
-                this._idfCache[word] = System.Math.Log((double)N / (1 + df);
+                this._idfCache[word] = System.Math.Log((double)N / (1 + df));
             }
         }
 

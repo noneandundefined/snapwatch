@@ -10,6 +10,8 @@ namespace snapwatch.Engine
     {
         private readonly NLPBuilder _nlpBuilder;
 
+        protected Dictionary<string, double> _idfCache;
+
         public TFIDFBuilder()
         {
             this._nlpBuilder = new NLPBuilder();
