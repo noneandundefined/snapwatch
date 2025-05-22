@@ -18,6 +18,7 @@ namespace snapwatch.Core.Repository
         private readonly UIException _uiException;
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
+        private readonly LSABuilder _lsaBuilder;
 
         private readonly ToneBuilder _toneBuilder;
 
@@ -32,6 +33,7 @@ namespace snapwatch.Core.Repository
             this._uiException = new UIException();
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
+            this._lsaBuilder = new LSABuilder();
 
             this._toneBuilder = new ToneBuilder();
 
@@ -190,6 +192,24 @@ namespace snapwatch.Core.Repository
         public Task<List<MovieModel>> GetMoviesByToneAsync(string tone)
         {
             return Task.Run(() => this.GetMoviesByTone(tone));
+        }
+
+        public List<MovieModel> GetMoviesByText(string text)
+        {
+            try
+            {
+                if (this._moviesByCache == null)
+                {
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                }
+
+                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+            }
+            List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(text);
         }
     }
 }
