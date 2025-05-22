@@ -37,11 +37,15 @@ namespace snapwatch.Engine
 
             var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
 
+            var localMatrix = new (int row, int col, double value)[nDocs][];
+
             Parallel.For(0, nDocs, i =>
             {
                 List<string> tokens = this._tokenizedDOCS[i];
                 Dictionary<string, int> tokenCountsDict = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
                 int tokenTotal = tokens.Count();
+
+                var rowMatrix = new List<(int, int, double)>();
 
                 foreach (string token in tokenCountsDict.Keys)
                 {
@@ -52,12 +56,17 @@ namespace snapwatch.Engine
 
                     //float tf = (float)tokenCountsDict[token] / tokenTotal;
                     float tf = this._tfidfBuilder.TF(tokenCountsDict[token], tokenTotal);
+                    double value = this._tfidfBuilder.TFIDF(tf, idf);
+
+                    rowMatrix.Add((i, index, value));
 
                     if (i >= 0 && i < matrix.RowCount)
                     {
                         matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
                     }
                 }
+
+                localMatrix[i] = [..rowMatrix];
             });
 
             var svd = matrix.Svd(computeVectors: true);
