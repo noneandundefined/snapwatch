@@ -67,27 +67,17 @@ namespace snapwatch.UI.View
             {
                 PlaceholderStory.Visibility = Visibility.Visible;
             }
+
+            PlaceholderStory.Visibility = SearchTextBox.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "anticipation";
-        }
+        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "anticipation";
 
-        private void JoyToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "joy";
-        }
+        private void JoyToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "joy";
 
-        private void TrustToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "trust";
-        }
+        private void TrustToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "trust";
 
-        private void SadnessToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "sadness";
-        }
+        private void SadnessToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "sadness";
 
         private async void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

@@ -210,12 +210,16 @@ namespace snapwatch.Core.Repository
                     throw new Exception("Ошибка чтения файла (json) с фильмами.");
                 }
 
-                if (!this._translateService.IS_EN(text))
-                {
-                    text = this._translateService.RU_TO_EN(text);
-                }
+                List<MovieModel> movies = this._moviesByCache.SelectMany(movie => movie.Results).ToList();
 
-                List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(this._moviesByCache, text);
+                List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(movies, text);
+
+                return lsaMovies.Select(x => x.Item1).ToList();
+            }
+            catch (Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                return null;
             }
         }
 
@@ -232,11 +236,12 @@ namespace snapwatch.Core.Repository
                         prepareText = await this._translateService.RU_TO_EN(text);
                     }
 
-                    this.GetMoviesByText(prepareText);
+                    return this.GetMoviesByText(prepareText);
                 }
                 catch (Exception ex)
                 {
                     this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                    return null;
                 }
             });
         }
