@@ -19,33 +19,9 @@ namespace snapwatch.Engine
             this._tfidfBuilder = new TFIDFBuilder();
         }
 
-        //public void Analyze(List<string> documents, ushort top = 5)
-        //{
-        //    this.AddVocabulary(documents);
-
-        //    int nDocs = documents.Count;
-        //    int nTerms = this._vocabulary.Count;
-
-        //    var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
-
-        //    for (int iDoc = 0; iDoc < nDocs; iDoc++)
-        //    {
-        //        List<string> tokens = this._nlpBuilder.Preprocess(documents[iDoc]);
-
-        //        foreach (string token in tokens.Distinct())
-        //        {
-        //            int index = this._vocabulary.IndexOf(token);
-        //            if (index == -1) continue;
-
-        //            float tf = this._tfidfBuilder.TF(token, tokens.ToArray());
-        //            double idf = this._tfidfBuilder.IDF()
-        //        }
-        //    }
-        //}
-
         public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 5)
         {
-            List<string> dOverview = documents.Take(documents.Count()/2).Select(document => document.Overview ?? "").ToList();
+            List<string> dOverview = documents.Take(documents.Count()/4).Select(document => document.Overview ?? "").ToList();
             dOverview.Add(text);
             this.AddVocabulary(dOverview);
 
