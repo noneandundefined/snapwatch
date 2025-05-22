@@ -109,7 +109,7 @@ namespace snapwatch.Engine
             foreach (string word in this._vocabulary)
             {
                 int df = this._tokenizedDOCS.Count(doc => doc.Contains(word));
-                this._idfCache[word] = System.Math.Log((double)N / (1 + df));
+                this._idfCache[word] = this._tfidfBuilder.IDF(N, df);
             }
         }
 

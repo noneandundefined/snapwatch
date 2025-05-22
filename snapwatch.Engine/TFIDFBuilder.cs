@@ -32,7 +32,7 @@ namespace snapwatch.Engine
             return (float)cWord / text.Length;
         }
 
-        public double IDF(string word, List<string> documents)
+        public double IDF_BY_TEXT(string word, List<string> documents)
         {
             ushort cWord = (ushort)documents.AsParallel().Count(dOverview =>
             {
@@ -41,6 +41,11 @@ namespace snapwatch.Engine
             });
 
             return Math.Log((double)documents.Count / (1 + cWord));
+        }
+
+        public double IDF(int N, int df)
+        {
+            return Math.Log((double)N / (1 + df));
         }
 
         public double TFIDF(float tf, double idf)
