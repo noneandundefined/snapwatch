@@ -11,6 +11,9 @@ namespace snapwatch.Engine
         private readonly TFIDFBuilder _tfidfBuilder;
 
         private List<string> _vocabulary;
+        private List<List<string>> _tokenizedDOCS;
+        private Dictionary<string, double> _idfCache;
+
         private readonly ushort avgOverview = 39;
 
         public LSABuilder()
@@ -21,9 +24,11 @@ namespace snapwatch.Engine
 
         public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 5)
         {
-            List<string> dOverview = documents.Take(documents.Count()/4).Select(document => document.Overview ?? "").ToList();
+            List<string> dOverview = documents.Take(documents.Count()/6).Select(document => document.Overview ?? "").ToList();
             dOverview.Add(text);
+
             this.AddVocabulary(dOverview);
+            //this.CalcIDF();
 
             int nDocs = dOverview.Count;
             int nTerms = this._vocabulary.Count;
@@ -32,7 +37,7 @@ namespace snapwatch.Engine
 
             Parallel.For(0, nDocs, i =>
             {
-                List<string> tokens = this._nlpBuilder.Preprocess(dOverview[i]);
+                List<string> tokens = this._tokenizedDOCS[i];
 
                 foreach (string token in tokens.Distinct())
                 {
@@ -68,14 +73,28 @@ namespace snapwatch.Engine
         {
             if (this._vocabulary == null)
             {
-                this._vocabulary = documents.AsParallel().SelectMany(document => 
-                            this._nlpBuilder.Preprocess(document)).
+                this._tokenizedDOCS = documents.AsParallel().Select(doc => this._nlpBuilder.Preprocess(doc)).ToList();
+
+                this._vocabulary = this._tokenizedDOCS.AsParallel().
+                            SelectMany(doc => doc).
                             GroupBy(word => word).
                             OrderByDescending(g => g.Count()).
                             Take(this.avgOverview * documents.Count()).
                             Select(g => g.Key).
                             OrderBy(word => word).
                             ToList();
+            }
+        }
+
+        private void CalcIDF()
+        {
+            this._idfCache = [];
+            int N = this._tokenizedDOCS.Count();
+
+            foreach (string word in this._vocabulary)
+            {
+                int df = this._tokenizedDOCS.Count(doc => doc.Contains(word));
+                this._idfCache[word] = System.Math.Log((double)N / (1 + df);
             }
         }
 
