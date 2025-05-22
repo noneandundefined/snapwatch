@@ -8,12 +8,11 @@ namespace snapwatch.Engine
     public class TFIDFBuilder
     {
         private readonly NLPBuilder _nlpBuilder;
+        private Dictionary<string, int> vocabIndex;
 
         public TFIDFBuilder()
         {
             this._nlpBuilder = new NLPBuilder();
-
-            //this._movies = movies.AsParallel().SelectMany(movie => movie.Results).ToList();
         }
 
         public float TF(string word, string[] text)
@@ -45,6 +44,23 @@ namespace snapwatch.Engine
         public double TFIDF(float tf, double idf)
         {
             return tf * idf;
+        }
+
+        public float[][] ComputeTFIDFMatrix(string[] overview, List<string> _vocabulary)
+        {
+            int nDocs = overview.Count;
+            int nTerms = _vocabulary.Count;
+
+            float[][] matrix = new float[nDocs][];
+            for (int i = 0; i < nDocs; i++)
+            {
+                matrix[i] = new float[nTerms];
+            }
+
+            if (this.vocabIndex == null)
+            {
+                this.vocabIndex = _vocabulary.Select((token, index) => new { token, index }).ToDictionary(k => k.token, v => v.index);
+            }
         }
     }
 }
