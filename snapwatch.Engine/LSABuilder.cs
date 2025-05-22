@@ -11,6 +11,7 @@ namespace snapwatch.Engine
         private readonly TFIDFBuilder _tfidfBuilder;
 
         private List<string> _vocabulary;
+        private Dictionary<string, int> _vocabularyIndexMap;
         private List<List<string>> _tokenizedDOCS;
         private Dictionary<string, double> _idfCache;
 
@@ -34,37 +35,28 @@ namespace snapwatch.Engine
             int nDocs = dOverview.Count;
             int nTerms = this._vocabulary.Count;
 
-            var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Sparse(nDocs, nTerms);
+            var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
 
             Parallel.For(0, nDocs, i =>
             {
-                //List<string> tokens = this._tokenizedDOCS[i];
-
-                //foreach (string token in tokens.Distinct())
-                //{
-                //    int index = this._vocabulary.IndexOf(token);
-                //    if (index == -1) continue;
-
-                //    float tf = this._tfidfBuilder.TF(token, [.. tokens]);
-                //    double idf = this._tfidfBuilder.IDF(token, dOverview);
-
-                //    matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
-                //}
-
                 List<string> tokens = this._tokenizedDOCS[i];
                 Dictionary<string, int> tokenCountsDict = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
                 int tokenTotal = tokens.Count();
 
                 foreach (string token in tokenCountsDict.Keys)
                 {
-                    int index = this._vocabulary.IndexOf(token);
-                    if (index == -1) continue;
+                    if (!this._idfCache.TryGetValue(token, out var idf)) continue;
+                    if (!this._vocabularyIndexMap.TryGetValue(token, out var index)) continue;
+
+                    if (index < 0 || index >= matrix.ColumnCount) continue;
 
                     //float tf = (float)tokenCountsDict[token] / tokenTotal;
                     float tf = this._tfidfBuilder.TF(tokenCountsDict[token], tokenTotal);
-                    double idf = this._idfCache[token];
 
-                    matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
+                    if (i >= 0 && i < matrix.RowCount)
+                    {
+                        matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
+                    }
                 }
             });
 
@@ -75,7 +67,7 @@ namespace snapwatch.Engine
 
             var similarities = new List<(MovieModel, double Similarity)>();
 
-            Parallel.For(0, nDocs - 1, i =>
+            Parallel.For(0, documentsTake.Count(), i =>
             {
                 var vMovie = documentTopicMatrix.Row(i);
 
@@ -103,6 +95,8 @@ namespace snapwatch.Engine
                             Select(g => g.Key).
                             OrderBy(word => word).
                             ToList();
+
+                this._vocabularyIndexMap = this._vocabulary.Select((word, index) => new { word, index }).ToDictionary(x => x.word, x => x.index);
             }
         }
 
