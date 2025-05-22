@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace snapwatch.Engine
 {
@@ -46,9 +47,9 @@ namespace snapwatch.Engine
             return tf * idf;
         }
 
-        public float[][] ComputeTFIDFMatrix(string[] overview, List<string> _vocabulary)
+        public float[][] ComputeTFIDFMatrix(string[] overviews, List<string> _vocabulary)
         {
-            int nDocs = overview.Count;
+            int nDocs = overviews.Count;
             int nTerms = _vocabulary.Count;
 
             float[][] matrix = new float[nDocs][];
@@ -61,6 +62,33 @@ namespace snapwatch.Engine
             {
                 this.vocabIndex = _vocabulary.Select((token, index) => new { token, index }).ToDictionary(k => k.token, v => v.index);
             }
+
+            var idfCache = _vocabulary.ToDictionary(
+                token => token,
+                token => this.IDF(token, [..overviews])
+            );
+
+            Parallel.For(0, nDocs, idfCache =>
+            {
+                var tokens = _nlpBuilder.Preprocess(overviews[i]);
+                var tfCache = new Dictionary<string, float>();
+
+                foreach (var token in tokens)
+                {
+                    if (!vocabIndex.TryGetValue(token, out int index)) continue;
+
+                    if (!tfCache.TryGetValue(token, out float tf))
+                    {
+                        tf = this.TF(token, [..tokens]);
+                        tfCache[token] = tf;
+                    }
+
+                    if (!idfCache.TryGetValue(token, out double idf))
+                        continue;
+
+                    matrix[i][index] = _tfidfBuilder.TFIDF(tf, idf);
+                }
+            })
         }
     }
 }
