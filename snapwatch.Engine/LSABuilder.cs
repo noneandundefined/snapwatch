@@ -1,8 +1,6 @@
 ﻿using snapwatch.Core.Models;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 
 namespace snapwatch.Engine
 {
@@ -43,27 +41,28 @@ namespace snapwatch.Engine
         //    }
         //}
 
-        public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieMode> documents, string text, ushort top = 5)
+        public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 5)
         {
-            documents.Add(text);
-            this.AddVocabulary(documents);
+            List<string> dOverview = documents.Select(document => document.Overview ?? "").ToList();
+            dOverview.Add(text);
+            this.AddVocabulary(dOverview);
 
-            int nDocs = documents.Count;
+            int nDocs = dOverview.Count;
             int nTerms = this._vocabulary.Count;
 
             var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
 
             for (int i = 0; i < nDocs; i++)
             {
-                List<string> tokens = this._nlpBuilder.Preprocess(documents[i]);
+                List<string> tokens = this._nlpBuilder.Preprocess(dOverview[i]);
 
                 foreach (string token in tokens.Distinct())
                 {
                     int index = this._vocabulary.IndexOf(token);
                     if (index == -1) continue;
 
-                    float tf = this._tfidfBuilder.TF(token, tokens.ToArray());
-                    double idf = this._tfidfBuilder.IDF(token, documents);
+                    float tf = this._tfidfBuilder.TF(token, [..tokens]);
+                    double idf = this._tfidfBuilder.IDF(token, dOverview);
 
                     matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
                 }
