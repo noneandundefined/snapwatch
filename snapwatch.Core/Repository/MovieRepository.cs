@@ -208,8 +208,14 @@ namespace snapwatch.Core.Repository
                 {
                     throw new Exception("Ошибка чтения файла (json) с фильмами.");
                 }
+
+                if (!this._translateService.IS_EN(text))
+                {
+                    text = this._translateService.RU_TO_EN(text);
+                }
+
+                List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(this._moviesByCache, text);
             }
-            List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(text);
         }
     }
 }
