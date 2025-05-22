@@ -22,9 +22,10 @@ namespace snapwatch.Engine
             this._tfidfBuilder = new TFIDFBuilder();
         }
 
-        public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 5)
+        public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 25)
         {
-            List<string> dOverview = documents.Take(documents.Count()/6).Select(document => document.Overview ?? "").ToList();
+            var documentsTake = documents.Take(documents.Count() / 6).ToList();
+            List<string> dOverview = documentsTake.Select(document => document.Overview ?? "").ToList();
             dOverview.Add(text);
 
             this.AddVocabulary(dOverview);
@@ -52,7 +53,7 @@ namespace snapwatch.Engine
 
                 List<string> tokens = this._tokenizedDOCS[i];
                 Dictionary<string, int> tokenCountsDict = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
-                int tokenTotal = tokenCountsDict.Count();
+                int tokenTotal = tokens.Count();
 
                 foreach (string token in tokenCountsDict.Keys)
                 {
@@ -60,10 +61,10 @@ namespace snapwatch.Engine
                     if (index == -1) continue;
 
                     //float tf = (float)tokenCountsDict[token] / tokenTotal;
-                    float tf = this._tfidfBuilder.TF((float)tokenCountsDict[token], tokenTotal);
-                    double idf = _idfCache[token];
+                    float tf = this._tfidfBuilder.TF(tokenCountsDict[token], tokenTotal);
+                    double idf = this._idfCache[token];
 
-                    matrix[i, index] = tf * idf;
+                    matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
                 }
             });
 
@@ -79,7 +80,10 @@ namespace snapwatch.Engine
                 var vMovie = documentTopicMatrix.Row(i);
 
                 double similarity = this.CosineSimilarity(vUser, vMovie);
-                similarities.Add((documents[i], similarity));
+                lock (similarities)
+                {
+                    similarities.Add((documentsTake[i], similarity));
+                }
             });
 
             return similarities.OrderByDescending(x => x.Similarity).Take(top).ToList();

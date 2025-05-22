@@ -34,7 +34,7 @@ namespace snapwatch.Engine
 
         public float TF(int df, int N)
         {
-            return N / df;
+            return (float)df / N;
         }
 
         public double IDF_BY_TEXT(string word, List<string> documents)
