@@ -59,7 +59,8 @@ namespace snapwatch.Engine
                     int index = this._vocabulary.IndexOf(token);
                     if (index == -1) continue;
 
-                    float tf = (float)tokenCountsDict[token] / tokenTotal;
+                    //float tf = (float)tokenCountsDict[token] / tokenTotal;
+                    float tf = this._tfidfBuilder.TF((float)tokenCountsDict[token], tokenTotal);
                     double idf = _idfCache[token];
 
                     matrix[i, index] = tf * idf;

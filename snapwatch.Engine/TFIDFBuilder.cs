@@ -17,7 +17,7 @@ namespace snapwatch.Engine
             this._nlpBuilder = new NLPBuilder();
         }
 
-        public float TF(string word, string[] text)
+        public float TF_BY_TEXT(string word, string[] text)
         {
             ushort cWord = 0;
 
@@ -30,6 +30,11 @@ namespace snapwatch.Engine
             }
 
             return (float)cWord / text.Length;
+        }
+
+        public float TF(int df, int N)
+        {
+            return N / df;
         }
 
         public double IDF_BY_TEXT(string word, List<string> documents)
