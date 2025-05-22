@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace snapwatch.Engine
 {
@@ -9,16 +10,14 @@ namespace snapwatch.Engine
     {
         private readonly NLPBuilder _nlpBuilder;
 
-        private readonly List<MovieModel> _movies;
+        protected Dictionary<string, double> _idfCache;
 
-        public TFIDFBuilder(List<MoviesModel> movies)
+        public TFIDFBuilder()
         {
             this._nlpBuilder = new NLPBuilder();
-
-            this._movies = movies.AsParallel().SelectMany(movie => movie.Results).ToList();
         }
 
-        public float TF(string word, string[] text)
+        public float TF_BY_TEXT(string word, string[] text)
         {
             ushort cWord = 0;
 
@@ -33,15 +32,25 @@ namespace snapwatch.Engine
             return (float)cWord / text.Length;
         }
 
-        public double IDF(string word)
+        public float TF(int df, int N)
         {
-            ushort cWord = (ushort)this._movies.AsParallel().Count(movie =>
+            return (float)df / N;
+        }
+
+        public double IDF_BY_TEXT(string word, List<string> documents)
+        {
+            ushort cWord = (ushort)documents.AsParallel().Count(dOverview =>
             {
-                List<string> overview = this._nlpBuilder.Preprocess(movie.Overview);
+                List<string> overview = this._nlpBuilder.Preprocess(dOverview);
                 return overview.Contains(word);
             });
 
-            return Math.Log((double)this._movies.Count / (1 + cWord));
+            return Math.Log((double)documents.Count / (1 + cWord));
+        }
+
+        public double IDF(int N, int df)
+        {
+            return Math.Log((double)N / (1 + df));
         }
 
         public double TFIDF(float tf, double idf)

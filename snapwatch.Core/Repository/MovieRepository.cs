@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
@@ -19,6 +19,7 @@ namespace snapwatch.Core.Repository
         private readonly UIException _uiException;
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
+        private readonly LSABuilder _lsaBuilder;
 
         private readonly ToneBuilder _toneBuilder;
 
@@ -33,6 +34,7 @@ namespace snapwatch.Core.Repository
             this._uiException = new UIException();
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
+            this._lsaBuilder = new LSABuilder();
 
             this._toneBuilder = new ToneBuilder();
 
@@ -84,7 +86,7 @@ namespace snapwatch.Core.Repository
                 if (this._moviesByCache == null)
                 {
                     string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
                 if (this._moviesByCache == null || this._moviesByCache.Count == 0)
@@ -123,7 +125,7 @@ namespace snapwatch.Core.Repository
                 if (this._moviesByCache == null)
                 {
                     string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
                 if (this._moviesByCache == null || this._moviesByCache.Count == 0)
@@ -191,6 +193,57 @@ namespace snapwatch.Core.Repository
         public Task<List<MovieModel>> GetMoviesByToneAsync(string tone)
         {
             return Task.Run(() => this.GetMoviesByTone(tone));
+        }
+
+        public List<MovieModel> GetMoviesByText(string text)
+        {
+            try
+            {
+                if (this._moviesByCache == null)
+                {
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                }
+
+                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                List<MovieModel> movies = this._moviesByCache.SelectMany(movie => movie.Results).ToList();
+
+                List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(movies, text);
+
+                return lsaMovies.Select(x => x.Item1).ToList();
+            }
+            catch (Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                return null;
+            }
+        }
+
+        public Task<List<MovieModel>> GetMoviesByTextAsync(string text)
+        {
+            return Task.Run(async () =>
+            {
+                string prepareText = text;
+
+                try
+                {
+                    if (!this._translateService.IS_EN(text))
+                    {
+                        prepareText = await this._translateService.RU_TO_EN(text);
+                    }
+
+                    return this.GetMoviesByText(prepareText);
+                }
+                catch (Exception ex)
+                {
+                    this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                    return null;
+                }
+            });
         }
     }
 }

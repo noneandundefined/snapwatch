@@ -39,6 +39,9 @@
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.9.0.5\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -104,8 +107,10 @@
     <Compile Include="snapwatch.Core\Models\MovieModel.cs" />
     <Compile Include="snapwatch.Core\Models\PanelItemsModel.cs" />
     <Compile Include="snapwatch.Engine\DataSet\ToneDataSet.cs" />
+    <Compile Include="snapwatch.Engine\LSABuilder.cs" />
     <Compile Include="snapwatch.Engine\Models\ToneModel.cs" />
     <Compile Include="snapwatch.Engine\NLPBuilder.cs" />
+    <Compile Include="snapwatch.Engine\TFIDFBuilder.cs" />
     <Compile Include="snapwatch.Engine\ToneBuilder.cs" />
     <Compile Include="snapwatch.UI\UI\Components\MovieCard.xaml.cs">
       <DependentUpon>MovieCard.xaml</DependentUpon>

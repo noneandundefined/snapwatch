@@ -1,33 +1,32 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 
 namespace snapwatch.Core.Core
 {
     public class AppConfig
     {
-        [JsonProperty("MOVIES_JSON_READ")]
+        [Newtonsoft.Json.JsonProperty("MOVIES_JSON_READ")]
         public string MOVIES_JSON_READ { get; }
 
-        [JsonProperty("MOVIES_PIDX_READ")]
+        [Newtonsoft.Json.JsonProperty("MOVIES_PIDX_READ")]
         public string MOVIES_PIDX_READ { get; }
 
-        [JsonProperty("DATA_NRC_EMOTION_JOY")]
+        [Newtonsoft.Json.JsonProperty("DATA_NRC_EMOTION_JOY")]
         public string DATA_NRC_EMOTION_JOY { get; }
 
-        [JsonProperty("DATA_NRC_EMOTION_SADNESS")]
+        [Newtonsoft.Json.JsonProperty("DATA_NRC_EMOTION_SADNESS")]
         public string DATA_NRC_EMOTION_SADNESS { get; }
 
-        [JsonProperty("DATA_NRC_EMOTION_TRUST")]
+        [Newtonsoft.Json.JsonProperty("DATA_NRC_EMOTION_TRUST")]
         public string DATA_NRC_EMOTION_TRUST { get; }
 
-        [JsonProperty("DATA_NRC_EMOTION_ANTICIPATION")]
+        [Newtonsoft.Json.JsonProperty("DATA_NRC_EMOTION_ANTICIPATION")]
         public string DATA_NRC_EMOTION_ANTICIPATION { get; }
 
-        [JsonProperty("TRANSLATE_WWW_URL")]
+        [Newtonsoft.Json.JsonProperty("TRANSLATE_WWW_URL")]
         public string TRANSLATE_WWW_URL { get; }
 
-        [JsonProperty("API_KEY_TMDB")]
+        [Newtonsoft.Json.JsonProperty("API_KEY_TMDB")]
         public string API_KEY_TMDB { get; }
 
         public AppConfig()

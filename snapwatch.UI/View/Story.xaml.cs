@@ -59,35 +59,25 @@ namespace snapwatch.UI.View
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SearchTextBox.Text.Length > 0)
-            {
-                PlaceholderStory.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PlaceholderStory.Visibility = Visibility.Visible;
-            }
+            //if (SearchTextBox.Text.Length > 0)
+            //{
+            //    PlaceholderStory.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    PlaceholderStory.Visibility = Visibility.Visible;
+            //}
+
+            PlaceholderStory.Visibility = SearchTextBox.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "anticipation";
-        }
+        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "anticipation";
 
-        private void JoyToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "joy";
-        }
+        private void JoyToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "joy";
 
-        private void TrustToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "trust";
-        }
+        private void TrustToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "trust";
 
-        private void SadnessToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "sadness";
-        }
+        private void SadnessToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "sadness";
 
         private async void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -96,7 +86,14 @@ namespace snapwatch.UI.View
                 this.IsLoading = true;
                 this.Movies = null;
 
-                this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                if (SearchTextBox.Text.Length > 0)
+                {
+                    this.Movies = await this._movieRepository.GetMoviesByTextAsync(SearchTextBox.Text);
+                }
+                else
+                {
+                    this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                }
             }
             finally
             {
