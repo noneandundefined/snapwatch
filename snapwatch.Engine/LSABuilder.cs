@@ -15,7 +15,7 @@ namespace snapwatch.Engine
         private List<List<string>> _tokenizedDOCS;
         private Dictionary<string, double> _idfCache;
 
-        private readonly ushort avgOverview = 39;
+        private readonly ushort avgOverview = 1; //39
 
         public LSABuilder()
         {
@@ -25,7 +25,7 @@ namespace snapwatch.Engine
 
         public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 25)
         {
-            var documentsTake = documents.Take(documents.Count() / 6).ToList();
+            var documentsTake = documents.Take(documents.Count() / 2).ToList();
             List<string> dOverview = documentsTake.Select(document => document.Overview ?? "").ToList();
             dOverview.Add(text);
 
