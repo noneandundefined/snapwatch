@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Policy;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace snapwatch.Core.Repository
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
         private readonly LSABuilder _lsaBuilder;
+        private readonly HttpClient _httpClient;
 
         private readonly ToneBuilder _toneBuilder;
 
@@ -35,6 +37,7 @@ namespace snapwatch.Core.Repository
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
             this._lsaBuilder = new LSABuilder();
+            this._httpClient = new HttpClient();
 
             this._toneBuilder = new ToneBuilder();
 
@@ -195,34 +198,6 @@ namespace snapwatch.Core.Repository
             return Task.Run(() => this.GetMoviesByTone(tone));
         }
 
-        public List<MovieModel> GetMoviesByText(string text)
-        {
-            try
-            {
-                if (this._moviesByCache == null)
-                {
-                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
-                }
-
-                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
-                {
-                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
-                }
-
-                List<MovieModel> movies = this._moviesByCache.SelectMany(movie => movie.Results).ToList();
-
-                List<(MovieModel, double Similarity)> lsaMovies = this._lsaBuilder.AnalyzeByMovie(movies, text);
-
-                return lsaMovies.Select(x => x.Item1).ToList();
-            }
-            catch (Exception ex)
-            {
-                this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
-                return null;
-            }
-        }
-
         public Task<List<MovieModel>> GetMoviesByTextAsync(string text)
         {
             return Task.Run(async () =>
@@ -235,6 +210,8 @@ namespace snapwatch.Core.Repository
                     {
                         prepareText = await this._translateService.RU_TO_EN(text);
                     }
+
+                    string jsonPayload = "{\"text\": \"{" + prepareText + "}\"}";
 
                     return this.GetMoviesByText(prepareText);
                 }
