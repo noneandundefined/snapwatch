@@ -23,6 +23,9 @@ namespace snapwatch.Core.Core
         [Newtonsoft.Json.JsonProperty("DATA_NRC_EMOTION_ANTICIPATION")]
         public string DATA_NRC_EMOTION_ANTICIPATION { get; }
 
+        [Newtonsoft.Json.JsonProperty("SERVER_API_ADDRESS")]
+        public string SERVER_API_ADDRESS { get; }
+
         [Newtonsoft.Json.JsonProperty("TRANSLATE_WWW_URL")]
         public string TRANSLATE_WWW_URL { get; }
 
@@ -37,6 +40,7 @@ namespace snapwatch.Core.Core
             this.DATA_NRC_EMOTION_SADNESS = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "sadness-NRC-Emotion-Lexicon.txt");
             this.DATA_NRC_EMOTION_TRUST = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "trust-NRC-Emotion-Lexicon.txt");
             this.DATA_NRC_EMOTION_ANTICIPATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "anticipation-NRC-Emotion-Lexicon.txt");
+            this.SERVER_API_ADDRESS = "http://localhost:8011/microservice/movie-service/movie/t/gost";
             this.TRANSLATE_WWW_URL = "https://ftapi.pythonanywhere.com/translate";
             this.API_KEY_TMDB = "ecfe8540ac63325e0c50686c0be8848d";
         }
