@@ -12,8 +12,6 @@ namespace snapwatch.Core.Interface
 
         Task<List<MovieModel>> GetMoviesByToneAsync(string tone);
 
-        List<MovieModel> GetMoviesByText(string text);
-
         Task<List<MovieModel>> GetMoviesByTextAsync(string text);
     }
 }

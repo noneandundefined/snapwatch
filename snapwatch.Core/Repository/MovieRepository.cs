@@ -236,7 +236,26 @@ namespace snapwatch.Core.Repository
                         prepareText = await this._translateService.RU_TO_EN(text);
                     }
 
+<<<<<<< Updated upstream
                     return this.GetMoviesByText(prepareText);
+=======
+                    string jsonPayload = "{\"text\": \"" + prepareText + "\"";
+
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                    var response = await this._httpClient.PostAsync(_config.ReturnConfig().SERVER_API_ADDRESS, content);
+
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
+                    }
+                    else
+                    {
+                        throw new Exception(result);
+                    }
+>>>>>>> Stashed changes
                 }
                 catch (Exception ex)
                 {

@@ -37,6 +37,10 @@ namespace snapwatch.Core.Core
             this.DATA_NRC_EMOTION_SADNESS = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "sadness-NRC-Emotion-Lexicon.txt");
             this.DATA_NRC_EMOTION_TRUST = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "trust-NRC-Emotion-Lexicon.txt");
             this.DATA_NRC_EMOTION_ANTICIPATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapwatch.Engine", "Data", "NRC-Emotion-Lexicon", "anticipation-NRC-Emotion-Lexicon.txt");
+<<<<<<< Updated upstream
+=======
+            this.SERVER_API_ADDRESS = "http://localhost:8011/microservice/movie-service/movie/f/t/gost";
+>>>>>>> Stashed changes
             this.TRANSLATE_WWW_URL = "https://ftapi.pythonanywhere.com/translate";
             this.API_KEY_TMDB = "ecfe8540ac63325e0c50686c0be8848d";
         }
