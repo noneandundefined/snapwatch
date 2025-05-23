@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Policy;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
@@ -213,7 +214,20 @@ namespace snapwatch.Core.Repository
 
                     string jsonPayload = "{\"text\": \"{" + prepareText + "}\"}";
 
-                    return this.GetMoviesByText(prepareText);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                    var response = await this._httpClient.PostAsync(_config.ReturnConfig().SERVER_API_ADDRESS, content);
+
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
+                    }
+                    else
+                    {
+                        throw new Exception(result);
+                    }
                 }
                 catch (Exception ex)
                 {
