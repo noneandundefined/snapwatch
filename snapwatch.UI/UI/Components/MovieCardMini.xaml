@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="snapwatch.snapwatch.UI.UI.Components.MovieCardMini"
+﻿<UserControl x:Class="snapwatch.UI.Components.MovieCardMini"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:snapwatch.snapwatch.UI.UI.Components"
+             xmlns:local="clr-namespace:snapwatch.UI.Components"
              xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
              mc:Ignorable="d" 
              d:DesignHeight="240" d:DesignWidth="240">

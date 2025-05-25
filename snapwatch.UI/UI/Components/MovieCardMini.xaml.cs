@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace snapwatch.snapwatch.UI.UI.Components
+namespace snapwatch.UI.Components
 {
     /// <summary>
     /// Логика взаимодействия для MovieCardMini.xaml
