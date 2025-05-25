@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace snapwatch.UI.UI.Styles.Controllers
+namespace snapwatch.UI.Styles.Controllers
 {
     public class MoodToColorConverter : IValueConverter
     {

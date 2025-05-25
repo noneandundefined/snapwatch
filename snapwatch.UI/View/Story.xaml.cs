@@ -35,6 +35,17 @@ namespace snapwatch.UI.View
             }
         }
 
+        private List<MovieModel> _moviesPreload = [];
+        public List<MovieModel> MoviesPreload
+        {
+            get => this._moviesPreload;
+            set
+            {
+                this._moviesPreload = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -59,15 +70,6 @@ namespace snapwatch.UI.View
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if (SearchTextBox.Text.Length > 0)
-            //{
-            //    PlaceholderStory.Visibility = Visibility.Collapsed;
-            //}
-            //else
-            //{
-            //    PlaceholderStory.Visibility = Visibility.Visible;
-            //}
-
             PlaceholderStory.Visibility = SearchTextBox.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
@@ -88,7 +90,8 @@ namespace snapwatch.UI.View
 
                 if (SearchTextBox.Text.Length > 0)
                 {
-                    this.Movies = await this._movieRepository.GetMoviesByTextAsync(SearchTextBox.Text);
+                    this.MoviesPreload = await this._movieRepository.GetMoviesByText_Simple(SearchTextBox.Text);
+                    //this.Movies = await this._movieRepository.GetMoviesByText_HardAsync(SearchTextBox.Text);
                 }
                 else
                 {

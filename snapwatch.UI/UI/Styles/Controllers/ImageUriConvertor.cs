@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace snapwatch.UI.UI.Styles.Controllers
+namespace snapwatch.UI.Styles.Controllers
 {
     /// <summary>
     /// Изображение фильмов с сервера

@@ -1,4 +1,6 @@
 ﻿using snapwatch.Core.Models;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,15 +9,41 @@ namespace snapwatch.Engine
 {
     public class LSABuilder
     {
+        /// <summary>
+        /// Классы и методы
+        /// </summary>
         private readonly NLPBuilder _nlpBuilder;
         private readonly TFIDFBuilder _tfidfBuilder;
 
-        private List<string> _vocabulary;
-        private Dictionary<string, int> _vocabularyIndexMap;
+        /// <summary>
+        /// слова участвующие в поиске
+        /// </summary>
+        private HashSet<string> _vocabulary;
+
+        /// <summary>
+        /// подготовленные(NLP) слова
+        /// </summary>
         private List<List<string>> _tokenizedDOCS;
+
+        /// <summary>
+        /// список TF-IDF векторов для всех документов
+        /// </summary>
+        private List<double[]> _tfidfVectors = [];
+
+        /// <summary>
+        /// словарь: слово -> IDF значение (частота документа)
+        /// </summary>
         private Dictionary<string, double> _idfCache;
 
-        private readonly ushort avgOverview = 1; //39
+        /// <summary>
+        /// словарь: слово -> количество документов где встречается это это слово
+        /// </summary>
+        private ConcurrentDictionary<string, uint> _docsTokensCache = [];
+
+        /// <summary>
+        /// max. количество слов для одного документа
+        /// </summary>
+        private readonly ushort _avgOverview = 39;
 
         public LSABuilder()
         {
@@ -23,100 +51,100 @@ namespace snapwatch.Engine
             this._tfidfBuilder = new TFIDFBuilder();
         }
 
-        public List<(MovieModel, double Similarity)> AnalyzeByMovie(List<MovieModel> documents, string text, ushort top = 25)
-        {
-            var documentsTake = documents.Take(documents.Count() / 2).ToList();
-            List<string> dOverview = documentsTake.Select(document => document.Overview ?? "").ToList();
-            dOverview.Add(text);
-
-            this.AddVocabulary(dOverview);
-            this.CalcIDF();
-
-            int nDocs = dOverview.Count;
-            int nTerms = this._vocabulary.Count;
-
-            var matrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Dense(nDocs, nTerms);
-
-            var localMatrix = new (int row, int col, double value)[nDocs][];
-
-            Parallel.For(0, nDocs, i =>
-            {
-                List<string> tokens = this._tokenizedDOCS[i];
-                Dictionary<string, int> tokenCountsDict = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
-                int tokenTotal = tokens.Count();
-
-                foreach (string token in tokenCountsDict.Keys)
-                {
-                    if (!this._idfCache.TryGetValue(token, out var idf)) continue;
-                    if (!this._vocabularyIndexMap.TryGetValue(token, out var index)) continue;
-
-                    if (index < 0 || index >= matrix.ColumnCount) continue;
-
-                    //float tf = (float)tokenCountsDict[token] / tokenTotal;
-                    float tf = this._tfidfBuilder.TF(tokenCountsDict[token], tokenTotal);
-
-                    if (i >= 0 && i < matrix.RowCount)
-                    {
-                        matrix[i, index] = this._tfidfBuilder.TFIDF(tf, idf);
-                    }
-                }
-            });
-
-            var svd = matrix.Svd(computeVectors: true);
-            var documentTopicMatrix = svd.U;
-
-            var vUser = documentTopicMatrix.Row(nDocs - 1);
-
-            var similarities = new List<(MovieModel, double Similarity)>();
-
-            Parallel.For(0, documentsTake.Count(), i =>
-            {
-                var vMovie = documentTopicMatrix.Row(i);
-
-                double similarity = this.CosineSimilarity(vUser, vMovie);
-                lock (similarities)
-                {
-                    similarities.Add((documentsTake[i], similarity));
-                }
-            });
-
-            return similarities.OrderByDescending(x => x.Similarity).Take(top).ToList();
-        }
-
-        private void AddVocabulary(List<string> documents)
+        /// <summary>
+        /// подготовка и счет базовых значений + кеширование
+        /// </summary>
+        /// <param name="overviews">описания фильмов</param>
+        private void Fit(string[] overviews)
         {
             if (this._vocabulary == null)
             {
-                this._tokenizedDOCS = documents.AsParallel().Select(doc => this._nlpBuilder.Preprocess(doc)).ToList();
+                this._idfCache = [];
 
-                this._vocabulary = this._tokenizedDOCS.AsParallel().
-                            SelectMany(doc => doc).
-                            GroupBy(word => word).
-                            OrderByDescending(g => g.Count()).
-                            Take(this.avgOverview * documents.Count()).
-                            Select(g => g.Key).
-                            OrderBy(word => word).
-                            ToList();
+                this._tokenizedDOCS = overviews.AsParallel().Select(doc => this._nlpBuilder.Preprocess(doc)).ToList();
+                this._vocabulary = _tokenizedDOCS.AsParallel().SelectMany(token => token).Take(this._avgOverview * overviews.Length).ToHashSet();
 
-                this._vocabularyIndexMap = this._vocabulary.Select((word, index) => new { word, index }).ToDictionary(x => x.word, x => x.index);
+                Parallel.ForEach(this._tokenizedDOCS, doc =>
+                {
+                    foreach (var term in doc.Distinct())
+                    {
+                        this._docsTokensCache.AddOrUpdate(term, 1, (key, oldValue) => oldValue + 1);
+                    }
+                });
+
+                foreach (string term in this._vocabulary)
+                {
+                    uint N = this._docsTokensCache.ContainsKey(term) ? this._docsTokensCache[term] : 0;
+                    this._idfCache[term] = this._tfidfBuilder.IDF(this._tokenizedDOCS.Count, (int)N);
+                }
+
+                this._tfidfVectors = overviews.AsParallel().Select(doc => this.Transform(doc)).ToList();
             }
         }
 
-        private void CalcIDF()
+        /// <summary>
+        /// счет TF-IDF документов и NLP подготовка
+        /// </summary>
+        /// <param name="doc">документ (описание фильма)</param>
+        private double[] Transform(string doc)
         {
-            this._idfCache = [];
-            int N = this._tokenizedDOCS.Count();
+            List<string> tokens = this._nlpBuilder.Preprocess(doc);
+            double[] tfidf = new double[this._vocabulary.Count];
+            List<string> vocabList = [..this._vocabulary];
 
-            foreach (string word in this._vocabulary)
+            var termFreq = tokens.GroupBy(t => t).ToDictionary(g => g.Key, g => g.Count());
+
+            for (int i = 0; i < vocabList.Count; i++)
             {
-                int df = this._tokenizedDOCS.Count(doc => doc.Contains(word));
-                this._idfCache[word] = this._tfidfBuilder.IDF(N, df);
+                string term = vocabList[i];
+                int termCount = termFreq.ContainsKey(term) ? termFreq[term] : 0;
+
+                float tf = this._tfidfBuilder.TF(termCount, tokens.Count);
+                tfidf[i] = this._tfidfBuilder.TFIDF(tf, this._idfCache.ContainsKey(term) ? this._idfCache[term] : 0.0);
             }
+
+            return tfidf;
         }
 
-        private double CosineSimilarity(MathNet.Numerics.LinearAlgebra.Vector<double> a, MathNet.Numerics.LinearAlgebra.Vector<double> b)
+        /// <summary>
+        /// основная фукнция нахождения похожих фильмов
+        /// </summary>
+        /// <param name="documents">фильмы</param>
+        /// <param name="text">текст написанный пользователем</param>
+        /// <param name="top">максимальный вывод фильмов</param>
+        public List<(MovieModel movies, double similarity)> TFIDF_Cosine(List<MovieModel> documents, string text, ushort top = 50)
         {
-            return a.DotProduct(b) / (a.L2Norm() * b.L2Norm() + 1e-10);
+            var documentsTake = documents.Take(documents.Count / 2).ToList();
+            List<string> overviews = documentsTake.AsParallel().Select(document => document.Overview ?? "").ToList();
+
+            this.Fit([..overviews]);
+
+            double[] vectorInput = this.Transform(text);
+            List<(MovieModel movies, double similarity)> similarity = [];
+
+            return documentsTake.AsParallel().Select((doc, i) => (
+                movies: doc,
+                similarity: this.CosineSimilarity(vectorInput, this._tfidfVectors[i])
+            )).OrderByDescending(sim => sim.similarity).Take(top).ToList();
+        }
+
+        /// <summary>
+        /// косинусное сравнение векторов
+        /// </summary>
+        /// <param name="vector_a"></param>
+        /// <param name="vector_b"></param>
+        private double CosineSimilarity(double[] vector_a, double[] vector_b)
+        {
+            double dot = 0, normA = 0, normB = 0;
+
+            for (int i = 0; i < vector_a.Length; i++)
+            {
+                dot += vector_a[i] * vector_b[i];
+                normA += vector_a[i] * vector_a[i];
+                normB += vector_b[i] * vector_b[i];
+            }
+
+            return normA == 0 || normB == 0 ? 0 : dot / (Math.Sqrt(normA) * Math.Sqrt(normB));
         }
     }
 }

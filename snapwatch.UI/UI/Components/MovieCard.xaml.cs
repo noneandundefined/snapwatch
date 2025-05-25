@@ -8,8 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
-namespace snapwatch.UI.UI.Components
+namespace snapwatch.UI.Components
 {
     /// <summary>
     /// Логика взаимодействия для MovieCard.xaml
@@ -110,7 +111,19 @@ namespace snapwatch.UI.UI.Components
             }
         }
 
-        // private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {}
+        private void ButtonDetailsMovie_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var gridButton = sender as Grid;
+
+            if (gridButton != null && gridButton.Tag is uint ID)
+            {
+                DetailsWindow detailsWindow = new DetailsWindow(ID);
+                Window mainWindow = Window.GetWindow(this); 
+
+                detailsWindow.Show();
+                mainWindow.Hide();
+            }
+        }
 
         /// <summary>
         /// Title Dependency

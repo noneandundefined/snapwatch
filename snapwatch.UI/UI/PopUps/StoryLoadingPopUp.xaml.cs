@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace snapwatch.snapwatch.UI.View
+namespace snapwatch.UI.PopUps
 {
     /// <summary>
-    /// Логика взаимодействия для Details.xaml
+    /// Логика взаимодействия для StoryLoadingPopUp.xaml
     /// </summary>
-    public partial class Details : UserControl
+    public partial class StoryLoadingPopUp : UserControl
     {
-        public Details()
+        public StoryLoadingPopUp()
         {
             InitializeComponent();
         }
