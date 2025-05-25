@@ -252,14 +252,12 @@ namespace snapwatch.Core.Repository
 
                     string result = await response.Content.ReadAsStringAsync();
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
-                    }
-                    else
+                    if (!response.IsSuccessStatusCode)
                     {
                         throw new Exception(result);
                     }
+
+                    return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
                 }
                 catch (Exception ex)
                 {
