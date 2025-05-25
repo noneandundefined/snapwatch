@@ -38,8 +38,17 @@
                     </StackPanel>
                 </StackPanel>
 
-                <ScrollViewer>
-                    
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="20,0" Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Content="Посмотри похожие пока идет загрука..." Style="{StaticResource Font}" Foreground="#fff" FontSize="17" />
+                        
+                        
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </Border>
