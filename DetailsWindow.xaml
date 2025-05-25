@@ -57,7 +57,7 @@
                 </Grid>
                 </ScrollViewer>
 
-                <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
+                <!--<ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
                         <Border Grid.Row="1" Margin="0 0 40 0" CornerRadius="12" BorderBrush="#FFF" BorderThickness="1">
                             <Image Source="Images/ash_poster.jpg" Width="250" Height="375"/>
@@ -96,7 +96,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                </ScrollViewer>
+                </ScrollViewer> -->
         </Grid>
     </Border>
 </Window>
