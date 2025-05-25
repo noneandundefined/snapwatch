@@ -19,42 +19,7 @@
 
             <Rectangle Fill="#AA000000" />
 
-            <Grid Margin="40">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
-                    <Border Margin="10,0">
-                        <!-- <Border.InputBindings>
-                        <MouseBinding Gesture="LeftClick"
-                              Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-                              CommandParameter="{Binding PathView}" />
-                    </Border.InputBindings> -->
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
-                        </StackPanel>
-                    </Border>
-
-                    <Border Margin="10,0">
-                        <!-- <Border.InputBindings>
-                            <MouseBinding Gesture="LeftClick"
-                                  Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-                                  CommandParameter="{Binding PathView}" />
-                        </Border.InputBindings> -->
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-
-                <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
+            <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
                     <Grid Margin="40">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -65,7 +30,31 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                    </Grid>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
+                        <Border Margin="10,0">
+                            <!-- <Border.InputBindings>
+        <MouseBinding Gesture="LeftClick"
+              Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
+              CommandParameter="{Binding PathView}" />
+    </Border.InputBindings> -->
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="10,0">
+                            <!-- <Border.InputBindings>
+            <MouseBinding Gesture="LeftClick"
+                  Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
+                  CommandParameter="{Binding PathView}" />
+        </Border.InputBindings> -->
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
                 </ScrollViewer>
 
                 <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
@@ -108,7 +97,6 @@
                         </ItemsControl>
                     </StackPanel>
                 </ScrollViewer>
-            </Grid>
         </Grid>
     </Border>
 </Window>
