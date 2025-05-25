@@ -24,6 +24,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
@@ -61,7 +62,7 @@
                                 <Image Source="Images/ash_poster.jpg" Width="250" Height="375"/>
                             </Border>
 
-                            <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Top">
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top">
                                 <TextBlock Text="Ash vs Evil Dead" FontSize="36" FontWeight="Bold" Foreground="White"/>
                                 <TextBlock Text="TV Series, USA, 2015" FontSize="14" Foreground="Gray" Margin="0,4,0,16"/>
                                 <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600"
@@ -78,6 +79,12 @@
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2">
+                        <components:MovieCardMini />
+
+                        <components:MovieCardMini />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
