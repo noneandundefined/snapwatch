@@ -34,10 +34,10 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
                             <!-- <Border.InputBindings>
-        <MouseBinding Gesture="LeftClick"
-              Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-              CommandParameter="{Binding PathView}" />
-    </Border.InputBindings> -->
+                                    <MouseBinding Gesture="LeftClick"
+                                          Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
+                                          CommandParameter="{Binding PathView}" />
+                                </Border.InputBindings> -->
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
                             </StackPanel>
@@ -45,10 +45,10 @@
 
                         <Border Margin="10,0">
                             <!-- <Border.InputBindings>
-            <MouseBinding Gesture="LeftClick"
-                  Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-                  CommandParameter="{Binding PathView}" />
-        </Border.InputBindings> -->
+                                    <MouseBinding Gesture="LeftClick"
+                                          Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
+                                          CommandParameter="{Binding PathView}" />
+                                </Border.InputBindings> -->
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
                             </StackPanel>
