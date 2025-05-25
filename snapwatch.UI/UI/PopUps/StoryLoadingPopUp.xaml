@@ -15,11 +15,11 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Background="#fff" Grid.Row="0">
+                <StackPanel Background="#000" Grid.Row="0">
                     <ProgressBar x:Name="ProgressBar"
                                  Height="10"
                                  Minimum="0" Maximum="100"
@@ -37,6 +37,10 @@
                                    Margin="0,-5,0,0"/>  
                     </StackPanel>
                 </StackPanel>
+
+                <ScrollViewer>
+                    
+                </ScrollViewer>
             </Grid>
         </Border>
     </Grid>
