@@ -81,7 +81,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <components:MovieCardMini />
 
                         <components:MovieCardMini />
