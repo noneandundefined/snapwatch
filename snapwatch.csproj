@@ -118,6 +118,9 @@
     <Compile Include="snapwatch.UI\UI\Components\MovieCard.xaml.cs">
       <DependentUpon>MovieCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="snapwatch.UI\UI\Components\MovieCardMini.xaml.cs">
+      <DependentUpon>MovieCardMini.xaml</DependentUpon>
+    </Compile>
     <Compile Include="snapwatch.UI\UI\Components\Panel.xaml.cs">
       <DependentUpon>Panel.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="snapwatch.UI\UI\Components\MovieCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="snapwatch.UI\UI\Components\MovieCardMini.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
