@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:snapwatch.UI.View"
              xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
              xmlns:components="clr-namespace:snapwatch.UI.Components"
+             xmlns:popups="clr-namespace:snapwatch.UI.PopUps"
              mc:Ignorable="d" 
              Background="#0f0f0f"
              d:DesignHeight="700" d:DesignWidth="775">
@@ -56,6 +57,8 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+
+    <popups:StoryLoadingPopUp />
 
     <ScrollViewer Padding="11" VerticalScrollBarVisibility="Hidden">
         <StackPanel>

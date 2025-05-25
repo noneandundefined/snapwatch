@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:snapwatch.UI.PopUps"
+             xmlns:components="clr-namespace:snapwatch.UI.Components"
              mc:Ignorable="d" Visibility="Visible"
              Background="#00000096"
              d:DesignHeight="750" d:DesignWidth="934">
@@ -46,8 +47,28 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Content="Посмотри похожие пока идет загрука..." Style="{StaticResource Font}" Foreground="#fff" FontSize="17" />
-                        
-                        
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <components:MovieCardMini />
+                            <!-- <ItemsControl ItemsSource="{Binding Movies}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <components:MovieCardMini />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl> -->
+                        </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </Grid>
