@@ -51,7 +51,7 @@ namespace snapwatch
         }
 
         private string title = "";
-        public string Title
+        public string TitleMovie
         {
             get => this.title;
             set
@@ -134,7 +134,7 @@ namespace snapwatch
             this.LoadImageAsync(this._movie.PosterPath, PosterImageBrash);
 
             // Текстовые данные
-            this.Title = this._movie.Title;
+            this.TitleMovie = this._movie.Title;
         }
     }
 }

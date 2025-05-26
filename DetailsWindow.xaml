@@ -69,7 +69,7 @@
                             </Border>
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                                <TextBlock Text="{Binding Title}" FontSize="36" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White"/>
                                 <TextBlock Text="TV Series, USA, 2015" FontSize="14" Foreground="Gray" Margin="0,4,0,16"/>
                                 <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600"
                                           Text="Ash has spent the last 30 years avoiding responsibility, maturity and the terrors of the Evil Dead until a Deadite plague threatens to destroy all of mankind and Ash becomes mankind's only hope."/>
