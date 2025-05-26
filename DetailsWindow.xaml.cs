@@ -69,7 +69,6 @@ namespace snapwatch
             var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
 
             this.SetImageSource(xName, new BitmapImage(preloaderUri));
-            //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
 
             try
             {
@@ -100,19 +99,15 @@ namespace snapwatch
                         bitmap.Freeze();
                     }
 
-                    //xName.Source = bitmap;
                     this.SetImageSource(xName, bitmap);
-                    //return;
                 }
                 else
                 {
-                    //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
                     this.SetImageSource(xName, new BitmapImage(defaultUri));
                 }
             }
             catch
             {
-                //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
                 this.SetImageSource(xName, new BitmapImage(defaultUri));
             }
         }
