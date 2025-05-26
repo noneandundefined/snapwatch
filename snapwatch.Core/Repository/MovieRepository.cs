@@ -279,7 +279,7 @@ namespace snapwatch.Core.Repository
         /// вывод информации о фильме по ID
         /// </summary>
         /// <param name="id">id фильма</param>
-        MovieModel GetMovieByID(uint id)
+        public MovieModel GetMovieByID(uint id)
         {
             try
             {

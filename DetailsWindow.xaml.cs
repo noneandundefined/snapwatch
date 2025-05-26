@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -62,9 +63,9 @@ namespace snapwatch
         /// Загрузка постеров
         /// </summary>
         /// <param name="path">путь изображения</param>
-        private async void LoadImageAsync(string path, ImageBrush xName)
+        private async void LoadImageAsync(string path, Image xName)
         {
-            xName.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
+            xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
 
             try
             {
@@ -93,25 +94,25 @@ namespace snapwatch
                         bitmap.Freeze();
                     }
 
-                    xName.ImageSource = bitmap;
+                    xName.Source = bitmap;
                     return;
                 }
                 else
                 {
-                    xName.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                    xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
                 }
             }
             catch(TaskCanceledException)
             {
-                xName.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
             }
             catch(HttpRequestException)
             {
-                xName.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
             }
             catch(Exception)
             {
-                xName.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
             }
         }
 
