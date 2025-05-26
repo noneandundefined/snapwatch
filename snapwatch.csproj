@@ -256,6 +256,7 @@
     <Compile Include="snapwatch.Core\Service\WPFHelper.cs" />
     <Compile Include="snapwatch.Core\Models\MovieModel.cs" />
     <Compile Include="snapwatch.Core\Models\PanelItemsModel.cs" />
+    <Compile Include="snapwatch.Engine\DataSet\GenresDataSet.cs" />
     <Compile Include="snapwatch.Engine\DataSet\ToneDataSet.cs" />
     <Compile Include="snapwatch.Engine\LSABuilder.cs" />
     <Compile Include="snapwatch.Engine\Models\ToneModel.cs" />

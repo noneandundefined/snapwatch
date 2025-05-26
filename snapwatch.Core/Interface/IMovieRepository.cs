@@ -40,5 +40,11 @@ namespace snapwatch.Core.Interface
         /// </summary>
         /// <param name="id">id фильма</param>
         MovieModel GetMovieByID(uint id);
+
+        /// <summary>
+        /// получение жанров и форматирование
+        /// </summary>
+        /// <param name="movie">фильм</param>
+        string GetGenreByMovie(MovieModel movie);
     }
 }

@@ -12,7 +12,7 @@
         <Grid>
             <Image x:Name="BackgroundImage" Stretch="UniformToFill">
                 <Image.Effect>
-                    <BlurEffect Radius="60"/>
+                    <BlurEffect Radius="10"/>
                 </Image.Effect>
             </Image>
 
@@ -58,7 +58,6 @@
                             </Grid.ColumnDefinitions>
 
                             <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
-                                <!-- <Image x:Name="PosterImage" Width="250" Height="375"/> -->
                                 <Border.Background>
                                     <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
                                         <ImageBrush.Transform>
@@ -69,10 +68,9 @@
                             </Border>
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White"/>
-                                <TextBlock Text="TV Series, USA, 2015" FontSize="14" Foreground="Gray" Margin="0,4,0,16"/>
-                                <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600"
-                                          Text="Ash has spent the last 30 years avoiding responsibility, maturity and the terrors of the Evil Dead until a Deadite plague threatens to destroy all of mankind and Ash becomes mankind's only hope."/>
+                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="600" />
+                                <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
+                                <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
 
                                 <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
                                 <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>

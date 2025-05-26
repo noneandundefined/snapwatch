@@ -318,6 +318,10 @@ namespace snapwatch.Core.Repository
             }
         }
 
+        /// <summary>
+        /// получение жанров и форматирование
+        /// </summary>
+        /// <param name="movie">фильм</param>
         public string GetGenreByMovie(MovieModel movie)
         {
             List<string> genres = [];
@@ -326,6 +330,8 @@ namespace snapwatch.Core.Repository
             {
                 genres.Add(GetGenreById(genre));
             }
+
+            return genres.Aggregate((current, next) => $"{current} / {next}");
         }
     }
 }

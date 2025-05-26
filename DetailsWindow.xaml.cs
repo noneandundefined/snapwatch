@@ -73,6 +73,17 @@ namespace snapwatch
             }
         }
 
+        private string genre = "";
+        public string GenreMovie
+        {
+            get => this.genre;
+            set
+            {
+                this.genre = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Загрузка постеров
         /// </summary>
@@ -148,9 +159,7 @@ namespace snapwatch
             // Текстовые данные
             this.TitleMovie = this._movie.Title;
             this.DescriptionMovie = this._movie.Overview;
-
-            // Жанр
-
+            this.GenreMovie = this._movieRepository.GetGenreByMovie(this._movie);
         }
     }
 }
