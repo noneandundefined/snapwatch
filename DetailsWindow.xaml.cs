@@ -46,6 +46,8 @@ namespace snapwatch
 
             this._movieID = ID;
             this._movie = this._movieRepository.GetMovieByID(ID);
+
+            DataContext = this;
         }
 
         private string title = "";
@@ -130,6 +132,9 @@ namespace snapwatch
             // Иконки
             this.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
             this.LoadImageAsync(this._movie.PosterPath, PosterImageBrash);
+
+            // Текстовые данные
+            this.Title = this._movie.Title;
         }
     }
 }
