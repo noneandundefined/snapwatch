@@ -1,4 +1,5 @@
 ﻿using snapwatch.Core.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace snapwatch.Core.Service
 
             foreach (var line in File.ReadLines(this._config.ReturnConfig().MOVIES_PIDX_READ))
             {
-                var parts = line.Split('\t');
+                var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 2 && ushort.TryParse(parts[0], out ushort page) && uint.TryParse(parts[1], out uint offset))
                 {
                     dict[page] = offset;

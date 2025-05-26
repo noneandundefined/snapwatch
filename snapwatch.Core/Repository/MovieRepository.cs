@@ -62,45 +62,47 @@ namespace snapwatch.Core.Repository
         /// </summary>
         public MoviesModel GetMovies()
         {
-            StreamReader sr = null;
-            FileStream fileSt = null;
+            //StreamReader sr = null;
+            //FileStream fileSt = null;
 
-            try
-            {
-                var r = new Random();
-                ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
+            //try
+            //{
+            //    var r = new Random();
+            //    ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
 
-                if (this._moviesByCache == null)
-                {
-                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
-                }
+            //    if (this._moviesByCache == null)
+            //    {
+            //        string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+            //        this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+            //    }
 
-                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
-                {
-                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
-                }
+            //    if (this._moviesByCache == null || this._moviesByCache.Count == 0)
+            //    {
+            //        throw new Exception("Ошибка чтения файла (json) с фильмами.");
+            //    }
 
-                foreach (var movies in this._moviesByCache)
-                {
-                    if (movies.Page == randomPage)
-                    {
-                        return movies;
-                    }
-                }
+            //    foreach (var movies in this._moviesByCache)
+            //    {
+            //        if (movies.Page == randomPage)
+            //        {
+            //            return movies;
+            //        }
+            //    }
 
-                return null;
-            }
-            catch (Exception ex)
-            {
-                this._uiException.Error(ex.Message, "Ошибка получения фильмов");
-                return null;
-            }
-            finally
-            {
-                sr?.Dispose();
-                fileSt?.Dispose();
-            }
+            //    return null;
+            //}
+            //catch (Exception ex)
+            //{
+            //    this._uiException.Error(ex.Message, "Ошибка получения фильмов");
+            //    return null;
+            //}
+            //finally
+            //{
+            //    sr?.Dispose();
+            //    fileSt?.Dispose();
+            //}
+
+
         }
 
         /// <summary>
