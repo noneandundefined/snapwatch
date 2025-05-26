@@ -68,7 +68,7 @@ namespace snapwatch
             var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
             var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
 
-            SetImageSource(xName, new BitmapImage(preloaderUri));
+            this.SetImageSource(xName, new BitmapImage(preloaderUri));
             //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
 
             try
@@ -101,13 +101,13 @@ namespace snapwatch
                     }
 
                     //xName.Source = bitmap;
-                    SetImageSource(xName, bitmap);
+                    this.SetImageSource(xName, bitmap);
                     //return;
                 }
                 else
                 {
                     //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-                    SetImageSource(xName, new BitmapImage(defaultUri));
+                    this.SetImageSource(xName, new BitmapImage(defaultUri));
                 }
             }
             catch

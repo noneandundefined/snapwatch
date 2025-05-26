@@ -58,15 +58,20 @@ namespace snapwatch.UI.Components
         /// <param name="path">путь изображения</param>
         private async void LoadImageAsync(string path)
         {
-            MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
+            var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
+            var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
+
+            MovieBrash.ImageSource = new BitmapImage(preloaderUri);
 
             try
             {
                 string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
 
-                var handler = new HttpClientHandler();
-                handler.Proxy = this._httpConfig.GetProxy();
-                handler.UseProxy = true;
+                var handler = new HttpClientHandler
+                {
+                    Proxy = this._httpConfig.GetProxy(),
+                    UseProxy = true
+                };
 
                 using var httpClient = new HttpClient(handler);
                 httpClient.Timeout = TimeSpan.FromSeconds(30);
@@ -88,24 +93,15 @@ namespace snapwatch.UI.Components
                     }
 
                     MovieBrash.ImageSource = bitmap;
-                    return;
                 } 
                 else
                 {
-                    MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                    MovieBrash.ImageSource = new BitmapImage(defaultUri);
                 }
             }
-            catch (TaskCanceledException)
+            catch
             {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-            }
-            catch (HttpRequestException)
-            {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-            }
-            catch (Exception)
-            {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                MovieBrash.ImageSource = new BitmapImage(defaultUri);
             }
         }
 
