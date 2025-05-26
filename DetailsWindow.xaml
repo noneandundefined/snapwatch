@@ -12,7 +12,7 @@
         <Grid>
             <Image x:Name="BackgroundImage" Stretch="UniformToFill">
                 <Image.Effect>
-                    <BlurEffect Radius="10"/>
+                    <BlurEffect Radius="30"/>
                 </Image.Effect>
             </Image>
 
