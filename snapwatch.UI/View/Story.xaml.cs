@@ -90,8 +90,9 @@ namespace snapwatch.UI.View
 
                 if (SearchTextBox.Text.Length > 0)
                 {
-                    //this.MoviesPreload = await this._movieRepository.GetMoviesByText_Simple(SearchTextBox.Text);
-                    this.Movies = await this._movieRepository.GetMoviesByText_HardAsync(SearchTextBox.Text);
+                    this.MoviesPreload = await this._movieRepository.GetMoviesByText_Simple(SearchTextBox.Text);
+                    StoryLoadingPopUp.Visibility = Visibility.Visible;
+                    //this.Movies = await this._movieRepository.GetMoviesByText_HardAsync(SearchTextBox.Text);
                 }
                 else
                 {

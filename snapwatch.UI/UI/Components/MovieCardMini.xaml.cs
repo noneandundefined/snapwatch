@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using snapwatch.Core.Core;
+using System.Windows.Media;
 
 namespace snapwatch.UI.Components
 {
@@ -20,9 +15,117 @@ namespace snapwatch.UI.Components
     /// </summary>
     public partial class MovieCardMini : UserControl
     {
+        private readonly Config _config;
+
+        private bool _imageLoaded = false;
+
         public MovieCardMini()
         {
             InitializeComponent();
+            this._config = new Config();
         }
+
+        private void MovieCardMini_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.IsVisible && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
+            {
+                this._imageLoaded = true;
+                LoadImageAsync(PosterPath);
+            }
+        }
+
+        private void MovieCardMini_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
+            {
+                this._imageLoaded = true;
+                LoadImageAsync(PosterPath);
+            }
+        }
+
+        /// <summary>
+        /// Загрузка постеров
+        /// </summary>
+        /// <param name="path">путь изображения</param>
+        private async void LoadImageAsync(string path)
+        {
+            MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
+
+            try
+            {
+                using var httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromMinutes(1);
+
+                string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
+
+                var response = await httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
+
+                    var bitmap = new BitmapImage();
+                    using (var memoryStream = new MemoryStream(imageBytes))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = memoryStream;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                    }
+
+                    MovieBrash.ImageSource = bitmap;
+                    return;
+                }
+                else
+                {
+                    MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+            }
+            catch (HttpRequestException)
+            {
+                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+            }
+            catch (Exception)
+            {
+                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+            }
+        }
+
+        private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var card = (MovieCardMini)d;
+            if (card.IsVisible && !card._imageLoaded && e.NewValue is string newPath && !string.IsNullOrEmpty(newPath))
+            {
+                card._imageLoaded = true;
+                card.LoadImageAsync(newPath);
+            }
+        }
+
+        /// <summary>
+        /// Title Dependency
+        /// </summary>
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MovieCardMini), new PropertyMetadata(string.Empty));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        /// <summary>
+        /// PosterPath Dependency
+        /// </summary>
+        public static readonly DependencyProperty PosterPathProperty = DependencyProperty.Register("PosterPath", typeof(string), typeof(MovieCardMini), new PropertyMetadata(null, OnPosterPathChanged));
+        public string PosterPath
+        {
+            get { return (string)GetValue(PosterPathProperty); }
+            set { SetValue(PosterPathProperty, value); }
+        }
+
+        public ScaleTransform ScaleTransform => scaleTransform;
     }
 }

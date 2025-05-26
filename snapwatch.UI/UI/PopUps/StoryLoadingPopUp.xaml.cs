@@ -1,17 +1,7 @@
-﻿using System;
+﻿using snapwatch.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace snapwatch.UI.PopUps
 {
@@ -23,6 +13,16 @@ namespace snapwatch.UI.PopUps
         public StoryLoadingPopUp()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Movies Dependency
+        /// </summary>
+        public static readonly DependencyProperty MoviesProperty = DependencyProperty.Register("Movies", typeof(List<MovieModel>), typeof(StoryLoadingPopUp), new PropertyMetadata(null));
+        public List<MovieModel> Movies
+        {
+            get { return (List<MovieModel>)GetValue(MoviesProperty); }
+            set { SetValue(MoviesProperty, value); }
         }
     }
 }

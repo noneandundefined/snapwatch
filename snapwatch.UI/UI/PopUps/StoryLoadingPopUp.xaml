@@ -6,13 +6,14 @@
              xmlns:local="clr-namespace:snapwatch.UI.PopUps"
              xmlns:components="clr-namespace:snapwatch.UI.Components"
              mc:Ignorable="d" Visibility="Visible"
-             Background="#00000096"
-             d:DesignHeight="750" d:DesignWidth="934">
+             Background="#80000000"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    
     <Grid Background="Transparent">
-        <Border Width="670" Height="500"
-                Background="Black"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+        <Border MinWidth="670" MinHeight="500"
+                Background="Black" BorderBrush="#999" BorderThickness="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" Margin="65">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -48,15 +49,8 @@
 
                         <Label Grid.Row="0" Content="Посмотри похожие пока идет загрука..." Style="{StaticResource Font}" Foreground="#fff" FontSize="17" />
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <components:MovieCardMini />
-                            <!-- <ItemsControl ItemsSource="{Binding Movies}">
+                        <StackPanel Grid.Row="1">
+                            <ItemsControl ItemsSource="{Binding Movies, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
@@ -64,10 +58,10 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <components:MovieCardMini />
+                                        <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl> -->
+                            </ItemsControl>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
