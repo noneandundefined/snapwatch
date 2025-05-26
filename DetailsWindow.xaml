@@ -57,7 +57,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" Margin="0 0 40 0" Width="250" Height="375">
+                            <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
                                 <!-- <Image x:Name="PosterImage" Width="250" Height="375"/> -->
                                 <Border.Background>
                                     <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
