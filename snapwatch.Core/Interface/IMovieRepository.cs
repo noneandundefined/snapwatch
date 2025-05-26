@@ -34,5 +34,11 @@ namespace snapwatch.Core.Interface
         /// </summary>
         /// <param name="text">текст написанный пользователем</param>
         Task<List<MovieModel>> GetMoviesByText_HardAsync(string text);
+
+        /// <summary>
+        /// вывод информации о фильме по ID
+        /// </summary>
+        /// <param name="id">id фильма</param>
+        List<MovieModel> GetMovieByID(uint id);
     }
 }

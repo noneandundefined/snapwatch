@@ -197,10 +197,17 @@ namespace snapwatch.Core.Repository
         /// <param name="text">текст написанный пользователем</param>
         public Task<List<MovieModel>> GetMoviesByText_Simple(string text)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
+                string prepareText = text;
+
                 try
                 {
+                    if(!this._translateService.IS_EN(text))
+                    {
+                        prepareText = await this._translateService.RU_TO_EN(text);
+                    }
+
                     if (this._moviesByCache == null)
                     {
                         string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
@@ -266,6 +273,15 @@ namespace snapwatch.Core.Repository
                     return null;
                 }
             });
+        }
+
+        /// <summary>
+        /// вывод информации о фильме по ID
+        /// </summary>
+        /// <param name="id">id фильма</param>
+        List<MovieModel> GetMovieByID(uint id)
+        {
+
         }
     }
 }
