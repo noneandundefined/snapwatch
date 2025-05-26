@@ -63,68 +63,31 @@ namespace snapwatch.Core.Repository
         /// </summary>
         public MoviesModel GetMovies()
         {
-            //StreamReader sr = null;
-            //FileStream fileSt = null;
-
-            //try
-            //{
-            //    var r = new Random();
-            //    ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
-
-            //    if (this._moviesByCache == null)
-            //    {
-            //        string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
-            //        this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
-            //    }
-
-            //    if (this._moviesByCache == null || this._moviesByCache.Count == 0)
-            //    {
-            //        throw new Exception("Ошибка чтения файла (json) с фильмами.");
-            //    }
-
-            //    foreach (var movies in this._moviesByCache)
-            //    {
-            //        if (movies.Page == randomPage)
-            //        {
-            //            return movies;
-            //        }
-            //    }
-
-            //    return null;
-            //}
-            //catch (Exception ex)
-            //{
-            //this._uiException.Error(ex.Message, "Ошибка получения фильмов");
-            //return null;
-            //}
-            //finally
-            //{
-            //    sr?.Dispose();
-            //    fileSt?.Dispose();
-            //}
+            StreamReader sr = null;
+            FileStream fileSt = null;
 
             try
             {
                 var r = new Random();
                 ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
 
-                if (!this._pidx.TryGetValue(randomPage, out var offset))
+                if (this._moviesByCache == null)
                 {
-                    throw new Exception($"Страница {randomPage} не найдена в индексе");
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
                 }
 
-                using var fs = new FileStream(this._config.ReturnConfig().MOVIES_JSON_READ, FileMode.Open, FileAccess.Read);
-                fs.Seek(offset, SeekOrigin.Begin);
-
-                using var reader = new StreamReader(fs, leaveOpen: false);
-                using var jsonReader = new JsonTextReader(reader);
-
-                var serializer = new JsonSerializer();
-                var movieResults = serializer.Deserialize<MoviesModel>(jsonReader);
-
-                if (movieResults != null)
+                if (this._moviesByCache == null || this._moviesByCache.Count == 0)
                 {
-                    return movieResults;
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                foreach (var movies in this._moviesByCache)
+                {
+                    if (movies.Page == randomPage)
+                    {
+                        return movies;
+                    }
                 }
 
                 return null;
@@ -133,6 +96,11 @@ namespace snapwatch.Core.Repository
             {
                 this._uiException.Error(ex.Message, "Ошибка получения фильмов");
                 return null;
+            }
+            finally
+            {
+                sr?.Dispose();
+                fileSt?.Dispose();
             }
         }
 
