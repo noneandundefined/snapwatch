@@ -1,4 +1,5 @@
-﻿using snapwatch.Core.Core;
+﻿using Newtonsoft.Json;
+using snapwatch.Core.Core;
 using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Service;
@@ -93,8 +94,8 @@ namespace snapwatch.Core.Repository
             //}
             //catch (Exception ex)
             //{
-            //    this._uiException.Error(ex.Message, "Ошибка получения фильмов");
-            //    return null;
+            //this._uiException.Error(ex.Message, "Ошибка получения фильмов");
+            //return null;
             //}
             //finally
             //{
@@ -102,7 +103,37 @@ namespace snapwatch.Core.Repository
             //    fileSt?.Dispose();
             //}
 
+            try
+            {
+                var r = new Random();
+                ushort randomPage = (ushort)r.Next(1, MAX_COUNT_MOVIES + 1);
 
+                if (!this._pidx.TryGetValue(randomPage, out var offset))
+                {
+                    throw new Exception($"Страница {randomPage} не найдена в индексе");
+                }
+
+                using var fs = new FileStream(this._config.ReturnConfig().MOVIES_JSON_READ, FileMode.Open, FileAccess.Read);
+                fs.Seek(offset, SeekOrigin.Begin);
+
+                using var reader = new StreamReader(fs, leaveOpen: false);
+                using var jsonReader = new JsonTextReader(reader);
+
+                var serializer = new JsonSerializer();
+                var movieResults = serializer.Deserialize<MoviesModel>(jsonReader);
+
+                if (movieResults != null)
+                {
+                    return movieResults;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка получения фильмов");
+                return null;
+            }
         }
 
         /// <summary>
