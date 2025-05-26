@@ -35,6 +35,17 @@ namespace snapwatch.UI.View
             }
         }
 
+        private List<MovieModel> _moviesPreload = [];
+        public List<MovieModel> MoviesPreload
+        {
+            get => this._moviesPreload;
+            set
+            {
+                this._moviesPreload = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -59,35 +70,16 @@ namespace snapwatch.UI.View
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SearchTextBox.Text.Length > 0)
-            {
-                PlaceholderStory.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PlaceholderStory.Visibility = Visibility.Visible;
-            }
+            PlaceholderStory.Visibility = SearchTextBox.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "anticipation";
-        }
+        private void AnticipationToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "anticipation";
 
-        private void JoyToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "joy";
-        }
+        private void JoyToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "joy";
 
-        private void TrustToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "trust";
-        }
+        private void TrustToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "trust";
 
-        private void SadnessToneButton_Click(object sender, RoutedEventArgs e)
-        {
-            this._selectTone = "sadness";
-        }
+        private void SadnessToneButton_Click(object sender, RoutedEventArgs e) => this._selectTone = "sadness";
 
         private async void Search_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -96,7 +88,16 @@ namespace snapwatch.UI.View
                 this.IsLoading = true;
                 this.Movies = null;
 
-                this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                if (SearchTextBox.Text.Length > 0)
+                {
+                    this.MoviesPreload = await this._movieRepository.GetMoviesByText_Simple(SearchTextBox.Text);
+                    StoryLoadingPopUp.Visibility = Visibility.Visible;
+                    //this.Movies = await this._movieRepository.GetMoviesByText_HardAsync(SearchTextBox.Text);
+                }
+                else
+                {
+                    this.Movies = await this._movieRepository.GetMoviesByToneAsync(this._selectTone);
+                }
             }
             finally
             {

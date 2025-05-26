@@ -1,36 +1,31 @@
-﻿using snapwatch.Core.Core;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+using snapwatch.Core.Core;
+using System.Windows.Media;
 
 namespace snapwatch.UI.Components
 {
     /// <summary>
-    /// Логика взаимодействия для MovieCard.xaml
+    /// Логика взаимодействия для MovieCardMini.xaml
     /// </summary>
-    public partial class MovieCard : UserControl
+    public partial class MovieCardMini : UserControl
     {
         private readonly Config _config;
 
         private bool _imageLoaded = false;
 
-        public MovieCard()
+        public MovieCardMini()
         {
             InitializeComponent();
             this._config = new Config();
-
-            this.Loaded += MovieCard_Loaded;
-            this.IsVisibleChanged += MovieCard_IsVisibleChanged;
         }
 
-        private void MovieCard_Loaded(object sender, RoutedEventArgs e)
+        private void MovieCardMini_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.IsVisible && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
             {
@@ -39,7 +34,7 @@ namespace snapwatch.UI.Components
             }
         }
 
-        private void MovieCard_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void MovieCardMini_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
             {
@@ -81,7 +76,7 @@ namespace snapwatch.UI.Components
 
                     MovieBrash.ImageSource = bitmap;
                     return;
-                } 
+                }
                 else
                 {
                     MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
@@ -103,7 +98,7 @@ namespace snapwatch.UI.Components
 
         private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var card = (MovieCard)d;
+            var card = (MovieCardMini)d;
             if (card.IsVisible && !card._imageLoaded && e.NewValue is string newPath && !string.IsNullOrEmpty(newPath))
             {
                 card._imageLoaded = true;
@@ -111,24 +106,10 @@ namespace snapwatch.UI.Components
             }
         }
 
-        private void ButtonDetailsMovie_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            var gridButton = sender as Grid;
-
-            if (gridButton != null && gridButton.Tag is uint ID)
-            {
-                DetailsWindow detailsWindow = new DetailsWindow(ID);
-                Window mainWindow = Window.GetWindow(this); 
-
-                detailsWindow.Show();
-                mainWindow.Hide();
-            }
-        }
-
         /// <summary>
         /// Title Dependency
         /// </summary>
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MovieCard), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MovieCardMini), new PropertyMetadata(string.Empty));
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -138,7 +119,7 @@ namespace snapwatch.UI.Components
         /// <summary>
         /// PosterPath Dependency
         /// </summary>
-        public static readonly DependencyProperty PosterPathProperty = DependencyProperty.Register("PosterPath", typeof(string), typeof(MovieCard), new PropertyMetadata(null, OnPosterPathChanged));
+        public static readonly DependencyProperty PosterPathProperty = DependencyProperty.Register("PosterPath", typeof(string), typeof(MovieCardMini), new PropertyMetadata(null, OnPosterPathChanged));
         public string PosterPath
         {
             get { return (string)GetValue(PosterPathProperty); }

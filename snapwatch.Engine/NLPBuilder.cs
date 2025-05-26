@@ -14,7 +14,7 @@ namespace snapwatch.Engine
             "will", "would", "shall", "should", "can", "could", "may", "might", "must",
             "here", "there", "now", "just", "very", "too", "about", "again", "once", "been",
             "being", "both", "each", "few", "more", "most", "other", "some", "such", "what",
-            "which", "why", "how"
+            "which", "why", "how", "the"
         };
 
         private readonly char[] spltChars = new[] { ' ', ',', '.', '!', '?', ';', ':', '\t', '\n', '\r' };
