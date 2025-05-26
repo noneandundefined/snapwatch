@@ -58,7 +58,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Border Grid.Column="0" Margin="0 0 40 0" CornerRadius="12" BorderBrush="#FFF" BorderThickness="1">
-                                <Image Source="Images/ash_poster.jpg" Width="250" Height="375"/>
+                                <Image x:Name="PosterImage" Width="250" Height="375"/>
                             </Border>
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Top">

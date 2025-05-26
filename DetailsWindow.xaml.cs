@@ -118,7 +118,9 @@ namespace snapwatch
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Иконки
             this.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
+            this.LoadImageAsync(this._movie.PosterPath, PosterImage);
         }
     }
 }
