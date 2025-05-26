@@ -57,8 +57,15 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" Margin="0 0 40 0" CornerRadius="12" BorderBrush="#FFF" BorderThickness="1">
-                                <Image x:Name="PosterImage" Width="250" Height="375"/>
+                            <Border Grid.Column="0" Margin="0 0 40 0" Width="250" Height="375">
+                                <!-- <Image x:Name="PosterImage" Width="250" Height="375"/> -->
+                                <Border.Background>
+                                    <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+                                        <ImageBrush.Transform>
+                                            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+                                        </ImageBrush.Transform>
+                                    </ImageBrush>
+                                </Border.Background>
                             </Border>
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Top">
