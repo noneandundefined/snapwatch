@@ -1,5 +1,6 @@
 ﻿using snapwatch.Core.Core;
 using snapwatch.Core.Interface;
+using snapwatch.Core.Models;
 using snapwatch.Core.Repository;
 using snapwatch.Core.Service;
 using System;
@@ -32,6 +33,7 @@ namespace snapwatch
         private readonly HttpConfig _httpConfig;
         private readonly IMovieRepository _movieRepository;
 
+        private MovieModel _movie;
         private uint _movieID;
 
         public DetailsWindow(uint ID)
@@ -42,6 +44,7 @@ namespace snapwatch
             this._movieRepository = new MovieRepository();
 
             this._movieID = ID;
+            this._movie = this._movieRepository.GetMovieByID(ID);
         }
 
         private string title = "";
@@ -114,7 +117,7 @@ namespace snapwatch
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            this.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
         }
     }
 }
