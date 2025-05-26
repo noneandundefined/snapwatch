@@ -63,8 +63,11 @@ namespace snapwatch
         /// Загрузка постеров
         /// </summary>
         /// <param name="path">путь изображения</param>
-        private async void LoadImageAsync(string path, Image xName)
+        private async void LoadImageAsync(string path, object xName)
         {
+            var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
+            var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
+
             xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
 
             try
@@ -120,7 +123,7 @@ namespace snapwatch
         {
             // Иконки
             this.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
-            this.LoadImageAsync(this._movie.PosterPath, PosterImage);
+            this.LoadImageAsync(this._movie.PosterPath, PosterImageBrash);
         }
     }
 }
