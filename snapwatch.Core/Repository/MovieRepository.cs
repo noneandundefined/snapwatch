@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace snapwatch.Core.Repository
 {
-    public class MovieRepository : ToneDataSet, IMovieRepository
+    public class MovieRepository : GenresDataSet, IMovieRepository
     {
         /// <summary>
         /// Классы и методы
@@ -25,6 +25,8 @@ namespace snapwatch.Core.Repository
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
         private readonly HttpClient _httpClient;
+
+        private readonly ToneDataSet _toneDataSet;
 
         private readonly LSABuilder _lsaBuilder;
         private readonly ToneBuilder _toneBuilder;
@@ -51,6 +53,8 @@ namespace snapwatch.Core.Repository
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
             this._httpClient = new HttpClient();
+
+            this._toneDataSet = new ToneDataSet();
 
             this._lsaBuilder = new LSABuilder();
             this._toneBuilder = new ToneBuilder();
@@ -127,10 +131,10 @@ namespace snapwatch.Core.Repository
 
                 HashSet<ushort> isGenres = tone.ToLower() switch
                 {
-                    "anticipation" => AnticipationGenresID,
-                    "joy" => JoyGenresID,
-                    "trust" => TrustGenresID,
-                    "sadness" => SadnessGenresID,
+                    "anticipation" => this._toneDataSet.AnticipationGenresID,
+                    "joy" => this._toneDataSet.JoyGenresID,
+                    "trust" => this._toneDataSet.TrustGenresID,
+                    "sadness" => this._toneDataSet.SadnessGenresID,
                     _ => throw new ArgumentException("Неправильно указан тон."),
                 };
 
@@ -311,6 +315,16 @@ namespace snapwatch.Core.Repository
             {
                 this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
                 return null;
+            }
+        }
+
+        public string GetGenreByMovie(MovieModel movie)
+        {
+            List<string> genres = [];
+
+            foreach (var genre in movie.GenreIds)
+            {
+                genres.Add(GetGenreById(genre));
             }
         }
     }
