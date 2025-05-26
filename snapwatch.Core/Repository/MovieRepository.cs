@@ -304,6 +304,8 @@ namespace snapwatch.Core.Repository
                         }
                     }
                 }
+
+                return null;
             }
             catch(Exception ex)
             {

@@ -39,6 +39,6 @@ namespace snapwatch.Core.Interface
         /// вывод информации о фильме по ID
         /// </summary>
         /// <param name="id">id фильма</param>
-        List<MovieModel> GetMovieByID(uint id);
+        MovieModel GetMovieByID(uint id);
     }
 }
