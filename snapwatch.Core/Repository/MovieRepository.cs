@@ -223,7 +223,7 @@ namespace snapwatch.Core.Repository
                                                     WithDegreeOfParallelism(Environment.ProcessorCount).
                                                     SelectMany(group => group.Results).ToList();
 
-                    var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, text);
+                    var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, prepareText);
 
                     return movies.Select(movie => movie.movies).ToList();
                 }
@@ -279,9 +279,37 @@ namespace snapwatch.Core.Repository
         /// вывод информации о фильме по ID
         /// </summary>
         /// <param name="id">id фильма</param>
-        List<MovieModel> GetMovieByID(uint id)
+        MovieModel GetMovieByID(uint id)
         {
+            try
+            {
+                if(this._moviesByCache == null)
+                {
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                }
 
+                if(this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                foreach (var movies in this._moviesByCache)
+                {
+                    foreach (var movie in movies.Results)
+                    {
+                        if (movie.Id == id)
+                        {
+                            return movie;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                return null;
+            }
         }
     }
 }
