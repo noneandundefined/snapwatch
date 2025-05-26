@@ -7,11 +7,10 @@
         xmlns:components="clr-namespace:snapwatch.UI.Components"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" Icon="pack://application:,,,/snapwatch.UI/Public/images/snapwatch-40px.ico"
-        Title="snapwatch" Height="750" MinHeight="750" Width="934" MinWidth="934">
+        Title="snapwatch" Height="750" MinHeight="750" Width="934" MinWidth="934" Loaded="Window_Loaded">
     <Border>
         <Grid>
-            <Image Source="pack://application:,,,/snapwatch.UI/Public/images/gMQibswELoKmB60imE7WFMlCuqY.webp"
-                Stretch="UniformToFill">
+            <Image x:Name="BackgroundImage" Stretch="UniformToFill">
                 <Image.Effect>
                     <BlurEffect Radius="60"/>
                 </Image.Effect>
