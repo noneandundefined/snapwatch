@@ -68,15 +68,18 @@ namespace snapwatch
             var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
             var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
 
-            xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
+            SetImageSource(xName, new BitmapImage(preloaderUri));
+            //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
 
             try
             {
                 string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
 
-                var handler = new HttpClientHandler();
-                handler.Proxy = this._httpConfig.GetProxy();
-                handler.UseProxy = true;
+                var handler = new HttpClientHandler
+                {
+                    Proxy = this._httpConfig.GetProxy(),
+                    UseProxy = true
+                };
 
                 using var httpClient = new HttpClient(handler);
                 httpClient.Timeout = TimeSpan.FromSeconds(30);
@@ -97,25 +100,33 @@ namespace snapwatch
                         bitmap.Freeze();
                     }
 
-                    xName.Source = bitmap;
-                    return;
+                    //xName.Source = bitmap;
+                    SetImageSource(xName, bitmap);
+                    //return;
                 }
                 else
                 {
-                    xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                    //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                    SetImageSource(xName, new BitmapImage(defaultUri));
                 }
             }
-            catch(TaskCanceledException)
+            catch
             {
-                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                //xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                this.SetImageSource(xName, new BitmapImage(defaultUri));
             }
-            catch(HttpRequestException)
+        }
+
+        private void SetImageSource(object target, ImageSource source)
+        {
+            switch(target)
             {
-                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-            }
-            catch(Exception)
-            {
-                xName.Source = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                case Image image:
+                    image.Source = source;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageSource = source;
+                    break;
             }
         }
 
