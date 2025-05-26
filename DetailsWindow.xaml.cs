@@ -3,6 +3,7 @@ using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Repository;
 using snapwatch.Core.Service;
+using snapwatch.Engine.DataSet;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -57,6 +58,17 @@ namespace snapwatch
             set
             {
                 this.title = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        private string description = "";
+        public string DescriptionMovie
+        {
+            get => this.description;
+            set
+            {
+                this.description = value;
                 OnPropertyChanged();
             }
         }
@@ -135,6 +147,10 @@ namespace snapwatch
 
             // Текстовые данные
             this.TitleMovie = this._movie.Title;
+            this.DescriptionMovie = this._movie.Overview;
+
+            // Жанр
+
         }
     }
 }
