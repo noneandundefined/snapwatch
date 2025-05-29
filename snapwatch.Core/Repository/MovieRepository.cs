@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using snapwatch.Core.Utilities;
 
 namespace snapwatch.Core.Repository
 {
@@ -28,7 +29,7 @@ namespace snapwatch.Core.Repository
 
         private readonly ToneDataSet _toneDataSet;
 
-        private readonly LSABuilder _lsaBuilder;
+        private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
         private readonly ToneBuilder _toneBuilder;
 
         /// <summary>
@@ -109,12 +110,26 @@ namespace snapwatch.Core.Repository
         }
 
         /// <summary>
+        /// получения всех фильмов в файле
+        /// </summary>
+        public List<MoviesModel> GetDataFileMovie()
+        {
+            if(this._moviesByCache == null)
+            {
+                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+            }
+
+            return this._moviesByCache;
+        }
+
+        /// <summary>
         /// получение фильмов по эмоциональной тональности
         /// </summary>
         /// <param name="tone">тональность для поиска</param>
-        public List<MovieModel> GetMoviesByTone(string tone)
+        public HashSet<MovieModel> GetMoviesByTone(string tone)
         {
-            List<MovieModel> moviesByTone = [];
+            HashSet<MovieModel> moviesByTone = [];
 
             try
             {
@@ -190,7 +205,7 @@ namespace snapwatch.Core.Repository
         /// получение фильмов по эмоциональной тональности (асинхронное)
         /// </summary>
         /// <param name="tone">тональность для поиска</param>
-        public Task<List<MovieModel>> GetMoviesByToneAsync(string tone)
+        public Task<HashSet<MovieModel>> GetMoviesByToneAsync(string tone)
         {
             return Task.Run(() => this.GetMoviesByTone(tone));
         }
@@ -199,7 +214,7 @@ namespace snapwatch.Core.Repository
         /// простой и быстрый поиск фильмов по косинусного сравнения
         /// </summary>
         /// <param name="text">текст написанный пользователем</param>
-        public Task<List<MovieModel>> GetMoviesByText_Simple(string text)
+        public Task<HashSet<MovieModel>> GetMoviesByText_Simple(string text)
         {
             return Task.Run(async () =>
             {
@@ -223,13 +238,13 @@ namespace snapwatch.Core.Repository
                         throw new Exception("Ошибка чтения файла (json) с фильмами.");
                     }
 
-                    List<MovieModel> filteredMovies = this._moviesByCache.AsParallel().
+                    List<MovieModel> filteredMovies = this._moviesByCache.Shuffle().AsParallel().
                                                     WithDegreeOfParallelism(Environment.ProcessorCount).
                                                     SelectMany(group => group.Results).ToList();
 
                     var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, prepareText);
 
-                    return movies.Select(movie => movie.movies).ToList();
+                    return movies.Select(movie => movie.movies).ToHashSet();
                 }
                 catch (Exception ex)
                 {
@@ -243,7 +258,7 @@ namespace snapwatch.Core.Repository
         /// сложный, медленный поиск фильмов по LSA/SVD алгоритмам
         /// </summary>
         /// <param name="text">текст написанный пользователем</param>
-        public Task<List<MovieModel>> GetMoviesByText_HardAsync(string text)
+        public Task<HashSet<MovieModel>> GetMoviesByText_HardAsync(string text)
         {
             return Task.Run(async () =>
             {
@@ -269,7 +284,7 @@ namespace snapwatch.Core.Repository
                         throw new Exception(result);
                     }
 
-                    return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
+                    return System.Text.Json.JsonSerializer.Deserialize<HashSet<MovieModel>>(result);
                 }
                 catch (Exception ex)
                 {

@@ -245,6 +245,9 @@
     <Compile Include="DetailsWindow.xaml.cs">
       <DependentUpon>DetailsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoadWindow.xaml.cs">
+      <DependentUpon>LoadWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="snapwatch.Core\Core\Config.cs" />
     <Compile Include="snapwatch.Core\Interface\IMovieRepository.cs" />
     <Compile Include="snapwatch.Core\Models\TranslateModel.cs" />
@@ -256,6 +259,7 @@
     <Compile Include="snapwatch.Core\Service\WPFHelper.cs" />
     <Compile Include="snapwatch.Core\Models\MovieModel.cs" />
     <Compile Include="snapwatch.Core\Models\PanelItemsModel.cs" />
+    <Compile Include="snapwatch.Core\Utilities\ListUtilities.cs" />
     <Compile Include="snapwatch.Engine\DataSet\GenresDataSet.cs" />
     <Compile Include="snapwatch.Engine\DataSet\ToneDataSet.cs" />
     <Compile Include="snapwatch.Engine\LSABuilder.cs" />
@@ -292,6 +296,10 @@
       <DependentUpon>Story.xaml</DependentUpon>
     </Compile>
     <Page Include="DetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -382,7 +390,8 @@
     <Content Include="snapwatch.Engine\Data\NRC-Emotion-Lexicon\joy-NRC-Emotion-Lexicon.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="snapwatch.UI\Public\images\gMQibswELoKmB60imE7WFMlCuqY.webp" />
+    <Resource Include="snapwatch.UI\Public\images\loaded-pool-190.png" />
+    <Resource Include="snapwatch.UI\Public\images\loaded-pool.png" />
     <Resource Include="snapwatch.UI\Public\images\snapwatch-40px.ico" />
     <Resource Include="snapwatch.UI\Public\images\snapwatch-40px.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -406,7 +415,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="snapwatch.UI\Public\images\empty_img.webp" />
-    <Resource Include="snapwatch.UI\Public\images\gradient.webp" />
     <Resource Include="snapwatch.UI\Public\font\Oswald-Bold.ttf" />
     <Resource Include="snapwatch.UI\Public\font\Oswald-ExtraLight.ttf" />
     <Resource Include="snapwatch.UI\Public\font\Oswald-Light.ttf" />

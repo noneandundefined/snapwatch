@@ -17,18 +17,18 @@ namespace snapwatch.Engine
             "which", "why", "how", "the"
         };
 
-        private readonly char[] spltChars = new[] { ' ', ',', '.', '!', '?', ';', ':', '\t', '\n', '\r' };
+        private readonly char[] spltChars = [' ', ',', '.', '!', '?', ';', ':', '\t', '\n', '\r'];
 
         public List<string> Preprocess(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
-                return new List<string>();
+                return [];
             }
 
             List<string> output = input.ToLower()
                 .Split(this.spltChars, StringSplitOptions.RemoveEmptyEntries)
-                .SelectMany(word => word.Contains('-') ? word.Split('-') : new[] { word })
+                .SelectMany(word => word.Contains('-') ? word.Split('-') : [word])
                 .Where(word => word.Length > 2 && !this.stopWords.Contains(word) && !word.Any(char.IsDigit))
                 .Select(word => this.Lemmatize(this.Stemming(word)))
                 .Where(word => word.Length > 2)

@@ -1,4 +1,7 @@
 ﻿using DotNetEnv;
+using snapwatch.Core.Interface;
+using snapwatch.Core.Repository;
+using snapwatch.Engine;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,11 +17,17 @@ namespace snapwatch
     /// </summary>
     public partial class App : Application
     {
+        public static IMovieRepository _movieRepository;
+        public static LSABuilder _lsaBuilder;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             Env.Load();
+
+            _movieRepository = new MovieRepository();
+            _lsaBuilder = new LSABuilder();
         }
     }
 }

@@ -18,10 +18,10 @@ namespace snapwatch.UI.PopUps
         /// <summary>
         /// Movies Dependency
         /// </summary>
-        public static readonly DependencyProperty MoviesProperty = DependencyProperty.Register("Movies", typeof(List<MovieModel>), typeof(StoryLoadingPopUp), new PropertyMetadata(null));
-        public List<MovieModel> Movies
+        public static readonly DependencyProperty MoviesProperty = DependencyProperty.Register("Movies", typeof(HashSet<MovieModel>), typeof(StoryLoadingPopUp), new PropertyMetadata(null));
+        public HashSet<MovieModel> Movies
         {
-            get { return (List<MovieModel>)GetValue(MoviesProperty); }
+            get { return (HashSet<MovieModel>)GetValue(MoviesProperty); }
             set { SetValue(MoviesProperty, value); }
         }
     }

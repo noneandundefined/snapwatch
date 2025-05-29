@@ -1,15 +1,15 @@
 ﻿using snapwatch.Core.Core;
 using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
-using snapwatch.Core.Repository;
 using snapwatch.Core.Service;
-using snapwatch.Engine.DataSet;
+using snapwatch.Engine;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -33,7 +33,8 @@ namespace snapwatch
         /// </summary>
         private readonly Config _config;
         private readonly HttpConfig _httpConfig;
-        private readonly IMovieRepository _movieRepository;
+        private readonly IMovieRepository _movieRepository = App._movieRepository;
+        private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
 
         private MovieModel _movie;
         private uint _movieID;
@@ -43,14 +44,31 @@ namespace snapwatch
             InitializeComponent();
             this._config = new Config();
             this._httpConfig = new HttpConfig();
-            this._movieRepository = new MovieRepository();
 
             this._movieID = ID;
             this._movie = this._movieRepository.GetMovieByID(ID);
 
             DataContext = this;
+
+            this.GetSimilar();
         }
 
+        /// <summary>
+        /// Получение похожих фильмов
+        /// </summary>
+        private void GetSimilar()
+        {
+            List<MoviesModel> movies = this._movieRepository.GetDataFileMovie();
+
+            List<MovieModel> fillteredMovies = movies.AsParallel().SelectMany(g => g.Results).ToList();
+
+            var similars = this._lsaBuilder.TFIDF_Cosine(fillteredMovies, this._movie.Overview);
+            this.SimilarMovies = similars.Select(group => group.movies).ToHashSet();
+        }
+
+        /// <summary>
+        /// Получение и вывод в UI название фильма
+        /// </summary>
         private string title = "";
         public string TitleMovie
         {
@@ -62,6 +80,9 @@ namespace snapwatch
             }
         }
 
+        /// <summary>
+        /// Получение и вывод в UI описания фильма
+        /// </summary>
         private string description = "";
         public string DescriptionMovie
         {
@@ -73,6 +94,9 @@ namespace snapwatch
             }
         }
 
+        /// <summary>
+        /// Получение и вывод в UI жанры фильма
+        /// </summary>
         private string genre = "";
         public string GenreMovie
         {
@@ -80,6 +104,20 @@ namespace snapwatch
             set
             {
                 this.genre = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Получение и вывод в UI похожии фильмы
+        /// </summary>
+        private HashSet<MovieModel> similarMovies = [];
+        public HashSet<MovieModel> SimilarMovies
+        {
+            get => this.similarMovies;
+            set
+            {
+                this.similarMovies = value;
                 OnPropertyChanged();
             }
         }
@@ -160,6 +198,14 @@ namespace snapwatch
             this.TitleMovie = this._movie.Title;
             this.DescriptionMovie = this._movie.Overview;
             this.GenreMovie = this._movieRepository.GetGenreByMovie(this._movie);
+        }
+
+        private void ToHome_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MainWindow mainWindow = new();
+
+            this.Hide();
+            mainWindow.Show();
         }
     }
 }

@@ -33,19 +33,8 @@
                                               Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
                                               CommandParameter="{Binding PathView}" />
                                     </Border.InputBindings> -->
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel MouseLeftButtonDown="ToHome_MouseLeftButtonDown">
                                 <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
-                            </StackPanel>
-                        </Border>
-
-                        <Border Margin="10,0">
-                            <!-- <Border.InputBindings>
-                                        <MouseBinding Gesture="LeftClick"
-                                              Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-                                              CommandParameter="{Binding PathView}" />
-                                    </Border.InputBindings> -->
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -67,8 +56,8 @@
                                 </Border.Background>
                             </Border>
 
-                            <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="600" />
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
+                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
                                 <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
                                 <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
 
@@ -76,19 +65,28 @@
                                 <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
-                                    <Button Content="▶ PLAY" Width="100" Height="40" Margin="0,0,20,0"
+                                    <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
                                             Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
-                                    <Button Content="Add to Wishlist" Width="150" Height="40"
-                                            Background="#FFF" Foreground="Black" FontWeight="Bold"/>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <components:MovieCardMini />
+                    <StackPanel Grid.Row="2">
+                        <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
 
-                        <components:MovieCardMini />
+                        <ItemsControl ItemsSource="{Binding SimilarMovies}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

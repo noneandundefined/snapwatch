@@ -55,7 +55,7 @@ namespace snapwatch.Engine
         /// подготовка и счет базовых значений + кеширование
         /// </summary>
         /// <param name="overviews">описания фильмов</param>
-        private void Fit(string[] overviews)
+        public void Fit(string[] overviews)
         {
             if (this._vocabulary == null)
             {

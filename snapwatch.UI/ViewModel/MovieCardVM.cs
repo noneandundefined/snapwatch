@@ -20,7 +20,7 @@ namespace snapwatch.UI.ViewModel
 
         private readonly WPFHelper _wpfHelper;
 
-        private readonly IMovieRepository _movieReposiroty;
+        private readonly IMovieRepository _movieRepository = App._movieRepository;
 
         /// <summary>
         /// Хранение фильмов
@@ -39,7 +39,6 @@ namespace snapwatch.UI.ViewModel
         public MovieCardVM()
         {
             this._wpfHelper = new WPFHelper(Application.Current.MainWindow as MainWindow);
-            this._movieReposiroty = new MovieRepository();
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -48,8 +47,8 @@ namespace snapwatch.UI.ViewModel
 
             Task.Run(async () =>
             {
-                MoviesModel movies = this._movieReposiroty.GetMovies();
-                Movies = new ObservableCollection<MovieModel>();
+                MoviesModel movies = this._movieRepository.GetMovies();
+                Movies = [];
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -67,7 +66,7 @@ namespace snapwatch.UI.ViewModel
 
         public void LoadMoreMovies()
         {
-            MoviesModel movies = this._movieReposiroty.GetMovies();
+            MoviesModel movies = this._movieRepository.GetMovies();
 
             if (movies != null)
             {
