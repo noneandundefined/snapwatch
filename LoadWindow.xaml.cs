@@ -7,6 +7,7 @@ using System;
 using snapwatch.Engine;
 using System.Threading.Tasks;
 using snapwatch.Core.Utilities;
+using snapwatch.Core.Service;
 
 namespace snapwatch
 {
@@ -18,9 +19,13 @@ namespace snapwatch
         private readonly IMovieRepository _movieRepository = App._movieRepository;
         private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
 
+        private readonly UIException _uiException;
+
         public LoadWindow()
         {
             InitializeComponent();
+
+            this._uiException = new UIException();
 
             this.Preparation();
         }
@@ -45,8 +50,9 @@ namespace snapwatch
 
                 this.NextWindow();
             }
-            catch
+            catch (Exception ex)
             {
+                this._uiException.Error(ex.Message, "Ошибка приложения");
             }
         }
 

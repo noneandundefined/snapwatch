@@ -32,7 +32,7 @@
 
                     <StackPanel Margin="20,0,20,20">
                         <TextBlock x:Name="ProgressText" Style="{StaticResource Font}"
-                                   Text="0%"
+                                   Text="{Binding ProgressBarText}"
                                    Foreground="White"
                                    FontSize="14"
                                    HorizontalAlignment="Left"
@@ -47,7 +47,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0" Content="Посмотри похожие пока идет загрука..." Style="{StaticResource Font}" Foreground="#fff" FontSize="17" />
+                        <Label Grid.Row="0" Content="Посмотри похожие пока идет загрука..." Style="{StaticResource Font}" Foreground="#fff" FontSize="17" Margin="0,10" />
 
                         <StackPanel Grid.Row="1">
                             <ItemsControl ItemsSource="{Binding Movies, RelativeSource={RelativeSource AncestorType=UserControl}}">
