@@ -20,12 +20,12 @@ namespace snapwatch.UI.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private readonly IMovieRepository _movieRepository;
+        private readonly IMovieRepository _movieRepository = App._movieRepository;
 
         private string _selectTone = "";
 
-        private List<MovieModel> _movies = [];
-        public List<MovieModel> Movies
+        private HashSet<MovieModel> _movies = [];
+        public HashSet<MovieModel> Movies
         {
             get => this._movies;
             set
@@ -35,8 +35,8 @@ namespace snapwatch.UI.View
             }
         }
 
-        private List<MovieModel> _moviesPreload = [];
-        public List<MovieModel> MoviesPreload
+        private HashSet<MovieModel> _moviesPreload = [];
+        public HashSet<MovieModel> MoviesPreload
         {
             get => this._moviesPreload;
             set
@@ -64,8 +64,6 @@ namespace snapwatch.UI.View
         {
             InitializeComponent();
             DataContext = this;
-
-            this._movieRepository = new MovieRepository();
         }
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)

@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using snapwatch.Core.Core;
 using System.Windows.Media;
+using snapwatch.Core.Service;
 
 namespace snapwatch.UI.Components
 {
@@ -15,7 +16,11 @@ namespace snapwatch.UI.Components
     /// </summary>
     public partial class MovieCardMini : UserControl
     {
+        /// <summary>
+        /// Классы и методы
+        /// </summary>
         private readonly Config _config;
+        private readonly HttpConfig _httpConfig;
 
         private bool _imageLoaded = false;
 
@@ -23,6 +28,7 @@ namespace snapwatch.UI.Components
         {
             InitializeComponent();
             this._config = new Config();
+            this._httpConfig = new HttpConfig();
         }
 
         private void MovieCardMini_Loaded(object sender, RoutedEventArgs e)
@@ -49,50 +55,50 @@ namespace snapwatch.UI.Components
         /// <param name="path">путь изображения</param>
         private async void LoadImageAsync(string path)
         {
-            MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png"));
+            var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
+            var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
+
+            MovieBrash.ImageSource = new BitmapImage(preloaderUri);
 
             try
             {
-                using var httpClient = new HttpClient();
-                httpClient.Timeout = TimeSpan.FromMinutes(1);
-
                 string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
+
+                var handler = new HttpClientHandler
+                {
+                    Proxy = this._httpConfig.GetProxy(),
+                    UseProxy = true
+                };
+
+                using var httpClient = new HttpClient(handler);
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
 
                 var response = await httpClient.GetAsync(url);
 
-                if (response.IsSuccessStatusCode)
+                if(response.IsSuccessStatusCode)
                 {
                     byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
 
                     var bitmap = new BitmapImage();
-                    using (var memoryStream = new MemoryStream(imageBytes))
+                    using(var stream = new MemoryStream(imageBytes))
                     {
                         bitmap.BeginInit();
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = memoryStream;
+                        bitmap.StreamSource = stream;
                         bitmap.EndInit();
                         bitmap.Freeze();
                     }
 
                     MovieBrash.ImageSource = bitmap;
-                    return;
                 }
                 else
                 {
-                    MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                    MovieBrash.ImageSource = new BitmapImage(defaultUri);
                 }
             }
-            catch (TaskCanceledException)
+            catch
             {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-            }
-            catch (HttpRequestException)
-            {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
-            }
-            catch (Exception)
-            {
-                MovieBrash.ImageSource = new BitmapImage(new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg"));
+                MovieBrash.ImageSource = new BitmapImage(defaultUri);
             }
         }
 

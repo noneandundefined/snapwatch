@@ -1,0 +1,90 @@
+﻿<Window x:Class="snapwatch.LoadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:snapwatch"
+        mc:Ignorable="d"
+        Title="snapwatch" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="pack://application:,,,/snapwatch.UI/Public/images/snapwatch-40px.ico"
+        Height="550" Width="800" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" WindowStyle="None">
+
+    <Border CornerRadius="10" Background="#111">
+        <Grid>
+            <Grid>
+                <Grid.Resources>
+                    <DrawingBrush x:Key="GridPattern" TileMode="Tile" Viewport="0,0,60,50" ViewportUnits="Absolute" Viewbox="0,0,40,40" ViewboxUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Pen>
+                                    <Pen Brush="#333" Thickness="0.5"/>
+                                </GeometryDrawing.Pen>
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <LineGeometry StartPoint="0,0" EndPoint="0,40"/>
+                                        <LineGeometry StartPoint="0,0" EndPoint="40,0"/>
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Grid.Resources>
+                <Rectangle Fill="{StaticResource GridPattern}" />
+
+                <Path Fill="#B0D50000" Stretch="Fill" HorizontalAlignment="Right" Width="600">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0,0">
+                                <LineSegment Point="600,0" />
+                                <LineSegment Point="600,600" />
+                                <LineSegment Point="200,600" />
+                                <LineSegment Point="0,600" />
+                                <LineSegment Point="0,0" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+            </Grid>
+
+            <Rectangle Fill="#88000000" HorizontalAlignment="Right" Width="0" />
+
+            <Image Source="pack://application:,,,/snapwatch.UI/Public/images/loaded-pool-190.png" Width="360" HorizontalAlignment="Left" Margin="0,101,0,0"/>
+
+            <StackPanel>
+                <TextBlock Text="БЫСТРЫЙ-ПРОСТОЙ ПОИСК" Style="{StaticResource Font}"
+                           Foreground="White" FontSize="30" FontWeight="Bold"
+                           Margin="60,30,0,0"/>
+
+                <TextBlock Text="И ПОДБОР ФИЛЬМОВ" Style="{StaticResource Font}"
+                           Foreground="White" FontSize="30" FontWeight="Bold"
+                           Margin="60,0,0,0"/>
+            </StackPanel>
+
+            <Border Background="#88000000" CornerRadius="10" Padding="12" Margin="480,80,20,0" Height="126" BorderBrush="#555" BorderThickness="1" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="№1" Foreground="White" FontWeight="Bold" FontSize="20" Style="{StaticResource Font}"/>
+                    <TextBlock Text="Приложение анализирует ваши предпочтения и предлагает вам фильмы" 
+                               TextWrapping="Wrap" Margin="0,10,0,0" Foreground="White" FontSize="15"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#88000000" CornerRadius="10" Padding="12" Margin="356,255,162,0" Height="113" BorderBrush="#555" BorderThickness="1" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="№2" Foreground="White" FontWeight="Bold" FontSize="20" Style="{StaticResource Font}"/>
+                    <TextBlock Text="Ты сможешь описать события фильма своими словами" 
+                                TextWrapping="Wrap" Foreground="White" Margin="0,10,0,0" FontSize="15"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#88000000" CornerRadius="10" Padding="12" Margin="456,410,20,0" Height="117" BorderBrush="#555" BorderThickness="1" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="№3" Foreground="White" FontWeight="Bold" FontSize="20" Style="{StaticResource Font}"/>
+                    <TextBlock Text="В базе данных приложения содержится огромное количество фильмов" 
+                                TextWrapping="Wrap" Foreground="White" Margin="0,10,0,0" FontSize="15"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

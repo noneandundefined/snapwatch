@@ -12,10 +12,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using snapwatch.Core.Utilities;
 
 namespace snapwatch.Core.Repository
 {
-    public class MovieRepository : ToneDataSet, IMovieRepository
+    public class MovieRepository : GenresDataSet, IMovieRepository
     {
         /// <summary>
         /// Классы и методы
@@ -26,7 +27,9 @@ namespace snapwatch.Core.Repository
         private readonly TranslateService _translateService;
         private readonly HttpClient _httpClient;
 
-        private readonly LSABuilder _lsaBuilder;
+        private readonly ToneDataSet _toneDataSet;
+
+        private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
         private readonly ToneBuilder _toneBuilder;
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace snapwatch.Core.Repository
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
             this._httpClient = new HttpClient();
+
+            this._toneDataSet = new ToneDataSet();
 
             this._lsaBuilder = new LSABuilder();
             this._toneBuilder = new ToneBuilder();
@@ -105,12 +110,26 @@ namespace snapwatch.Core.Repository
         }
 
         /// <summary>
+        /// получения всех фильмов в файле
+        /// </summary>
+        public List<MoviesModel> GetDataFileMovie()
+        {
+            if(this._moviesByCache == null)
+            {
+                string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+            }
+
+            return this._moviesByCache;
+        }
+
+        /// <summary>
         /// получение фильмов по эмоциональной тональности
         /// </summary>
         /// <param name="tone">тональность для поиска</param>
-        public List<MovieModel> GetMoviesByTone(string tone)
+        public HashSet<MovieModel> GetMoviesByTone(string tone)
         {
-            List<MovieModel> moviesByTone = [];
+            HashSet<MovieModel> moviesByTone = [];
 
             try
             {
@@ -127,10 +146,10 @@ namespace snapwatch.Core.Repository
 
                 HashSet<ushort> isGenres = tone.ToLower() switch
                 {
-                    "anticipation" => AnticipationGenresID,
-                    "joy" => JoyGenresID,
-                    "trust" => TrustGenresID,
-                    "sadness" => SadnessGenresID,
+                    "anticipation" => this._toneDataSet.AnticipationGenresID,
+                    "joy" => this._toneDataSet.JoyGenresID,
+                    "trust" => this._toneDataSet.TrustGenresID,
+                    "sadness" => this._toneDataSet.SadnessGenresID,
                     _ => throw new ArgumentException("Неправильно указан тон."),
                 };
 
@@ -186,7 +205,7 @@ namespace snapwatch.Core.Repository
         /// получение фильмов по эмоциональной тональности (асинхронное)
         /// </summary>
         /// <param name="tone">тональность для поиска</param>
-        public Task<List<MovieModel>> GetMoviesByToneAsync(string tone)
+        public Task<HashSet<MovieModel>> GetMoviesByToneAsync(string tone)
         {
             return Task.Run(() => this.GetMoviesByTone(tone));
         }
@@ -195,12 +214,19 @@ namespace snapwatch.Core.Repository
         /// простой и быстрый поиск фильмов по косинусного сравнения
         /// </summary>
         /// <param name="text">текст написанный пользователем</param>
-        public Task<List<MovieModel>> GetMoviesByText_Simple(string text)
+        public Task<HashSet<MovieModel>> GetMoviesByText_Simple(string text)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
+                string prepareText = text;
+
                 try
                 {
+                    if(!this._translateService.IS_EN(text))
+                    {
+                        prepareText = await this._translateService.RU_TO_EN(text);
+                    }
+
                     if (this._moviesByCache == null)
                     {
                         string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
@@ -212,13 +238,13 @@ namespace snapwatch.Core.Repository
                         throw new Exception("Ошибка чтения файла (json) с фильмами.");
                     }
 
-                    List<MovieModel> filteredMovies = this._moviesByCache.AsParallel().
+                    List<MovieModel> filteredMovies = this._moviesByCache.Shuffle().AsParallel().
                                                     WithDegreeOfParallelism(Environment.ProcessorCount).
                                                     SelectMany(group => group.Results).ToList();
 
-                    var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, text);
+                    var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, prepareText);
 
-                    return movies.Select(movie => movie.movies).ToList();
+                    return movies.Select(movie => movie.movies).ToHashSet();
                 }
                 catch (Exception ex)
                 {
@@ -232,7 +258,7 @@ namespace snapwatch.Core.Repository
         /// сложный, медленный поиск фильмов по LSA/SVD алгоритмам
         /// </summary>
         /// <param name="text">текст написанный пользователем</param>
-        public Task<List<MovieModel>> GetMoviesByText_HardAsync(string text)
+        public Task<HashSet<MovieModel>> GetMoviesByText_HardAsync(string text)
         {
             return Task.Run(async () =>
             {
@@ -258,7 +284,7 @@ namespace snapwatch.Core.Repository
                         throw new Exception(result);
                     }
 
-                    return System.Text.Json.JsonSerializer.Deserialize<List<MovieModel>>(result);
+                    return System.Text.Json.JsonSerializer.Deserialize<HashSet<MovieModel>>(result);
                 }
                 catch (Exception ex)
                 {
@@ -266,6 +292,61 @@ namespace snapwatch.Core.Repository
                     return null;
                 }
             });
+        }
+
+        /// <summary>
+        /// вывод информации о фильме по ID
+        /// </summary>
+        /// <param name="id">id фильма</param>
+        public MovieModel GetMovieByID(uint id)
+        {
+            try
+            {
+                if(this._moviesByCache == null)
+                {
+                    string movieFile = File.ReadAllText(this._config.ReturnConfig().MOVIES_JSON_READ);
+                    this._moviesByCache = System.Text.Json.JsonSerializer.Deserialize<List<MoviesModel>>(movieFile);
+                }
+
+                if(this._moviesByCache == null || this._moviesByCache.Count == 0)
+                {
+                    throw new Exception("Ошибка чтения файла (json) с фильмами.");
+                }
+
+                foreach (var movies in this._moviesByCache)
+                {
+                    foreach (var movie in movies.Results)
+                    {
+                        if (movie.Id == id)
+                        {
+                            return movie;
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch(Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// получение жанров и форматирование
+        /// </summary>
+        /// <param name="movie">фильм</param>
+        public string GetGenreByMovie(MovieModel movie)
+        {
+            List<string> genres = [];
+
+            foreach (var genre in movie.GenreIds)
+            {
+                genres.Add(GetGenreById(genre));
+            }
+
+            return genres.Aggregate((current, next) => $"{current} / {next}");
         }
     }
 }
