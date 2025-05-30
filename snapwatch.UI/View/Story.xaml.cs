@@ -1,6 +1,5 @@
 ﻿using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
-using snapwatch.Core.Repository;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

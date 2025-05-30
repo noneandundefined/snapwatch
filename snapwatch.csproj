@@ -252,8 +252,10 @@
       <DependentUpon>LoadWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="snapwatch.Core\Core\Config.cs" />
+    <Compile Include="snapwatch.Core\Interface\ICacheRepository.cs" />
     <Compile Include="snapwatch.Core\Interface\IMovieRepository.cs" />
     <Compile Include="snapwatch.Core\Models\TranslateModel.cs" />
+    <Compile Include="snapwatch.Core\Repository\CacheRepository.cs" />
     <Compile Include="snapwatch.Core\Repository\MovieRepository.cs" />
     <Compile Include="snapwatch.Core\Service\HttpConfig.cs" />
     <Compile Include="snapwatch.Core\Service\IndexService.cs" />
