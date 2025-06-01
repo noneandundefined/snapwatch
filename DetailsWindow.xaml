@@ -68,6 +68,7 @@
                                 BorderThickness="0"
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                 PreviewMouseWheel="ListBox_PreviewMouseWheel"
                                 ScrollViewer.CanContentScroll="True"
                                 VirtualizingPanel.IsVirtualizing="True"
                                 SelectionMode="Single" Height="Auto">

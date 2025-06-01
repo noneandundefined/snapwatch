@@ -219,5 +219,33 @@ namespace snapwatch
             this.Hide();
             mainWindow.Show();
         }
+
+        /// <summary>
+        /// Медленный скрол
+        /// </summary>
+        private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var scrollViewer = FindScrollViewer(sender as DependencyObject);
+            if(scrollViewer != null)
+            {
+                double scrollAmount = 40;
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
+                e.Handled = true;
+            }
+        }
+
+        private ScrollViewer FindScrollViewer(DependencyObject d)
+        {
+            if(d is ScrollViewer viewer) return viewer;
+
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+                var result = FindScrollViewer(child);
+                if(result != null) return result;
+            }
+
+            return null;
+        }
     }
 }
