@@ -270,7 +270,7 @@
                             <Border Background="{StaticResource ColorRed}" CornerRadius="7" Padding="8" MouseLeftButtonDown="Search_MouseLeftButtonDown">
                                 <Grid>
                                     <Label Content="ПОДОБРАТЬ" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                               Foreground="#fff" FontSize="15" Margin="0 -4 0 0">
+                                            Foreground="#fff" FontSize="15" Margin="0 -4 0 0">
                                         <Label.Style>
                                             <Style TargetType="Label">
                                                 <Setter Property="Visibility" Value="Visible" />
