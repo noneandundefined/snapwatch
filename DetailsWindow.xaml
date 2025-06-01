@@ -23,16 +23,12 @@
                 <Grid Margin="40">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Header -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Постер и описание -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Заголовок -->
                         <RowDefinition Height="*"/>
-                        <!-- ListBox, который может расти -->
                     </Grid.RowDefinitions>
-                    
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
                             <StackPanel MouseLeftButtonDown="ToHome_MouseLeftButtonDown">
                                 <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
@@ -40,7 +36,7 @@
                         </Border>
                     </StackPanel>
 
-                    <Grid>
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -71,14 +67,15 @@
                         </StackPanel>
                     </Grid>
 
-                    <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
+                    <Label Grid.Row="2" Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
 
-                    <ListBox ItemsSource="{Binding SimilarMovies}"
+                    <ListBox Grid.Row="3" ItemsSource="{Binding SimilarMovies}"
                             Background="Transparent"
                             BorderThickness="0"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ScrollViewer.CanContentScroll="True"
+                            VirtualizingPanel.IsVirtualizing="True"
                             SelectionMode="Single">
 
                         <ListBox.ItemsPanel>
