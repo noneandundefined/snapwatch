@@ -46,8 +46,8 @@
             </Border.Triggers>
         </Border>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19" Margin="0,15,0,5" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19"  Margin="0,15,0,14" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
+        </Grid>
     </Grid>
 </UserControl>
