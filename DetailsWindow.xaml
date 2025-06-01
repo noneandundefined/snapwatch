@@ -23,10 +23,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True"
-                    VirtualizingPanel.IsVirtualizing="True"
-                    SelectionMode="Single">
+                    VirtualizingPanel.IsVirtualizing="True">
 
                 <ListBoxItem>
                     <Grid Margin="40">
@@ -62,11 +61,55 @@
                 </ListBoxItem>
 
                 <ListBoxItem>
-                    
+                    <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
+                </ListBoxItem>
+
+                <ListBoxItem>
+                    <ListBox ItemsSource="{Binding SimilarMovies}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             ScrollViewer.CanContentScroll="True"
+                             SelectionMode="Single">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <vwp:VirtualizingWrapPanel IsItemsHost="True" Orientation="Horizontal" HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Focusable" Value="False"/>
+                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
                 </ListBoxItem>
             </ListBox>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <!-- <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <Grid Margin="40">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -158,7 +201,7 @@
                         </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
-            </ScrollViewer>
+            </ScrollViewer> -->
 
             <!-- <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
                 <Grid Margin="40">
