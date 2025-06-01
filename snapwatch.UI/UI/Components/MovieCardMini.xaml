@@ -48,16 +48,7 @@
             </Border>
 
             <StackPanel Grid.Row="1">
-                <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19" Margin="0,12" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
-
-                <!-- <Border BorderBrush="#fff" BorderThickness="2" Width="54" Height="54" CornerRadius="20" Padding="5">
-                    <Grid x:Name="GridButtonDetailsMovie" Panel.ZIndex="2" Cursor="Hand" Width="41" Height="40" Background="#fff" Tag="{Binding Id}">
-                        <Grid.Clip>
-                            <RectangleGeometry Rect="0,0,40,40" RadiusX="100" RadiusY="100" x:Name="btn_rectagle" />
-                        </Grid.Clip>
-                        <fa:FontAwesome x:Name="ico_play" Icon="Play" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2 2 0 0" />
-                    </Grid>
-                </Border> -->
+                <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19" Margin="0,122" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
             </StackPanel>
         </Grid>
     </StackPanel>
