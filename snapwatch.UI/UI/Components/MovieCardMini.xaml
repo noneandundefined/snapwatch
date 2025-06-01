@@ -13,43 +13,41 @@
         <controllers:ImageUriConvertor x:Key="ImageUriConverter" />
     </UserControl.Resources>
 
-    <StackPanel Margin="0,0,13,40">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height='*' />
-            </Grid.RowDefinitions>
+    <Grid Margin="0,0,13,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height='*' />
+        </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Width="190" Height="220" CornerRadius="10" x:Name="MovieBlock">
-                <!-- Основное изображение -->
-                <Border.Background>
-                    <ImageBrush x:Name="MovieBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
-                        <ImageBrush.Transform>
-                            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
-                        </ImageBrush.Transform>
-                    </ImageBrush>
-                </Border.Background>
-                <Border.Triggers>
-                    <EventTrigger RoutedEvent="MouseEnter">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="MouseLeave">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.07" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Border.Triggers>
-            </Border>
+        <Border Grid.Row="0" Width="190" Height="220" CornerRadius="10" x:Name="MovieBlock">
+            <!-- Основное изображение -->
+            <Border.Background>
+                <ImageBrush x:Name="MovieBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+                    <ImageBrush.Transform>
+                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+                    </ImageBrush.Transform>
+                </ImageBrush>
+            </Border.Background>
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.07" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
 
-            <StackPanel Grid.Row="1">
-                <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19" Margin="-33,10" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="{Binding Title}" Foreground="#fff" Style="{StaticResource Font}" FontSize="19" Margin="0,15,0,5" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="200" />
+        </StackPanel>
+    </Grid>
 </UserControl>
