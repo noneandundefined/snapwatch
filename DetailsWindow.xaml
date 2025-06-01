@@ -24,7 +24,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
                             <StackPanel MouseLeftButtonDown="ToHome_MouseLeftButtonDown">
-                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
+                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
