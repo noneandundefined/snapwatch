@@ -19,7 +19,7 @@
 
             <Rectangle Fill="#AA000000" />
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical" Margin="40">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
@@ -62,7 +62,7 @@
 
                     <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
 
-                    <Grid MaxHeight="500">
+                    <Grid MaxHeight="600">
                         <ListBox ItemsSource="{Binding SimilarMovies}"
                                 Background="Transparent"
                                 BorderThickness="0"
@@ -70,7 +70,7 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrollViewer.CanContentScroll="True"
                                 VirtualizingPanel.IsVirtualizing="True"
-                                SelectionMode="Single">
+                                SelectionMode="Single" Height="Auto">
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
