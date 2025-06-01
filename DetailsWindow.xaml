@@ -19,6 +19,53 @@
 
             <Rectangle Fill="#AA000000" />
 
+            <ListBox Grid.Row="3" ItemsSource="{Binding SimilarMovies}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.CanContentScroll="True"
+                    VirtualizingPanel.IsVirtualizing="True"
+                    SelectionMode="Single">
+
+                <ListBoxItem>
+                    <Grid Margin="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
+                            <Border.Background>
+                                <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+                                    <ImageBrush.Transform>
+                                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+                                    </ImageBrush.Transform>
+                                </ImageBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
+                            <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
+                            <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
+                            <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
+
+                            <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
+                            <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
+                                <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
+                                        Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </ListBoxItem>
+
+                <ListBoxItem>
+                    
+                </ListBoxItem>
+            </ListBox>
+
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <Grid Margin="40">
                     <Grid.RowDefinitions>
