@@ -19,106 +19,9 @@
 
             <Rectangle Fill="#AA000000" />
 
-            <ListBox Grid.Row="3"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.CanContentScroll="True"
-                    VirtualizingPanel.IsVirtualizing="True">
-
-                <ListBoxItem>
-                    <Grid Margin="40">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
-                            <Border.Background>
-                                <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
-                                    <ImageBrush.Transform>
-                                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
-                                    </ImageBrush.Transform>
-                                </ImageBrush>
-                            </Border.Background>
-                        </Border>
-
-                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
-                            <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
-                            <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
-                            <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
-
-                            <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
-                            <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
-
-                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
-                                <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
-                                        Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </ListBoxItem>
-
-                <ListBoxItem>
-                    <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
-                </ListBoxItem>
-
-                <ListBoxItem>
-                    <ListBox ItemsSource="{Binding SimilarMovies}"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                             VirtualizingPanel.IsVirtualizing="True"
-                             VirtualizingPanel.VirtualizationMode="Recycling"
-                             ScrollViewer.CanContentScroll="True"
-                             SelectionMode="Single">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <vwp:VirtualizingWrapPanel IsItemsHost="True" Orientation="Horizontal" HorizontalAlignment="Center" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                <Setter Property="Focusable" Value="False"/>
-                                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
-                </ListBoxItem>
-            </ListBox>
-
-            <!-- <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <Grid Margin="40">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Vertical" Margin="40">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
                             <StackPanel MouseLeftButtonDown="ToHome_MouseLeftButtonDown">
                                 <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
@@ -126,7 +29,7 @@
                         </Border>
                     </StackPanel>
 
-                    <Grid Grid.Row="1">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -157,16 +60,16 @@
                         </StackPanel>
                     </Grid>
 
-                    <Label Grid.Row="2" Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
+                    <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
 
-                    <ListBox Grid.Row="3" ItemsSource="{Binding SimilarMovies}"
+                    <ListBox ItemsSource="{Binding SimilarMovies}"
                             Background="Transparent"
                             BorderThickness="0"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ScrollViewer.CanContentScroll="True"
                             VirtualizingPanel.IsVirtualizing="True"
-                            SelectionMode="Single">
+                            SelectionMode="Single" Height="200">
 
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -200,8 +103,8 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                </Grid>
-            </ScrollViewer> -->
+                </StackPanel>
+            </ScrollViewer>
 
             <!-- <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
                 <Grid Margin="40">
