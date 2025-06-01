@@ -15,8 +15,8 @@
 
     <Grid Margin="0,0,13,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height='*' />
+            <RowDefinition Height="220" />
+            <RowDefinition Height='Auto' />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Width="190" Height="220" CornerRadius="10" x:Name="MovieBlock">
