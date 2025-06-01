@@ -67,6 +67,7 @@
                                 BorderThickness="0"
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                ScrollViewer.CanContentScroll="True"
                                 SelectionMode="Single">
 
                         <ListBox.ItemsPanel>
