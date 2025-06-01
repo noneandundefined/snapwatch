@@ -19,7 +19,7 @@
 
             <Rectangle Fill="#AA000000" />
 
-            <ListBox Grid.Row="3" ItemsSource="{Binding SimilarMovies}"
+            <ListBox Grid.Row="3"
                     Background="Transparent"
                     BorderThickness="0"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
