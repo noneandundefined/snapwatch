@@ -22,7 +22,7 @@ namespace snapwatch.Core.Service
         {
             string proxyUrl = $"http://{this._proxyAddress}:{this._proxyPort}";
 
-            WebProxy proxy = new WebProxy(proxyUrl)
+            WebProxy proxy = new(proxyUrl)
             {
                 Credentials = new NetworkCredential(this._proxyUsername, this._proxyPassword)
             };

@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using snapwatch.Core.Core;
 using System.Windows.Media;
 using snapwatch.Core.Service;
+using snapwatch.Core.Interface;
 
 namespace snapwatch.UI.Components
 {
@@ -21,6 +22,7 @@ namespace snapwatch.UI.Components
         /// </summary>
         private readonly Config _config;
         private readonly HttpConfig _httpConfig;
+        private readonly ICacheRepository _cacheRepository = App._cacheRepository;
 
         private bool _imageLoaded = false;
 
@@ -64,6 +66,14 @@ namespace snapwatch.UI.Components
             {
                 string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
 
+                // попытка получить картинку из кеша
+                var cachedImage = this._cacheRepository.Get_ImageCache(url);
+                if(cachedImage != null)
+                {
+                    MovieBrash.ImageSource = cachedImage;
+                    return;
+                }
+
                 var handler = new HttpClientHandler
                 {
                     Proxy = this._httpConfig.GetProxy(),
@@ -88,6 +98,9 @@ namespace snapwatch.UI.Components
                         bitmap.EndInit();
                         bitmap.Freeze();
                     }
+
+                    // добавления изображения в кеш
+                    this._cacheRepository.Add_ImageCache(url, bitmap);
 
                     MovieBrash.ImageSource = bitmap;
                 }

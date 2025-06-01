@@ -1,11 +1,12 @@
 ﻿using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
-using snapwatch.Core.Repository;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace snapwatch.UI.View
 {
@@ -101,6 +102,34 @@ namespace snapwatch.UI.View
             {
                 this.IsLoading = false;
             }
+        }
+
+        /// <summary>
+        /// Медленный скрол
+        /// </summary>
+        private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var scrollViewer = FindScrollViewer(sender as DependencyObject);
+            if(scrollViewer != null)
+            {
+                double scrollAmount = 40;
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
+                e.Handled = true;
+            }
+        }
+
+        private ScrollViewer FindScrollViewer(DependencyObject d)
+        {
+            if(d is ScrollViewer viewer) return viewer;
+
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+                var result = FindScrollViewer(child);
+                if(result != null) return result;
+            }
+
+            return null;
         }
     }
 }

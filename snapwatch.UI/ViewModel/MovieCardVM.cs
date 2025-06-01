@@ -52,10 +52,20 @@ namespace snapwatch.UI.ViewModel
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    this._wpfHelper.LoaderVisibilityCollapsed();
+
+                    if (this.Movies == null)
+                    {
+                        this.Movies = [];
+                    }
+                    else
+                    {
+                        this.Movies.Clear();
+                    }
+
                     if (movies != null)
                     {
-                        this._wpfHelper.LoaderVisibilityCollapsed();
-                        foreach (var movie in movies.Results)
+                        foreach(var movie in movies.Results)
                         {
                             Movies.Add(movie);
                         }

@@ -36,11 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Update=".env">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="DotNetEnv, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DotNetEnv.3.1.1\lib\netstandard1.3\DotNetEnv.dll</HintPath>
     </Reference>
@@ -233,6 +228,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="VirtualizingWrapPanel, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\VirtualizingWrapPanel.2.2.1\lib\net462\VirtualizingWrapPanel.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -249,8 +247,10 @@
       <DependentUpon>LoadWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="snapwatch.Core\Core\Config.cs" />
+    <Compile Include="snapwatch.Core\Interface\ICacheRepository.cs" />
     <Compile Include="snapwatch.Core\Interface\IMovieRepository.cs" />
     <Compile Include="snapwatch.Core\Models\TranslateModel.cs" />
+    <Compile Include="snapwatch.Core\Repository\CacheRepository.cs" />
     <Compile Include="snapwatch.Core\Repository\MovieRepository.cs" />
     <Compile Include="snapwatch.Core\Service\HttpConfig.cs" />
     <Compile Include="snapwatch.Core\Service\IndexService.cs" />

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:local="clr-namespace:snapwatch"
         xmlns:components="clr-namespace:snapwatch.UI.Components"
         WindowStartupLocation="CenterScreen"
@@ -18,118 +19,95 @@
 
             <Rectangle Fill="#AA000000" />
 
-            <ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
-                <Grid Margin="40">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Vertical" Margin="40">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Right">
                         <Border Margin="10,0">
-                            <!-- <Border.InputBindings>
-                                        <MouseBinding Gesture="LeftClick"
-                                              Command="{Binding ElementName=menuItems, Path=DataContext.MenuItemClickCommand}"
-                                              CommandParameter="{Binding PathView}" />
-                                    </Border.InputBindings> -->
                             <StackPanel MouseLeftButtonDown="ToHome_MouseLeftButtonDown">
-                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/text.png" Width="24" />
+                                <Image Source="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png" Width="24" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
-                                <Border.Background>
-                                    <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
-                                        <ImageBrush.Transform>
-                                            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
-                                        </ImageBrush.Transform>
-                                    </ImageBrush>
-                                </Border.Background>
-                            </Border>
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
-                                <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
-                                <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
-                                <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
-
-                                <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
-                                <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
-                                    <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
-                                            Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="2">
-                        <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
-
-                        <ItemsControl ItemsSource="{Binding SimilarMovies}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-
-                <!--<ScrollViewer Grid.Column="1" Padding="17 10 0 10" VerticalScrollBarVisibility="Hidden">
-                    <StackPanel>
-                        <Border Grid.Row="1" Margin="0 0 40 0" CornerRadius="12" BorderBrush="#FFF" BorderThickness="1">
-                            <Image Source="Images/ash_poster.jpg" Width="250" Height="375"/>
+                        <Border Grid.Column="0" Margin="0 0 40 0" Width="270" Height="375" CornerRadius="10">
+                            <Border.Background>
+                                <ImageBrush x:Name="PosterImageBrash" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+                                    <ImageBrush.Transform>
+                                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+                                    </ImageBrush.Transform>
+                                </ImageBrush>
+                            </Border.Background>
                         </Border>
 
-
-                        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Top">
-                            <TextBlock Text="Ash vs Evil Dead" FontSize="36" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="TV Series, USA, 2015" FontSize="14" Foreground="Gray" Margin="0,4,0,16"/>
-                            <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600"
-                                        Text="Ash has spent the last 30 years avoiding responsibility, maturity and the terrors of the Evil Dead until a Deadite plague threatens to destroy all of mankind and Ash becomes mankind's only hope."/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
+                            <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
+                            <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
+                            <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
 
                             <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
                             <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
 
                             <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
-                                <Button Content="▶ PLAY" Width="100" Height="40" Margin="0,0,20,0"
+                                <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
                                         Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
-                                <Button Content="Add to Wishlist" Width="150" Height="40"
-                                        Background="#FFF" Foreground="Black" FontWeight="Bold"/>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel/>
-                        <StackPanel>
-                        <ItemsControl x:Name="MoviesItemsControl" ItemsSource="{Binding Movies}">
-                            <ItemsControl.ItemsPanel>
+                    </Grid>
+
+                    <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
+
+                    <Grid MaxHeight="600">
+                        <ListBox ItemsSource="{Binding SimilarMovies}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                PreviewMouseWheel="ListBox_PreviewMouseWheel"
+                                ScrollViewer.CanContentScroll="True"
+                                VirtualizingPanel.IsVirtualizing="True"
+                                SelectionMode="Single" Height="Auto">
+
+                            <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                                    <vwp:VirtualizingWrapPanel IsItemsHost="True" Orientation="Horizontal" HorizontalAlignment="Center" />
                                 </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <components:MovieCardMini />
+                                    <StackPanel>
+                                        <components:MovieCardMini Title="{Binding Title}" PosterPath="{Binding PosterPath}" />
+                                    </StackPanel>
                                 </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </ScrollViewer> -->
+                            </ListBox.ItemTemplate>
+
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Border>
 </Window>

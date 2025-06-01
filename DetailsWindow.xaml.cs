@@ -34,6 +34,7 @@ namespace snapwatch
         private readonly Config _config;
         private readonly HttpConfig _httpConfig;
         private readonly IMovieRepository _movieRepository = App._movieRepository;
+        private readonly ICacheRepository _cacheRepository = App._cacheRepository;
         private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
 
         private MovieModel _movie;
@@ -137,6 +138,14 @@ namespace snapwatch
             {
                 string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
 
+                // попытка получить картинку из кеша
+                var cachedImage = this._cacheRepository.Get_ImageCache(url);
+                if(cachedImage != null)
+                {
+                    this.SetImageSource(xName, cachedImage);
+                    return;
+                }
+
                 var handler = new HttpClientHandler
                 {
                     Proxy = this._httpConfig.GetProxy(),
@@ -161,6 +170,9 @@ namespace snapwatch
                         bitmap.EndInit();
                         bitmap.Freeze();
                     }
+
+                    // добавления изображения в кеш
+                    this._cacheRepository.Add_ImageCache(url, bitmap);
 
                     this.SetImageSource(xName, bitmap);
                 }
@@ -206,6 +218,34 @@ namespace snapwatch
 
             this.Hide();
             mainWindow.Show();
+        }
+
+        /// <summary>
+        /// Медленный скрол
+        /// </summary>
+        private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var scrollViewer = FindScrollViewer(sender as DependencyObject);
+            if(scrollViewer != null)
+            {
+                double scrollAmount = 40;
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
+                e.Handled = true;
+            }
+        }
+
+        private ScrollViewer FindScrollViewer(DependencyObject d)
+        {
+            if(d is ScrollViewer viewer) return viewer;
+
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+                var result = FindScrollViewer(child);
+                if(result != null) return result;
+            }
+
+            return null;
         }
     }
 }
