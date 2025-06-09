@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using snapwatch.Core.Core;
+﻿using snapwatch.Core.Core;
 using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Service;
@@ -26,6 +25,7 @@ namespace snapwatch.Core.Repository
         private readonly IndexService _indexService;
         private readonly TranslateService _translateService;
         private readonly HttpClient _httpClient;
+        private readonly HttpConfig _httpConfig;
 
         private readonly ToneDataSet _toneDataSet;
 
@@ -54,6 +54,7 @@ namespace snapwatch.Core.Repository
             this._indexService = new IndexService();
             this._translateService = new TranslateService();
             this._httpClient = new HttpClient();
+            this._httpConfig = new HttpConfig();
 
             this._toneDataSet = new ToneDataSet();
 
@@ -242,7 +243,7 @@ namespace snapwatch.Core.Repository
                                                     WithDegreeOfParallelism(Environment.ProcessorCount).
                                                     SelectMany(group => group.Results).ToList();
 
-                    var movies = this._lsaBuilder.TFIDF_Cosine(filteredMovies, prepareText);
+                    var movies = this._lsaBuilder.TFIDF_Cosine_Overviews(filteredMovies, prepareText);
 
                     return movies.Select(movie => movie.movies).ToHashSet();
                 }
@@ -329,6 +330,43 @@ namespace snapwatch.Core.Repository
             catch(Exception ex)
             {
                 this._uiException.Error(ex.Message, "Ошибка поиска фильмов по запросу");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// получения видео(трейлера) и доп. информации фильма
+        /// </summary>
+        /// <param name="id">id фильма</param>
+        public async Task<VideoMovieModel> GetVideoMovie(uint id)
+        {
+            string url = $"https://api.themoviedb.org/3/movie/{id}/videos?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
+
+            try
+            {
+                var handler = new HttpClientHandler
+                {
+                    Proxy = this._httpConfig.GetProxy(),
+                    UseProxy = true
+                };
+
+                using var httpClient = new HttpClient(handler);
+                httpClient.Timeout = TimeSpan.FromMinutes(1);
+
+                var response = await httpClient.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+
+                return System.Text.Json.JsonSerializer.Deserialize<VideoMovieModel>(content);
+            }
+            catch (Exception ex)
+            {
+                this._uiException.Error(ex.Message, "Ошибка получения трейлера фильма.");
                 return null;
             }
         }

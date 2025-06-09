@@ -1,5 +1,6 @@
 ﻿using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
+using snapwatch.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,9 +22,21 @@ namespace snapwatch.UI.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// классы и методы
+        /// </summary>
+        private readonly MouseUtilities _mouseUtilities;
         private readonly IMovieRepository _movieRepository = App._movieRepository;
 
         private string _selectTone = "";
+
+        public Story()
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            this._mouseUtilities = new MouseUtilities();
+        }
 
         private HashSet<MovieModel> _movies = [];
         public HashSet<MovieModel> Movies
@@ -59,12 +72,6 @@ namespace snapwatch.UI.View
                     OnPropertyChanged();
                 }
             }
-        }
-
-        public Story()
-        {
-            InitializeComponent();
-            DataContext = this;
         }
 
         private void StoryTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -109,27 +116,21 @@ namespace snapwatch.UI.View
         /// </summary>
         private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            var scrollViewer = FindScrollViewer(sender as DependencyObject);
-            if(scrollViewer != null)
-            {
-                double scrollAmount = 40;
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
-                e.Handled = true;
-            }
+            this._mouseUtilities.PreviewMouseWheel(sender, e);
         }
 
-        private ScrollViewer FindScrollViewer(DependencyObject d)
-        {
-            if(d is ScrollViewer viewer) return viewer;
+        //private ScrollViewer FindScrollViewer(DependencyObject d)
+        //{
+        //    if(d is ScrollViewer viewer) return viewer;
 
-            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
-            {
-                var child = VisualTreeHelper.GetChild(d, i);
-                var result = FindScrollViewer(child);
-                if(result != null) return result;
-            }
+        //    for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+        //    {
+        //        var child = VisualTreeHelper.GetChild(d, i);
+        //        var result = FindScrollViewer(child);
+        //        if(result != null) return result;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
     }
 }

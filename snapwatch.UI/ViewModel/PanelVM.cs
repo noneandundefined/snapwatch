@@ -40,8 +40,9 @@ namespace snapwatch.UI.ViewModel
         {
             MenuItems = new ObservableCollection<PanelItemsModel>
             {
-                new PanelItemsModel { Image="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png", PathView="pack://application:,,,/snapwatch.UI/View/Home.xaml", Title="Home" },
-                new PanelItemsModel { Image="pack://application:,,,/snapwatch.UI/Public/ico/text.png", PathView="pack://application:,,,/snapwatch.UI/View/Story.xaml", Title="Story" },
+                new PanelItemsModel { Image="pack://application:,,,/snapwatch.UI/Public/ico/layout-dashboard.png", PathView="pack://application:,,,/snapwatch.UI/View/Home.xaml", Title="Главная" },
+                new PanelItemsModel { Image="pack://application:,,,/snapwatch.UI/Public/ico/clapperboard.png", PathView="pack://application:,,,/snapwatch.UI/View/Search.xaml", Title="Поиск" },
+                new PanelItemsModel { Image="pack://application:,,,/snapwatch.UI/Public/ico/text.png", PathView="pack://application:,,,/snapwatch.UI/View/Story.xaml", Title="История" },
             };
         }
     }

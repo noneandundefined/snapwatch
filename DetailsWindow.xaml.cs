@@ -2,10 +2,12 @@
 using snapwatch.Core.Interface;
 using snapwatch.Core.Models;
 using snapwatch.Core.Service;
+using snapwatch.Core.Utilities;
 using snapwatch.Engine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -33,6 +35,8 @@ namespace snapwatch
         /// </summary>
         private readonly Config _config;
         private readonly HttpConfig _httpConfig;
+        private readonly MouseUtilities _mouseUtilities;
+        private readonly ImageUtilities _imageUtilities;
         private readonly IMovieRepository _movieRepository = App._movieRepository;
         private readonly ICacheRepository _cacheRepository = App._cacheRepository;
         private readonly LSABuilder _lsaBuilder = App._lsaBuilder;
@@ -43,8 +47,11 @@ namespace snapwatch
         public DetailsWindow(uint ID)
         {
             InitializeComponent();
+
             this._config = new Config();
             this._httpConfig = new HttpConfig();
+            this._mouseUtilities = new MouseUtilities();
+            this._imageUtilities = new ImageUtilities();
 
             this._movieID = ID;
             this._movie = this._movieRepository.GetMovieByID(ID);
@@ -63,8 +70,22 @@ namespace snapwatch
 
             List<MovieModel> fillteredMovies = movies.AsParallel().SelectMany(g => g.Results).ToList();
 
-            var similars = this._lsaBuilder.TFIDF_Cosine(fillteredMovies, this._movie.Overview);
+            var similars = this._lsaBuilder.TFIDF_Cosine_Overviews(fillteredMovies, this._movie.Overview);
             this.SimilarMovies = similars.Select(group => group.movies).ToHashSet();
+        }
+
+        /// <summary>
+        /// Получение и вывод в UI id фильма
+        /// </summary>
+        private uint idMovie = 0;
+        public uint IdMovie
+        {
+            get => this.idMovie;
+            set
+            {
+                this.idMovie = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -119,94 +140,24 @@ namespace snapwatch
             set
             {
                 this.similarMovies = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SimilarMovies));
+                OnPropertyChanged(nameof(HasNoMovies));
             }
         }
 
         /// <summary>
-        /// Загрузка постеров
+        /// Проверка на пустой ли список с фильмами
         /// </summary>
-        /// <param name="path">путь изображения</param>
-        private async void LoadImageAsync(string path, object xName)
-        {
-            var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
-            var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
-
-            this.SetImageSource(xName, new BitmapImage(preloaderUri));
-
-            try
-            {
-                string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
-
-                // попытка получить картинку из кеша
-                var cachedImage = this._cacheRepository.Get_ImageCache(url);
-                if(cachedImage != null)
-                {
-                    this.SetImageSource(xName, cachedImage);
-                    return;
-                }
-
-                var handler = new HttpClientHandler
-                {
-                    Proxy = this._httpConfig.GetProxy(),
-                    UseProxy = true
-                };
-
-                using var httpClient = new HttpClient(handler);
-                httpClient.Timeout = TimeSpan.FromSeconds(30);
-
-                var response = await httpClient.GetAsync(url);
-
-                if(response.IsSuccessStatusCode)
-                {
-                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
-
-                    var bitmap = new BitmapImage();
-                    using(var stream = new MemoryStream(imageBytes))
-                    {
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = stream;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                    }
-
-                    // добавления изображения в кеш
-                    this._cacheRepository.Add_ImageCache(url, bitmap);
-
-                    this.SetImageSource(xName, bitmap);
-                }
-                else
-                {
-                    this.SetImageSource(xName, new BitmapImage(defaultUri));
-                }
-            }
-            catch
-            {
-                this.SetImageSource(xName, new BitmapImage(defaultUri));
-            }
-        }
-
-        private void SetImageSource(object target, ImageSource source)
-        {
-            switch(target)
-            {
-                case Image image:
-                    image.Source = source;
-                    break;
-                case ImageBrush brush:
-                    brush.ImageSource = source;
-                    break;
-            }
-        }
+        public bool HasNoMovies => this.similarMovies == null || this.similarMovies.Count == 0;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Иконки
-            this.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
-            this.LoadImageAsync(this._movie.PosterPath, PosterImageBrash);
+            this._imageUtilities.LoadImageAsync(this._movie.BackdropPath, BackgroundImage);
+            this._imageUtilities.LoadImageAsync(this._movie.PosterPath, PosterImageBrash);
 
             // Текстовые данные
+            this.IdMovie = this._movie.Id;
             this.TitleMovie = this._movie.Title;
             this.DescriptionMovie = this._movie.Overview;
             this.GenreMovie = this._movieRepository.GetGenreByMovie(this._movie);
@@ -225,27 +176,22 @@ namespace snapwatch
         /// </summary>
         private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            var scrollViewer = FindScrollViewer(sender as DependencyObject);
-            if(scrollViewer != null)
-            {
-                double scrollAmount = 40;
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
-                e.Handled = true;
-            }
+            this._mouseUtilities.PreviewMouseWheel(sender, e);
         }
 
-        private ScrollViewer FindScrollViewer(DependencyObject d)
+        private async void ShowTrailler_Click(object sender, RoutedEventArgs e)
         {
-            if(d is ScrollViewer viewer) return viewer;
+            var button = sender as Button;
 
-            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+            if(button != null && button.Tag is uint ID)
             {
-                var child = VisualTreeHelper.GetChild(d, i);
-                var result = FindScrollViewer(child);
-                if(result != null) return result;
-            }
+                VideoMovieModel videoInfo = await this._movieRepository.GetVideoMovie(ID);
 
-            return null;
+                var trailer = videoInfo.Results.FirstOrDefault(v => v.Site == "YouTube" && v.Type == "Trailer"); //https://www.youtube.com/watch?v={videoId}
+                if(trailer == null) return;
+
+                Process.Start($"https://www.youtube.com/watch?v={trailer.Key}");
+            }
         }
     }
 }
