@@ -1,14 +1,10 @@
-﻿using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using snapwatch.Core.Core;
 using System.Windows.Media;
 using snapwatch.Core.Service;
 using snapwatch.Core.Interface;
+using snapwatch.Core.Utilities;
 
 namespace snapwatch.UI.Components
 {
@@ -22,6 +18,7 @@ namespace snapwatch.UI.Components
         /// </summary>
         private readonly Config _config;
         private readonly HttpConfig _httpConfig;
+        private readonly ImageUtilities _imageUtilities;
         private readonly ICacheRepository _cacheRepository = App._cacheRepository;
 
         private bool _imageLoaded = false;
@@ -29,8 +26,10 @@ namespace snapwatch.UI.Components
         public MovieCardMini()
         {
             InitializeComponent();
+
             this._config = new Config();
             this._httpConfig = new HttpConfig();
+            this._imageUtilities = new ImageUtilities();
         }
 
         private void MovieCardMini_Loaded(object sender, RoutedEventArgs e)
@@ -38,7 +37,7 @@ namespace snapwatch.UI.Components
             if (this.IsVisible && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
             {
                 this._imageLoaded = true;
-                LoadImageAsync(PosterPath);
+                this._imageUtilities.LoadImageAsync(PosterPath, MovieBrash);
             }
         }
 
@@ -47,7 +46,7 @@ namespace snapwatch.UI.Components
             if ((bool)e.NewValue && !this._imageLoaded && !string.IsNullOrEmpty(PosterPath))
             {
                 this._imageLoaded = true;
-                LoadImageAsync(PosterPath);
+                this._imageUtilities.LoadImageAsync(PosterPath, MovieBrash);
             }
         }
 
@@ -55,64 +54,9 @@ namespace snapwatch.UI.Components
         /// Загрузка постеров
         /// </summary>
         /// <param name="path">путь изображения</param>
-        private async void LoadImageAsync(string path)
+        private void CardLoadImageAsync(string path)
         {
-            var preloaderUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/image_preloader.png");
-            var defaultUri = new Uri("pack://application:,,,/snapwatch.UI/Public/images/default_image.jpg");
-
-            MovieBrash.ImageSource = new BitmapImage(preloaderUri);
-
-            try
-            {
-                string url = $"https://image.tmdb.org/t/p/w500{path}?api_key={this._config.ReturnConfig().API_KEY_TMDB}";
-
-                // попытка получить картинку из кеша
-                var cachedImage = this._cacheRepository.Get_ImageCache(url);
-                if(cachedImage != null)
-                {
-                    MovieBrash.ImageSource = cachedImage;
-                    return;
-                }
-
-                var handler = new HttpClientHandler
-                {
-                    Proxy = this._httpConfig.GetProxy(),
-                    UseProxy = true
-                };
-
-                using var httpClient = new HttpClient(handler);
-                httpClient.Timeout = TimeSpan.FromSeconds(30);
-
-                var response = await httpClient.GetAsync(url);
-
-                if(response.IsSuccessStatusCode)
-                {
-                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
-
-                    var bitmap = new BitmapImage();
-                    using(var stream = new MemoryStream(imageBytes))
-                    {
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = stream;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                    }
-
-                    // добавления изображения в кеш
-                    this._cacheRepository.Add_ImageCache(url, bitmap);
-
-                    MovieBrash.ImageSource = bitmap;
-                }
-                else
-                {
-                    MovieBrash.ImageSource = new BitmapImage(defaultUri);
-                }
-            }
-            catch
-            {
-                MovieBrash.ImageSource = new BitmapImage(defaultUri);
-            }
+            this._imageUtilities.LoadImageAsync(path, MovieBrash);
         }
 
         private static void OnPosterPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -121,7 +65,7 @@ namespace snapwatch.UI.Components
             if (card.IsVisible && !card._imageLoaded && e.NewValue is string newPath && !string.IsNullOrEmpty(newPath))
             {
                 card._imageLoaded = true;
-                card.LoadImageAsync(newPath);
+                card.CardLoadImageAsync(newPath);
             }
         }
 

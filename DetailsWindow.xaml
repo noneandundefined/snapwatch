@@ -4,11 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
         xmlns:local="clr-namespace:snapwatch"
         xmlns:components="clr-namespace:snapwatch.UI.Components"
+        xmlns:controllers="clr-namespace:snapwatch.UI.Styles.Controllers"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" Icon="pack://application:,,,/snapwatch.UI/Public/images/snapwatch-40px.ico"
         Title="snapwatch" Height="750" MinHeight="750" Width="934" MinWidth="934" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <controllers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    
     <Border>
         <Grid>
             <Image x:Name="BackgroundImage" Stretch="UniformToFill">
@@ -46,16 +53,17 @@
                         </Border>
 
                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Width="550">
-                            <TextBlock Text="{Binding TitleMovie}" FontSize="36" FontWeight="Bold" Foreground="White" MaxWidth="550" />
+                            <TextBox Text="{Binding TitleMovie}" Style="{StaticResource Font}" FontSize="36" FontWeight="Bold" Background="Transparent" BorderThickness="0" Foreground="White" MaxWidth="550" IsReadOnly="True" />
                             <TextBlock Text="{Binding GenreMovie}" FontSize="14" Foreground="Gray" Margin="0,4,0,16" />
-                            <TextBlock Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" FontSize="16" MaxWidth="600" />
+                            <TextBox Text="{Binding DescriptionMovie}" TextWrapping="Wrap" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" MaxWidth="600" IsReadOnly="True" />
 
                             <TextBlock Margin="0,20,0,0" Foreground="Gray" Text="Creators: Ivan Raimi, Sam Raimi, Tom Spezialy"/>
                             <TextBlock Foreground="Gray" Text="Stars: Bruce Campbell, Jill Marie Jones, Lucy Lawless"/>
 
                             <StackPanel Orientation="Horizontal" Margin="0,30,0,0" >
-                                <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0"
-                                        Background="#FFFFC107" Foreground="Black" FontWeight="Bold"/>
+                                <Button Content="▶   ТРЕЙЛЕР" Width="150" Height="40" Margin="0,0,20,0" Tag="{Binding IdMovie}"
+                                        Background="#FFFFC107" Foreground="Black" FontWeight="Bold" FontSize="13" 
+                                        Style="{StaticResource Font}" Click="ShowTrailler_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -63,6 +71,8 @@
                     <Label Content="Смотрите также" Style="{StaticResource Font}" Foreground="#fff" FontSize="23" Margin="0,20" />
 
                     <Grid MaxHeight="600">
+                        <components:NotFound Visibility="{Binding HasNoMovies, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        
                         <ListBox ItemsSource="{Binding SimilarMovies}"
                                 Background="Transparent"
                                 BorderThickness="0"

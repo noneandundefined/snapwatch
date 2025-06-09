@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen" 
         Icon="pack://application:,,,/snapwatch.UI/Public/images/snapwatch-40px.ico"
         Height="550" Width="800" AllowsTransparency="True" Background="Transparent"
-        ResizeMode="NoResize" WindowStyle="None">
+        ResizeMode="NoResize" WindowStyle="None" Cursor="Wait">
 
     <Border CornerRadius="10" Background="#111">
         <Grid>

@@ -54,15 +54,15 @@ namespace snapwatch.Engine
         /// <summary>
         /// подготовка и счет базовых значений + кеширование
         /// </summary>
-        /// <param name="overviews">описания фильмов</param>
-        public void Fit(string[] overviews)
+        /// <param name="documents">описания фильмов</param>
+        public void Fit(string[] documents)
         {
             if (this._vocabulary == null)
             {
                 this._idfCache = [];
 
-                this._tokenizedDOCS = overviews.AsParallel().Select(doc => this._nlpBuilder.Preprocess(doc)).ToList();
-                this._vocabulary = _tokenizedDOCS.AsParallel().SelectMany(token => token).Take(this._avgOverview * overviews.Length).ToHashSet();
+                this._tokenizedDOCS = documents.AsParallel().Select(doc => this._nlpBuilder.Preprocess(doc)).ToList();
+                this._vocabulary = _tokenizedDOCS.AsParallel().SelectMany(token => token).Take(this._avgOverview * documents.Length).ToHashSet();
 
                 Parallel.ForEach(this._tokenizedDOCS, doc =>
                 {
@@ -78,7 +78,7 @@ namespace snapwatch.Engine
                     this._idfCache[term] = this._tfidfBuilder.IDF(this._tokenizedDOCS.Count, (int)N);
                 }
 
-                this._tfidfVectors = overviews.AsParallel().Select(doc => this.Transform(doc)).ToList();
+                this._tfidfVectors = documents.AsParallel().Select(doc => this.Transform(doc)).ToList();
             }
         }
 
@@ -107,17 +107,39 @@ namespace snapwatch.Engine
         }
 
         /// <summary>
-        /// основная фукнция нахождения похожих фильмов
+        /// основная фукнция нахождения похожих фильмов по описанию
         /// </summary>
         /// <param name="documents">фильмы</param>
         /// <param name="text">текст написанный пользователем</param>
         /// <param name="top">максимальный вывод фильмов</param>
-        public List<(MovieModel movies, double similarity)> TFIDF_Cosine(List<MovieModel> documents, string text, ushort top = 50)
+        public List<(MovieModel movies, double similarity)> TFIDF_Cosine_Overviews(List<MovieModel> documents, string text, ushort top = 50)
         {
             var documentsTake = documents.Take(documents.Count / 2).ToList();
             List<string> overviews = documentsTake.AsParallel().Select(document => document.Overview ?? "").ToList();
 
-            this.Fit([..overviews]);
+            this.Fit([.. overviews]);
+
+            double[] vectorInput = this.Transform(text);
+            List<(MovieModel movies, double similarity)> similarity = [];
+
+            return documentsTake.AsParallel().Select((doc, i) => (
+                movies: doc,
+                similarity: this.CosineSimilarity(vectorInput, this._tfidfVectors[i])
+            )).OrderByDescending(sim => sim.similarity).Take(top).ToList();
+        }
+
+        /// <summary>
+        /// основная фукнция нахождения похожих фильмов по заголовкам
+        /// </summary>
+        /// <param name="documents">фильмы</param>
+        /// <param name="text">текст написанный пользователем</param>
+        /// <param name="top">максимальный вывод фильмов</param>
+        public List<(MovieModel movies, double similarity)> TFIDF_Cosine_Title(List<MovieModel> documents, string text, ushort top = 50)
+        {
+            var documentsTake = documents.Take(documents.Count / 2).ToList();
+            List<string> overviews = documentsTake.AsParallel().Select(document => document.Title ?? "").ToList();
+
+            this.Fit([.. overviews]);
 
             double[] vectorInput = this.Transform(text);
             List<(MovieModel movies, double similarity)> similarity = [];

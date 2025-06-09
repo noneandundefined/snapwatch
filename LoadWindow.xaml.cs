@@ -27,28 +27,35 @@ namespace snapwatch
 
             this._uiException = new UIException();
 
+            Show();
+
             this.Preparation();
         }
 
-        private void Preparation()
+        private async void Preparation()
         {
             try
             {
-                // 1
-                this._movieRepository.GetMovies();
+                await Task.Run(() =>
+                {
+                    // 1
+                    this._movieRepository.GetMovies();
 
-                // 2
-                List<MoviesModel> documents = this._movieRepository.GetDataFileMovie();
-                List<MovieModel> filteredMovies = documents.AsParallel().
-                                                    WithDegreeOfParallelism(Environment.ProcessorCount).
-                                                    SelectMany(group => group.Results).ToList();
+                    // 2
+                    List<MoviesModel> documents = this._movieRepository.GetDataFileMovie();
+                    List<MovieModel> filteredMovies = documents.AsParallel().
+                                                        WithDegreeOfParallelism(Environment.ProcessorCount).
+                                                        SelectMany(group => group.Results).ToList();
 
-                var documentsTake = filteredMovies.Shuffle().Take(filteredMovies.Count / 2).ToList();
-                List<string> overviews = documentsTake.AsParallel().Select(document => document.Overview ?? "").ToList();
+                    var documentsTake = filteredMovies.Shuffle().Take(filteredMovies.Count / 2).ToList();
+                    List<string> overviews = documentsTake.AsParallel().Select(document => document.Overview ?? "").ToList();
 
-                this._lsaBuilder.Fit([.. overviews]);
+                    this._lsaBuilder.Fit([.. overviews]);
 
-                this.NextWindow();
+                    //this.NextWindow();
+                });
+
+                await Dispatcher.BeginInvoke(new Action(NextWindow));
             }
             catch (Exception ex)
             {
@@ -56,10 +63,8 @@ namespace snapwatch
             }
         }
 
-        private async void NextWindow()
+        private void NextWindow()
         {
-            await Task.Delay(3000);
-
             MainWindow mainWindow = new();
             this.Hide();
 

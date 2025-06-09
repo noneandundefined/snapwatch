@@ -45,7 +45,7 @@ namespace snapwatch.UI.ViewModel
                 this._wpfHelper.LoaderVisibilityVisible();
             });
 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 MoviesModel movies = this._movieRepository.GetMovies();
                 Movies = [];

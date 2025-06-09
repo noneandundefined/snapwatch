@@ -47,6 +47,12 @@ namespace snapwatch.Core.Interface
         MovieModel GetMovieByID(uint id);
 
         /// <summary>
+        /// получения видео(трейлера) и доп. информации фильма
+        /// </summary>
+        /// <param name="id">id фильма</param>
+        Task<VideoMovieModel> GetVideoMovie(uint id);
+
+        /// <summary>
         /// получение жанров и форматирование
         /// </summary>
         /// <param name="movie">фильм</param>

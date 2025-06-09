@@ -1,4 +1,5 @@
-﻿using snapwatch.UI.ViewModel;
+﻿using snapwatch.Core.Utilities;
+using snapwatch.UI.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,9 +14,13 @@ namespace snapwatch.UI.View
     {
         private bool _isLoading = false;
 
+        private readonly MouseUtilities _mouseUtilities;
+
         public Home()
         {
             InitializeComponent();
+
+            this._mouseUtilities = new MouseUtilities();
         }
 
         private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -52,27 +57,7 @@ namespace snapwatch.UI.View
         /// </summary>
         private void ListBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            var scrollViewer = FindScrollViewer(sender as DependencyObject);
-            if(scrollViewer != null)
-            {
-                double scrollAmount = 40;
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Sign(e.Delta) * scrollAmount);
-                e.Handled = true;
-            }
-        }
-
-        private ScrollViewer FindScrollViewer(DependencyObject d)
-        {
-            if (d is ScrollViewer viewer) return viewer;
-
-            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
-            {
-                var child = VisualTreeHelper.GetChild(d, i);
-                var result = FindScrollViewer(child);
-                if (result != null) return result;
-            }
-
-            return null;
+            this._mouseUtilities.PreviewMouseWheel(sender, e);
         }
     }
 }
